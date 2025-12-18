@@ -1,0 +1,98 @@
+﻿================================================================================
+PROJEKT DOKUMENTÁCIÓ: "NEBULA" BANKI RENDSZER
+================================================================================
+
+## FEJLESZTŐI ALAPSZABÁLYOK (MINDENKINEK KÖTELEZŐ)
+
+Mielőtt egyetlen sort is írnál, tartsd be az alábbiakat a kódban:
+
+### Függvény dokumentáció
+Minden függvény felett kötelező megadni:
+  • Mit csinál a függvény?
+  • Mit vár bemeneti adatként (paraméterek)?
+  • Mit ad vissza (return value)?
+
+### Láthatóság
+Minden public változót, static mezőt vagy osztályt kötelező kommenttel ellátni, 
+amely elmagyarázza a szerepét a rendszerben.
+
+### Tisztaság
+Ne használj "magic number"-eket (pl. if (x == 5)). 
+Használj beszédes változóneveket vagy konstansokat!
+
+### Git etikett
+1. Munka előtt: git pull
+2. Munka után: tesztelés
+3. Csak utána: git push
+
+================================================================================
+## PROJEKT SPECIFIKÁCIÓ & ELVÁRÁSOK
+================================================================================
+
+### 1. IDENTITÁS ÉS MUNKAMENET-KEZELÉS
+
+A rendszernek képesnek kell lennie több különálló felhasználó adatait kezelni 
+egyidejűleg.
+
+Követelmények:
+  ✓ Szerepkörök: Vásárló (Customer) és Bankmenedzser (Manager) megkülönböztetése
+  ✓ Hitelesítés: Senki ne férhessen hozzá adatokhoz sikeres azonosítás 
+    (pl. számlaszám és PIN) nélkül
+  ✓ Adatintegritás: Ha az egyik felhasználó módosít egy adatot, az a központi 
+    adatbázisban (listában) azonnal frissüljön mindenki más számára is
+
+### 2. PÉNZÜGYI LOGIKA ÉS TRANZAKCIÓBIZTONSÁG
+
+A programnak garantálnia kell, hogy a "pénz törvényei" soha ne sérüljenek.
+
+Követelmények:
+  ✓ Atomi Tranzakciók: Egy kifizetés nem történhet meg, ha nincs fedezet. 
+    A folyamatnak golyóállónak kell lennie (nincs negatív egyenleg, hacsak 
+    nem hitelkeretről van szó)
+  
+  ✓ Audit Trail (Naplózás): Ne csak az egyenleget írjuk felül! 
+    Minden pénzmozgásról készüljön rekord: pontos időpont, összeg, típus 
+    és egy egyedi azonosító
+  
+  ✓ Belső utalások: Meg kell oldani az összegek mozgatását két különböző 
+    számla között úgy, hogy a pénz ne "tűnjön el" a logika futása közben
+
+### 3. MODULÁRIS ARCHITEKTÚRA (Többrétegű felépítés)
+
+A kód ne egyetlen óriási fájl legyen! A feladatokat válasszuk szét:
+
+  Adatréteg (Data Layer)
+    → Itt definiáljuk a számlák és tranzakciók szerkezetét
+  
+  Logikai Réteg (Business Logic Layer)
+    → Itt történnek a számítások, a validációk és a banki szabályok ellenőrzése
+  
+  Interfész Réteg (Presentation Layer)
+    → Itt kezeljük a felhasználói bevitelt és a konzolos megjelenítést
+
+### 4. MENEDZSERI FELÜGYELET
+
+A bank "háttéroldala", ahol az adminisztrátorok ellenőrizhetik a bank egészségét.
+
+Követelmények:
+  ✓ Minden regisztrált számla listázása és részletes megtekintése
+  ✓ Globális tranzakciós napló (minden mozgás követése az egész bankban)
+  ✓ Számlák zárolása vagy globális kamatlábak módosítása
+
+================================================================================
+## FEJLESZTÉSI FILOZÓFIA
+================================================================================
+
+→ Skalálhatóság
+  Ne égess be adatokat! Úgy kódolj, hogy a rendszer 5 és 5000 felhasználóval 
+  is ugyanúgy működjön.
+
+→ Encapsulation (Egységbezárás)
+  Védd az adatokat! Egyik modul ne tudja csak úgy "véletlenül" átírni 
+  egy másik modul privát változóit.
+
+→ Hibakezelés
+  A program soha nem omolhat össze hibás bevitel miatt. Ha a felhasználó 
+  szöveget ír szám helyett, a rendszer kezelje le és kérje újra az adatot.
+
+================================================================================

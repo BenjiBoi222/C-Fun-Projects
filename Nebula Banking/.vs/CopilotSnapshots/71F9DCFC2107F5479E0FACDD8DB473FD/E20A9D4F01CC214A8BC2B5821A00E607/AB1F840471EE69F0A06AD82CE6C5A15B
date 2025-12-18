@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Nebula_Banking
+{
+    class BankManager : Users
+    {
+        public bool CanViewAllAccounts { get; set; } = true;
+        public bool CanCreateUsers { get; set; } = true;
+        public bool CanDeleteUsers { get; set; } = true;
+
+        // Constructor for manager accounts
+        public BankManager(int cardNumber, string password)
+            : base(cardNumber, password)
+        {
+        }
+
+        // View all users in the system
+        public void ViewAllAccounts(List<Users> allUsers)
+        {
+            Console.WriteLine("\n=== All User Accounts ===");
+            if (allUsers.Count == 0)
+            {
+                Console.WriteLine("No users found.");
+                return;
+            }
+
+            foreach (var user in allUsers)
+            {
+                user.DisplayUserInfo();
+                Console.WriteLine("---");
+            }
+        }
+
+        // Add a new user to the system
+        public Users AddNewUser(int cardNumber, string password)
+        {
+            if (!CanCreateUsers)
+            {
+                Console.WriteLine("Manager does not have permission to create users.");
+                return null;
+            }
+
+            Users newUser = new Users(cardNumber, password);
+            Console.WriteLine($"New user created successfully. User ID: {newUser.Id}");
+            return newUser;
+        }
+
+        // Delete a user by their ID
+        public bool DeleteUser(List<Users> allUsers, int userId)
+        {
+            if (!CanDeleteUsers)
+            {
+                Console.WriteLine("Manager does not have permission to delete users.");
+                return false;
+            }
+
+            var userToDelete = allUsers.FirstOrDefault(u => u.Id == userId);
+            if (userToDelete != null)
+            {
+                allUsers.Remove(userToDelete);
+                Console.WriteLine($"User {userId} deleted successfully.");
+                return true;
+            }
+
+            Console.WriteLine($"User {userId} not found.");
+            return false;
+        }
+
+        // Override base method
+        public override void DisplayUserInfo()
+        {
+            Console.WriteLine($"Manager ID: {Id}");
+            Console.WriteLine($"Card Number: {CardNumber}");
+        }
+    }
+}

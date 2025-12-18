@@ -1,0 +1,38 @@
+========================
+		Classok
+========================
+1.Program
+2.Users
+3.BankManager
+4.LoginMenu
+5.MainMenu
+
+
+========================
+	 Class funkciok
+========================
+--------------
+Program:
+	Runs the code
+	References the menus
+	DOESNT have any internal logic other than Main
+
+--------------
+Users:
+	Constructor for every element a user has control over
+	Basic functions to help other classes to work smoother
+	New content addable
+   /VARIABLE TYPES MUST NOT BE CHANGED\
+
+--------------
+BankManager:
+	Constructor for every element the bank admin has control over
+	More complex helper functions so other classes doesnt have to implement admin functions
+
+--------------
+LoginMenu:
+	Stores all the login menu functions(legin/register)
+
+--------------
+MainMenu:
+	Stores all the main menu functions
