@@ -38,6 +38,32 @@ namespace Nebula_Banking
         /// </summary>
         private static void LoginFunc()
         {
+            Console.Write("Enter your card number: ");
+            //Checks if the user given input is an {int}, if not than error
+            if (int.TryParse(Console.ReadLine(), out var cardNumber))
+            {
+                    foreach(var userElement in Universal.Users)
+                    {
+                        if(userElement.CardNumber == cardNumber)
+                        {
+                            for(int i = 0; i < 3; i++)
+                            {
+                                Console.Write("Enter your password");
+                                string password = Console.ReadLine();
+
+                                if(password == userElement.Password)
+                                {
+
+                                }
+                            }
+
+                        }
+                    }
+                    //If the foreach loop can't find the card number inside, than the user doesn't exit
+                    Console.WriteLine("Card not registered in database");
+                    return;
+            }
+            else { Console.WriteLine("Invalid input, only numbers!"); }
 
         }
         /// <summary>

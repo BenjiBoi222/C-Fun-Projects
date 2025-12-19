@@ -21,9 +21,9 @@
             {
                 if (isLoggedIn)
                 {
-                    mainMenu.ShowMenu();
+                    //mainMenu.ShowMenu();
                     int choice = UserChoice();
-                    mainMenu.HandleMenu(choice);
+                    //mainMenu.HandleMenu(choice);
                 }
                 else
                 {

@@ -6,7 +6,8 @@
 3.BankManager
 4.LoginMenu
 5.MainMenu
-
+6.Files
+7.Universal
 
 ========================
 	 Class funkciok
@@ -36,3 +37,13 @@ LoginMenu:
 --------------
 MainMenu:
 	Stores all the main menu functions
+
+--------------
+Files:
+	Handles all the file writing and reading from txt for cleaner code
+	No universal reader and writer due to its hardere approach
+
+--------------
+Universal:
+	This class contains all the elemets that are being used throughout more than one class 
+	Easirer acces and no code duplications

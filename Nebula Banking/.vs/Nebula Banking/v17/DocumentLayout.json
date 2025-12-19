@@ -3,28 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\files.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\files.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\devlog.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\devlog.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\universal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\universal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\loginmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\loginmenu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\bankmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\bankmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\users.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\universal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\universal.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\files.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\files.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\nebula banking\\nebula banking\\bankmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{75E43E13-F9F5-4F31-96AC-3EBF7BDAE986}|Nebula Banking\\Nebula Banking.csproj|solutionrelative:nebula banking\\bankmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,17 +38,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Program.cs",
               "RelativeDocumentMoniker": "Nebula Banking\\Program.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Program.cs",
               "RelativeToolTip": "Nebula Banking\\Program.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAtwBcAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAwwBwAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-18T19:10:59.066Z",
               "IsPinned": true,
@@ -52,13 +56,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "Files.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Files.cs",
               "RelativeDocumentMoniker": "Nebula Banking\\Files.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Files.cs",
               "RelativeToolTip": "Nebula Banking\\Files.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAIA7wBYAAABDAAAAAAAAAA==",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAAAcAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-18T20:51:29.618Z",
               "IsPinned": true,
@@ -66,7 +70,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
+              "Title": "DevLog.txt",
+              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\DevLog.txt",
+              "RelativeDocumentMoniker": "Nebula Banking\\DevLog.txt",
+              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\DevLog.txt",
+              "RelativeToolTip": "Nebula Banking\\DevLog.txt",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwCQAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-12-19T05:42:20.019Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "BankManager.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\BankManager.cs",
               "RelativeDocumentMoniker": "Nebula Banking\\BankManager.cs",
@@ -74,8 +91,7 @@
               "RelativeToolTip": "Nebula Banking\\BankManager.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAAA4AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-12-18T21:32:15.518Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-12-18T21:32:15.518Z"
             },
             {
               "$type": "Document",
@@ -85,7 +101,7 @@
               "RelativeDocumentMoniker": "Nebula Banking\\Users.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Users.cs",
               "RelativeToolTip": "Nebula Banking\\Users.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAA9wBIAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-18T21:30:42.074Z",
               "EditorCaption": ""
@@ -98,20 +114,20 @@
               "RelativeDocumentMoniker": "Nebula Banking\\LoginMenu.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\LoginMenu.cs",
               "RelativeToolTip": "Nebula Banking\\LoginMenu.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAhwCAAAABEAAAAAAAAAA==",
+              "ViewState": "AgIAACYAAAAAAAAAAAApwDgAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-18T21:27:48.654Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "Universal.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Universal.cs",
               "RelativeDocumentMoniker": "Nebula Banking\\Universal.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\Nebula Banking\\Nebula Banking\\Universal.cs",
               "RelativeToolTip": "Nebula Banking\\Universal.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-18T21:25:15.441Z",
               "EditorCaption": ""

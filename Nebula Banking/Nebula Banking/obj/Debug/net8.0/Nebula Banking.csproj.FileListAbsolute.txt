@@ -1,0 +1,5 @@
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.AssemblyInfoInputs.cache
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.AssemblyInfo.cs
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.csproj.CoreCompileInputs.cache
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.sourcelink.json

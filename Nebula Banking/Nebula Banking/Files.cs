@@ -7,13 +7,11 @@ using System.Threading.Tasks;
 
 namespace Nebula_Banking
 {
-    class File
+    /// <summary>
+    /// Because making a universal file reader would be way out of our league I suggest making a reader and a writer to every txt file we make.
+    /// </summary>
+    class Files
     {
-        /**
-         * Because making a universal file reader would be way out of our league
-         * I suggest making a reader and a writer to every txt file we make.
-         */
-
         /// <summary>
         /// Reads the content of the User.txt, elements separated by ";" |
         /// Id;CardNumber;Password;Username

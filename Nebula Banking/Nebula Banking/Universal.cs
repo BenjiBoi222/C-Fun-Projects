@@ -9,10 +9,14 @@ namespace Nebula_Banking
     class Universal
     {
         //========== User List ==========//
+        //This is where all the Users are stored inside a List
         public static List<Users> Users = new List<Users>();
         //===============================//
 
-
+        //========== Current user ==========//
+        //This is where the ID of the logged in user is stored 
+        public static string _CurrentUserID_ = string.Empty;
+        //==================================//
 
 
 
