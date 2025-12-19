@@ -25,7 +25,7 @@
                 if (switchFromMenu)
                 {
                     Console.clear();
-                    switchFromMenu = false;
+                    switchFromMenu = false;  
                 }
 
 

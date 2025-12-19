@@ -8,6 +8,10 @@ namespace Nebula_Banking
 {
     internal class AccountFunctions
     {
+
+        /// <summary>
+        /// Function to show the user the balance they have on their account
+        /// </summary>
         public void ViewAccountBalance()
         {
             foreach(var userElement in Universal.Users)
@@ -21,10 +25,25 @@ namespace Nebula_Banking
                 }
             }
         }
+        /// <summary>
+        /// Function to give the user their whole account information
+        /// </summary>
 
         public void ViewAccountDetails()
         {
-            
+            foreach(var userElement in Universal.Users)
+            {
+                if(userElement.Id == Universal.Users)
+                {
+                    Console.WriteLine("======================");
+                    Console.WriteLine($"User ID: {userElement.Id}");
+                    Console.WriteLine($"Username: {userElement.UserName}");
+                    Console.WriteLine($"Password: {userElement.Password}");
+                    Console.WriteLine($"Cardnumber: {userElement.cardNumber}");
+                    Console.WriteLine($"Balance: {userElement.cardNumber}");
+                    Console.WriteLine("======================");   
+                }
+            }
         }
     }
 }

@@ -42,13 +42,16 @@ namespace Nebula_Banking
                 case 0: Console.WriteLine("Logging out..."); Program.isLoggedIn = false; Program.switchFromMenu = true; break;
                 case 1: AccountFunctions.ViewAccountBalance(); break;
                 case 2: AccountFunctions.ViewAccountDetails(); break;
+
                 case 3: MoneyFunctions.DepositMoney(); break;
                 case 4: MoneyFunctions.WithdrawMoney(); break;
                 case 5: MoneyFunctions.TransferMoney(); break;
+
                 case 6: StockFunctions.ViewOwnedStocks(); break;
-                case 7: StockFunctions.ViewAvailableStocks(); break;
+                case 7: StockFunctions.ViewStocksInMarket(); break;
                 case 8: StockFunctions.BuyStocks(); break;
                 case 9: StockFunctions.SellStocks(); break;
+
                 case 10: SettingFunctions.ChangePassword(); break;
                 case 11: SettingFunctions.ChangeUsername(); break;
             }

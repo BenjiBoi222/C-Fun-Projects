@@ -15,7 +15,9 @@ namespace Nebula_Banking
         public string Password { get; set; }
         public string UserName { get; set; }
         public double UserBalance { get; set; }
-
+        public string[,] UserStocks { get; set;}
+        // [{string},{int},{double}]
+        // [{name},{amount},{price/amount}]
 
         // Constructor for regular users
         public Users(int cardNumber, string password, string userName, double UserBalance)
@@ -31,6 +33,22 @@ namespace Nebula_Banking
         {
             Console.WriteLine($"User ID: {Id}");
             Console.WriteLine($"Card Number: {CardNumber}");
+        }
+
+        ///<summary>
+        ///Lists out the basic infos of each stock the user owns 
+        ///</summary>
+        public void DisplayStocks()
+        {
+            Console.WriteLine("==============");
+            for(int i = 0; i < UserStocks.Count(); i++)
+            {
+                Console.WriteLine($"Stock name: {UserStocks[i][0]}");
+                Console.WriteLine($"Stock owned: {UserStocks[i][1]}");
+                Console.WriteLine($"Stock price/amount: {UserStocks[i][2]}");
+                Console.WriteLine("----");
+            }
+            Console.WriteLine("==============");
         }
     }
 }

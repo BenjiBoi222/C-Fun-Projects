@@ -79,7 +79,7 @@ namespace Nebula_Banking
         {
             string userPasword;
             int cardNumber;
-
+            double userBalance = 0;
             Console.Write("Enter your new username: ");
             string userName = Console.ReadLine();
 
@@ -117,7 +117,7 @@ namespace Nebula_Banking
                 }
             }
 
-            Users user = new Users(cardNumber, password, userName);
+            Users user = new Users(cardNumber, password, userName, userBalance);
             Console.WriteLine("Registration succesful!");
             
             //========= After register userinfo =========//

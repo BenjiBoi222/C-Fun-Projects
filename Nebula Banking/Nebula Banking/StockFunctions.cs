@@ -1,0 +1,43 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Nebula_Banking
+{
+    class StockFunctions
+    {
+        static List<Stocks> Stocks = new List<Stocks>();
+
+        /// <summary>
+        /// Calls the DisplayStocks function from Users.cs
+        /// </summary>
+        public void ViewOwnedStocks()
+        {
+            foreach(var userElement in Universal.Users)
+            {
+                if(userElement.Id == Universal._CurrentUserID_)
+                {
+                    userElement.DisplayStocks();
+                }
+            }
+        } 
+        /// <summary>
+        /// Displays all the stocks info
+        /// </summary>
+        public void ViewStocksInMarket()
+        {
+            foreach(var stockElement in Stocks)
+            {
+                stockElement.DisplayStock();
+            }
+        }
+
+        public void BuyStocks()
+        {
+            
+        }
+
+    }
+}

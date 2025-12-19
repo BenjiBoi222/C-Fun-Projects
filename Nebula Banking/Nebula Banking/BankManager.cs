@@ -8,21 +8,15 @@ namespace Nebula_Banking
 {
     class BankManager : Users
     {
-        public bool CanApproveLoans { get; set; } = true;
         public bool CanViewAllAccounts { get; set; } = true;
         public bool CanCreateUsers { get; set; } = true;
 
         // Constructor for manager accounts
-        public BankManager(int cardNumber, string password, string userName) 
-            : base(cardNumber, password, userName)
+        public BankManager(int cardNumber, string password, string userName, bool userBalance) 
+            : base(cardNumber, password, userName, userBalance)
         {
         }
 
-        // Manager-specific methods
-        public void ApproveTransaction(Users user)
-        {
-            Console.WriteLine($"Manager {Id} approved transaction for user {user.Id}");
-        }
 
         public void ViewAllAccounts(List<Users> allUsers)
         {
@@ -38,7 +32,6 @@ namespace Nebula_Banking
         {
             Console.WriteLine($"Manager ID: {Id}");
             Console.WriteLine($"Card Number: {CardNumber}");
-            Console.WriteLine($"Can Approve Loans: {CanApproveLoans}");
         }
     }
 }
