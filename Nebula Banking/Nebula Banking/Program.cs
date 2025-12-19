@@ -9,6 +9,9 @@
         static LoginMenu loginMenu = new LoginMenu();
         static MainMenu mainMenu = new MainMenu();
 
+        //Checks if a user logged in or out so it can clear the console
+        public static bool switchFromMenu = false;
+
         //Static bools to determent if the user is logged in or not or that the menu should run
         public static bool isRunning = true;
         public static bool isLoggedIn = false;
@@ -19,11 +22,18 @@
 
             while(isRunning)
             {
+                if (switchFromMenu)
+                {
+                    Console.clear();
+                    switchFromMenu = false;
+                }
+
+
                 if (isLoggedIn)
                 {
-                    //mainMenu.ShowMenu();
+                    mainMenu.ShowMenu();
                     int choice = UserChoice();
-                    //mainMenu.HandleMenu(choice);
+                    mainMenu.HandleMenu(choice);
                 }
                 else
                 {

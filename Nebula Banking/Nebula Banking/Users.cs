@@ -14,14 +14,16 @@ namespace Nebula_Banking
         public int CardNumber { get; set; }
         public string Password { get; set; }
         public string UserName { get; set; }
+        public double UserBalance { get; set; }
 
 
         // Constructor for regular users
-        public Users(int cardNumber, string password, string userName)
+        public Users(int cardNumber, string password, string userName, double UserBalance)
         {
             CardNumber = cardNumber;
             Password = password;
             UserName = userName;
+            UserBalance = UserBalance;
         }
 
         // Virtual method - can be overridden by managers
