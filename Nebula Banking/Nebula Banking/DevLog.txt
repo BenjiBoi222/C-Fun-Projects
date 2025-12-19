@@ -8,6 +8,8 @@
 5.MainMenu
 6.Files
 7.Universal
+8.Stocks
+9.StockFunctions
 
 ========================
 	 Class funkciok
@@ -47,3 +49,11 @@ Files:
 Universal:
 	This class contains all the elemets that are being used throughout more than one class 
 	Easirer acces and no code duplications
+
+--------------
+Stocks:
+	This class handles all the properties of  Stocks
+
+--------------
+StockFunctions:
+	This class handles all the function in the main menu related to stock operation

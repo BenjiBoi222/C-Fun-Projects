@@ -61,6 +61,11 @@ namespace Nebula_Banking
         }
 
 
+        public void ReadStocksFile()
+        {
+            
+        }
+
 
     }
 }
