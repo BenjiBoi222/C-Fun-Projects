@@ -11,6 +11,8 @@ namespace Nebula_Banking
         //========== User List ==========//
         //This is where all the Users are stored inside a List
         public static List<Users> Users = new List<Users>();
+        //This is where all the Stocks are stored inside a List
+        public static List<Stocks> Stocks = new List<Stocks>();
         //===============================//
 
         //========== Current user ==========//

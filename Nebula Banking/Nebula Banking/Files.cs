@@ -63,9 +63,32 @@ namespace Nebula_Banking
 
         public void ReadStocksFile()
         {
-            
+            using(StreamReader sr = new StreamReader("Stocks.txt"))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string line = sr.ReadLine();
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        string[] lines = line.Split(";");
+
+                        Stocks stock = new Stocks();
+
+                        //Strring, int, double
+
+                        stock.StockName = lines[0];
+                        stock.AvailableStocks = int.Parse(lines[1]);
+                        stock.StockPricePerPiece = double.Parse(lines[2]);
+
+                        Universal.Stocks.Add(stock);                 
+                    }
+                }
+            }
         }
 
-
+        public void WriteStock()
+        {
+            
+        }
     }
 }
