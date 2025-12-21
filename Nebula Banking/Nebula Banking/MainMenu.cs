@@ -10,7 +10,7 @@ namespace Nebula_Banking
     {
         public static void ShowMenu()
         {
-            Console.WriteLine("=== Nebula Main Menu ===\n");
+            Console.WriteLine("\n=== Nebula Main Menu ===\n");
             
             Console.WriteLine("--- Account Management ---");
             Console.WriteLine("1) View Account Balance");
@@ -43,17 +43,19 @@ namespace Nebula_Banking
                 case 1: AccountFunctions.ViewAccountBalance(); break;
                 case 2: AccountFunctions.ViewAccountDetails(); break;
 
-                case 3: MoneyFunctions.DepositMoney(); break;
-                case 4: MoneyFunctions.WithdrawMoney(); break;
-                case 5: MoneyFunctions.TransferMoney(); break;
+                // Money functions not implemented yet
+                case 3: Console.WriteLine("Deposit not implemented yet."); break;
+                case 4: Console.WriteLine("Withdraw not implemented yet."); break;
+                case 5: Console.WriteLine("Transfer not implemented yet."); break;
 
                 case 6: StockFunctions.ViewOwnedStocks(); break;
                 case 7: StockFunctions.ViewStocksInMarket(); break;
                 case 8: StockFunctions.BuyStocks(); break;
-                case 9: StockFunctions.SellStocks(); break;
+                case 9: Console.WriteLine("Sell stocks not implemented yet."); break;
 
-                case 10: SettingFunctions.ChangePassword(); break;
-                case 11: SettingFunctions.ChangeUsername(); break;
+                // Settings not implemented yet
+                case 10: Console.WriteLine("Change password not implemented yet."); break;
+                case 11: Console.WriteLine("Change username not implemented yet."); break;
             }
         }
 

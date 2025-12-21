@@ -14,10 +14,11 @@ namespace Nebula_Banking
     {
         /// <summary>
         /// Reads the content of the User.txt, elements separated by ";" |
-        /// Id;CardNumber;Password;Username
+        /// Id;CardNumber;Password;Username;UserBalance
         /// </summary>
         public void ReadUserFile()
         {
+            if (!File.Exists("Users.txt")) return;
             using (StreamReader sr = new StreamReader("Users.txt"))
             {
                 while (!sr.EndOfStream)
@@ -27,42 +28,45 @@ namespace Nebula_Banking
 
                     string[] lines = line.Split(";");
 
-                    // 1. Parse the values first
+                    //1. Parse the values first
                     int id = int.Parse(lines[0]);
                     int cardNumber = int.Parse(lines[1]);
                     string password = lines[2];
                     string username = lines[3];
+                    double balance = double.Parse(lines[4]);
 
-                    // 2. Create the object using those values
-                    Users usr = new Users(cardNumber, password, username);
+                    //2. Create the object using those values
+                    Users usr = new Users(cardNumber, password, username, balance);
                     
-                    // 3. Manually override the ID since User class auto-increments it
+                    //3. Manually override the ID since User class auto-increments it
                     usr.Id = id;
+
+                    Universal.Users.Add(usr);
                 }
             }
         }
 
         /// <summary>
         /// Writes into the User.txt file, devided by ";" |
-        /// Id;CardNumber;Password;Username
+        /// Id;CardNumber;Password;Username;UserBalance
         /// </summary>
-        public void WriteUserFile()
+        public static void WriteUserFile()
         {
             //If there is no user in the list, than save nothing
-            if (Universal.Users.Count == 0) return;            
+            if (Universal.Users.Count == 0) return;
 
-            using(StreamWriter sw = new StreamWriter("Users.txt"))
+            using StreamWriter sw = new("Users.txt");
+            foreach (var userElement in Universal.Users)
             {
-                foreach(var userElement in Universal.Users)
-                {
-                    sw.WriteLine($"{userElement.Id};{userElement.CardNumber};{userElement.Password};{userElement.UserName}");
-                }
+                sw.WriteLine($"{userElement.Id};{userElement.CardNumber};{userElement.Password};{userElement.UserName};{userElement.UserBalance}");
             }
+            // StreamWriter automatically disposed and closed here
         }
 
 
         public void ReadStocksFile()
         {
+            if (!File.Exists("Stocks.txt")) return;
             using(StreamReader sr = new StreamReader("Stocks.txt"))
             {
                 while (!sr.EndOfStream)
@@ -80,7 +84,7 @@ namespace Nebula_Banking
                         stock.AvailableStocks = int.Parse(lines[1]);
                         stock.StockPricePerPiece = double.Parse(lines[2]);
 
-                        Universal.Stocks.Add(stock);                 
+                        Universal.Stocks.Add(stock); 
                     }
                 }
             }

@@ -15,17 +15,17 @@ namespace Nebula_Banking
         public string Password { get; set; }
         public string UserName { get; set; }
         public double UserBalance { get; set; }
-        public string[,] UserStocks { get; set;}
+        public string[,] UserStocks { get; set; } = new string[0,0];
         // [{string},{int},{double}]
         // [{name},{amount},{price/amount}]
 
         // Constructor for regular users
-        public Users(int cardNumber, string password, string userName, double UserBalance)
+        public Users(int cardNumber, string password, string userName, double userBalance)
         {
             CardNumber = cardNumber;
             Password = password;
             UserName = userName;
-            UserBalance = UserBalance;
+            UserBalance = userBalance;
         }
 
         // Virtual method - can be overridden by managers
@@ -41,14 +41,19 @@ namespace Nebula_Banking
         public void DisplayStocks()
         {
             Console.WriteLine("==============");
-            for(int i = 0; i < UserStocks.Count(); i++)
+            if( UserStocks != null )
             {
-                Console.WriteLine($"Stock name: {UserStocks[i][0]}");
-                Console.WriteLine($"Stock owned: {UserStocks[i][1]}");
-                Console.WriteLine($"Stock price/amount: {UserStocks[i][2]}");
-                Console.WriteLine("----");
+                int rows = UserStocks.GetLength(0);
+                for (int i = 0; i < rows; i++)
+                {
+                    Console.WriteLine($"Stock name: {UserStocks[i, 0]}");
+                    Console.WriteLine($"Stock owned: {UserStocks[i, 1]}");
+                    Console.WriteLine($"Stock price/amount: {UserStocks[i, 2]}");
+                    Console.WriteLine("----");
+                }
             }
-            Console.WriteLine("==============");
+            else Console.WriteLine("No stock owned!");
+                Console.WriteLine("==============");
         }
     }
 }

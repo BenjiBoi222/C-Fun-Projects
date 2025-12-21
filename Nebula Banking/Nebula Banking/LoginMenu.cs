@@ -11,7 +11,7 @@ namespace Nebula_Banking
         /// <summary>
         /// Shows the options inside the Login menu
         /// </summary>
-        public void ShowMenu()
+        public static void ShowMenu()
         {
             Console.WriteLine("\n=== Nebula Bank Login Menu ===");
             Console.WriteLine("0)Exit app");
@@ -23,13 +23,13 @@ namespace Nebula_Banking
         /// Handles the selected menu option based on the specified choice.
         /// </summary>
         /// <param name="choice">The numeric value representing the user's menu selection. Each value corresponds to a specific menu action.</param>
-        public void HandleMenu(int choice)
+        public static void HandleMenu(int choice)
         {
             switch (choice)
             {
                 case 0: Program.isRunning = false; break;
                 case 1: LoginFunc(); break;
-                case 2: RegisterFunc(); break;
+                case 2: RegisterFunc(); Files.WriteUserFile(); break;
                 default: Console.WriteLine("Invalid input!"); break;
             }
         }
@@ -48,10 +48,10 @@ namespace Nebula_Banking
                     {
                         if(userElement.CardNumber == cardNumber)
                         {
-                            for(int i = 0; i < 3; i++)
+                            for(int i =0; i <3; i++)
                             {
                                 Console.WriteLine($"Tries left: {3-i}");
-                                Console.Write("Enter your password");
+                                Console.Write("Enter your password: ");
                                 string password = Console.ReadLine();
 
                                 if(password == userElement.Password)
@@ -60,9 +60,11 @@ namespace Nebula_Banking
                                     Program.isLoggedIn = true;
                                     Program.switchFromMenu = true;
                                     Console.WriteLine("Login succesful");
+                                    return;
                                 }
                             }
-
+                            Console.WriteLine("Password attempts exhausted or incorrect.");
+                            return;
                         }
                     }
                     //If the foreach loop can't find the card number inside, than the user doesn't exit
@@ -77,9 +79,9 @@ namespace Nebula_Banking
         /// </summary>
         private static void RegisterFunc()
         {
-            string userPasword;
-            int cardNumber;
-            double userBalance = 0;
+            string userPasword = string.Empty;
+            int cardNumber =0;
+            double userBalance =0;
             Console.Write("Enter your new username: ");
             string userName = Console.ReadLine();
 
@@ -88,11 +90,12 @@ namespace Nebula_Banking
             while (!validPassword)
             {
                 Console.Write("Enter new password: ");
-                string password = Console.ReadLine();
+                string userPassword = Console.ReadLine();
                 Console.Write("Enter new password again: ");
                 string passwordTest = Console.ReadLine();
 
-                if(password == passwordTest) {validPassword = true; userPasword = password;}
+                if(userPassword == passwordTest) {validPassword = true; userPasword = userPassword;}
+                else { Console.WriteLine("Passwords do not match, try again."); }
             }
 
 
@@ -117,13 +120,14 @@ namespace Nebula_Banking
                 }
             }
 
-            Users user = new Users(cardNumber, password, userName, userBalance);
+            Users user = new Users(cardNumber, userPasword, userName, userBalance);
+            Universal.Users.Add(user);
             Console.WriteLine("Registration succesful!");
             
             //========= After register userinfo =========//
             foreach(var userElement in Universal.Users)
             {
-                if(userElement.cardNumber == cardNumber) userElement.DisplayUserInfo();
+                if(userElement.CardNumber == cardNumber) userElement.DisplayUserInfo();
             }
             //===========================================//
         }
@@ -132,21 +136,21 @@ namespace Nebula_Banking
         //--Helper function--//
 
         /// <summary>
-        /// Helper function for the register option, generates a random 12 card number 
+        /// Helper function for the register option, generates a random12 card number 
         /// </summary>
         /// <returns>{int} - the card number</returns>
         private static int GenerateCustomCardNumber()
         {
             Random random = new Random();
 
-            string cardNumber = string.empty;
-            //THis while loop runs until the card number is less than 12 number long
-            while(!cardNumber.Length == 12)
+            string cardNumber = string.Empty;
+            //THis while loop runs until the card number is less than12 number long
+            while(cardNumber.Length <6)
             {
-                int number = random.Next(1, 10);
+                int number = random.Next(0,10);
                 cardNumber += number.ToString();
             }
-             
+            
             return int.Parse(cardNumber);
         }
     }

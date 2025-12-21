@@ -13,7 +13,7 @@ namespace Nebula_Banking
         /// <summary>
         /// Calls the DisplayStocks function from Users.cs
         /// </summary>
-        public void ViewOwnedStocks()
+        public static void ViewOwnedStocks()
         {
             foreach(var userElement in Universal.Users)
             {
@@ -26,7 +26,7 @@ namespace Nebula_Banking
         /// <summary>
         /// Displays all the stocks info
         /// </summary>
-        public void ViewStocksInMarket()
+        public static void ViewStocksInMarket()
         {
             foreach(var stockElement in Stocks)
             {
@@ -34,7 +34,7 @@ namespace Nebula_Banking
             }
         }
 
-        public void BuyStocks()
+        public static void BuyStocks()
         {
             
         }
