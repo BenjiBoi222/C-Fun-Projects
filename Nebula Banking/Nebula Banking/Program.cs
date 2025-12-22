@@ -11,11 +11,17 @@
 
         static void Main(string[] args)
         {
-            while(isRunning)
+            Files.EnsureFilesExist();
+            Files.ReadUserFile();
+            Files.ReadStocksFile();
+
+
+
+            while (isRunning)
             {
                 if (switchFromMenu)
                 {
-                    System.Console.Clear();
+                    Console.Clear();
                     switchFromMenu = false;  
                 }
 

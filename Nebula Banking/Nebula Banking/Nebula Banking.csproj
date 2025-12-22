@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="Users.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Remove="Users.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Users.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

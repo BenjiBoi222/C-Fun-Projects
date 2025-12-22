@@ -1,98 +1,135 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Nebula_Banking;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Nebula_Banking
+class Files
 {
-    /// <summary>
-    /// Because making a universal file reader would be way out of our league I suggest making a reader and a writer to every txt file we make.
-    /// </summary>
-    class Files
+    // Where the EXE runs
+    private static readonly string basePath = AppContext.BaseDirectory;
+
+    // Runtime files (DATABASE)
+    private static readonly string usersRuntimePath =
+        Path.Combine(basePath, "Users.txt");
+
+    private static readonly string stocksRuntimePath =
+        Path.Combine(basePath, "Stocks.txt");
+
+    // Project-root template files (SEED DATA)
+    private static readonly string projectRoot =
+        Directory.GetParent(basePath)!.Parent!.Parent!.FullName;
+
+    private static readonly string usersTemplatePath =
+        Path.Combine(projectRoot, "Users.txt");
+
+    private static readonly string stocksTemplatePath =
+        Path.Combine(projectRoot, "Stocks.txt");
+
+    // =========================
+    // INITIALIZATION (IMPORTANT)
+    // =========================
+
+    public static void EnsureFilesExist()
     {
-        /// <summary>
-        /// Reads the content of the User.txt, elements separated by ";" |
-        /// Id;CardNumber;Password;Username;UserBalance
-        /// </summary>
-        public void ReadUserFile()
+        EnsureFile(usersRuntimePath, usersTemplatePath);
+        EnsureFile(stocksRuntimePath, stocksTemplatePath);
+    }
+
+    private static void EnsureFile(string runtimePath, string templatePath)
+    {
+        if (File.Exists(runtimePath)) return;
+
+        if (File.Exists(templatePath))
         {
-            if (!File.Exists("Users.txt")) return;
-            using (StreamReader sr = new StreamReader("Users.txt"))
+            File.Copy(templatePath, runtimePath);
+        }
+        else
+        {
+            File.Create(runtimePath).Close();
+        }
+    }
+
+    // =========================
+    // USERS
+    // =========================
+
+    public static void ReadUserFile()
+    {
+        EnsureFilesExist();
+        Universal.Users.Clear();
+
+        using StreamReader sr = new StreamReader(usersRuntimePath);
+        while (!sr.EndOfStream)
+        {
+            string line = sr.ReadLine();
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] parts = line.Split(';');
+            if (parts.Length != 5) continue;
+
+            Users user = new Users(
+                int.Parse(parts[1]),
+                parts[2],
+                parts[3],
+                double.Parse(parts[4])
+            )
             {
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-                    if (string.IsNullOrWhiteSpace(line)) continue;
+                Id = int.Parse(parts[0])
+            };
 
-                    string[] lines = line.Split(";");
-
-                    //1. Parse the values first
-                    int id = int.Parse(lines[0]);
-                    int cardNumber = int.Parse(lines[1]);
-                    string password = lines[2];
-                    string username = lines[3];
-                    double balance = double.Parse(lines[4]);
-
-                    //2. Create the object using those values
-                    Users usr = new Users(cardNumber, password, username, balance);
-                    
-                    //3. Manually override the ID since User class auto-increments it
-                    usr.Id = id;
-
-                    Universal.Users.Add(usr);
-                }
-            }
+            Universal.Users.Add(user);
         }
 
-        /// <summary>
-        /// Writes into the User.txt file, devided by ";" |
-        /// Id;CardNumber;Password;Username;UserBalance
-        /// </summary>
-        public static void WriteUserFile()
-        {
-            //If there is no user in the list, than save nothing
-            if (Universal.Users.Count == 0) return;
+        Console.WriteLine($"Loaded {Universal.Users.Count} users.");
+    }
 
-            using StreamWriter sw = new("Users.txt");
-            foreach (var userElement in Universal.Users)
+    public static void WriteUserFile()
+    {
+        using StreamWriter sw = new StreamWriter(usersRuntimePath, false);
+        foreach (var user in Universal.Users)
+        {
+            sw.WriteLine(
+                $"{user.Id};{user.CardNumber};{user.Password};{user.UserName};{user.UserBalance}"
+            );
+        }
+    }
+
+    // =========================
+    // STOCKS
+    // =========================
+
+    public static void ReadStocksFile()
+    {
+        EnsureFilesExist();
+        Universal.Stocks.Clear();
+
+        using StreamReader sr = new StreamReader(stocksRuntimePath);
+        while (!sr.EndOfStream)
+        {
+            string line = sr.ReadLine();
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] parts = line.Split(';');
+            if (parts.Length != 3) continue;
+
+            Universal.Stocks.Add(new Stocks
             {
-                sw.WriteLine($"{userElement.Id};{userElement.CardNumber};{userElement.Password};{userElement.UserName};{userElement.UserBalance}");
-            }
-            // StreamWriter automatically disposed and closed here
+                StockName = parts[0],
+                AvailableStocks = int.Parse(parts[1]),
+                StockPricePerPiece = double.Parse(parts[2])
+            });
         }
 
+        Console.WriteLine($"Loaded {Universal.Stocks.Count} stocks.");
+    }
 
-        public void ReadStocksFile()
+    public static void WriteStocksFile()
+    {
+        using StreamWriter sw = new StreamWriter(stocksRuntimePath, false);
+        foreach (var stock in Universal.Stocks)
         {
-            if (!File.Exists("Stocks.txt")) return;
-            using(StreamReader sr = new StreamReader("Stocks.txt"))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string line = sr.ReadLine();
-                    if (!string.IsNullOrWhiteSpace(line))
-                    {
-                        string[] lines = line.Split(";");
-
-                        Stocks stock = new Stocks();
-
-                        //Strring, int, double
-
-                        stock.StockName = lines[0];
-                        stock.AvailableStocks = int.Parse(lines[1]);
-                        stock.StockPricePerPiece = double.Parse(lines[2]);
-
-                        Universal.Stocks.Add(stock); 
-                    }
-                }
-            }
-        }
-
-        public void WriteStock()
-        {
-            
+            sw.WriteLine(
+                $"{stock.StockName};{stock.AvailableStocks};{stock.StockPricePerPiece}"
+            );
         }
     }
 }

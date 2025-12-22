@@ -8,7 +8,7 @@ namespace Nebula_Banking
 {
     class Users
     {
-        static int UserId = 0;
+        static int UserId = 1;
 
         public int Id { get; set; } = UserId++;
         public int CardNumber { get; set; }

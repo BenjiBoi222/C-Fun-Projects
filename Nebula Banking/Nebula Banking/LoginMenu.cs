@@ -29,7 +29,7 @@ namespace Nebula_Banking
             {
                 case 0: Program.isRunning = false; break;
                 case 1: LoginFunc(); break;
-                case 2: RegisterFunc(); Files.WriteUserFile(); break;
+                case 2: RegisterFunc(); Files.WriteUserFile(); Debugger.ShowUserListElements(); break;
                 default: Console.WriteLine("Invalid input!"); break;
             }
         }

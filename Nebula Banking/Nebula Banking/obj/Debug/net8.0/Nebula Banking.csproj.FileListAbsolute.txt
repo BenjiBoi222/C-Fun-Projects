@@ -4,7 +4,6 @@ C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\ob
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.csproj.CoreCompileInputs.cache
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\obj\Debug\net8.0\Nebula Banking.sourcelink.json
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\bin\Debug\net8.0\Nebula Banking.exe
-C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\bin\Debug\net8.0\Users.txt
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\bin\Debug\net8.0\Nebula Banking.deps.json
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\bin\Debug\net8.0\Nebula Banking.runtimeconfig.json
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\Nebula Banking\Nebula Banking\bin\Debug\net8.0\Nebula Banking.dll
