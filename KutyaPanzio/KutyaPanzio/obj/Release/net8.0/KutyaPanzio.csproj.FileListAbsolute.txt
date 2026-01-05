@@ -1,0 +1,16 @@
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\KutyaPanzio.exe
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\Program.cs
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\KutyaPanzio.deps.json
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\KutyaPanzio.runtimeconfig.json
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\KutyaPanzio.dll
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Release\net8.0\KutyaPanzio.pdb
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.AssemblyInfoInputs.cache
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.AssemblyInfo.cs
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.csproj.CoreCompileInputs.cache
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.sourcelink.json
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.dll
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\refint\KutyaPanzio.dll
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.pdb
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\KutyaPanzio.genruntimeconfig.cache
+C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Release\net8.0\ref\KutyaPanzio.dll

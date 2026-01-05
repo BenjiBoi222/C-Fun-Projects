@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\schla\\IskolaGyokermappa\\CS\\KutyaPanzio\\",
+  "WorkspaceRootPath": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\cs\\kutyapanzio\\kutyapanzio\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\CS\\KutyaPanzio\\KutyaPanzio\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Program.cs",
               "RelativeDocumentMoniker": "KutyaPanzio\\Program.cs",
-              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\CS\\KutyaPanzio\\KutyaPanzio\\Program.cs",
+              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Program.cs",
               "RelativeToolTip": "KutyaPanzio\\Program.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAAwBkAAABzAAAAAAAAAA==",
+              "ViewState": "AgIAAFIAAAAAAAAAAAAgwCcBAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T20:40:41.488Z",
               "EditorCaption": ""
