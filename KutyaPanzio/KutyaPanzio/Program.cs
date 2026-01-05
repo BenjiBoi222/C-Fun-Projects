@@ -2,18 +2,56 @@
 {
     internal class Program
     {
+        public static bool IsRegistered = false;
+        public static bool IsGameRunning = false;
         static void Main(string[] args)
         {
-            Console.WriteLine("Classes in progress!");
+            while (!IsRegistered)
+            {
+                UserFunctions.RegisterMenu();
+            }
+            while (IsGameRunning)
+            {
+                UserFunctions.GameMenu();
+            }
         }
     }
 
-    ///<!--This class is to handle all the Hotel functions!-->
+    class UserFunctions
+    {
+        ///<!--This is the main register menu before the game starts-->
+        /// <summary>Registers the hotel name and starts the game</summary>
+        public static void RegisterMenu()
+        {
+            Console.WriteLine("====Welcome to the hotel====");
+            Console.Write("Please enter a name for the hotel: ");
+            string hotelName = Console.ReadLine();
+            if(!string.IsNullOrWhiteSpace(hotelName)) { Hotel.HotelName = hotelName; Program.IsRegistered = true; Program.IsGameRunning = true; }
+            else Console.WriteLine("Invalid naming!");
+        }
+
+        ///<!--Functions for the game's main menu-->
+        public static void GameMenu()
+        {
+            Console.WriteLine($"\n==={Hotel.HotelName} Hotel Menu===");
+            Console.WriteLine("1)Hotel info");
+            Console.WriteLine("2)Open store");
+            Console.WriteLine("3)Check for available dogs");
+            Console.WriteLine("4)Check dog in");
+            Console.WriteLine("5)Check dog out");
+            Console.WriteLine("0)Exit the game without saving");
+            Console.Write("Enter selected option: ");
+        }
+    }
+
+    ///<!--This class is to handle all the Hotel functions-->
     class Hotel
     {
-        public string HotelName { get; set; }
-        public int HotelMoney { get; set; }
-        public int StackSize { get; set; }
+        public static string HotelName { get; set; }
+        public static int HotelMoney { get; set; }
+        public static int StackSize { get; set; } = 4;
+        public static int UsedStack {  get; set; }
+        public static int RemainingStack => StackSize - UsedStack;
 
 
         ///<summary>A list of dogs that are waiting in line to get into the hotel</summary>
@@ -22,35 +60,59 @@
         ///<summary>A list of dogs that are inside the hotel already</summary>
         public static List<Dogs> DogsInHotel { get; set; } = new();
 
+        ///<!--Hotel Functions-->
         ///<summary>Checks if there are 5 dogs in line and if not than it adds more</summary>
         public void CheckDogsList()
         {
             if (DogsInLine.Count < 5)
             {
-                while (DogsInLine.Count < 0)
+                while (DogsInLine.Count < 5)
                 {
                     DogsInLine.Add(Randoms.GenerateDog());
                 }
             }
         }
 
-        /// <summary>Checks if the dog exists and than adds it into the list. !MORE CHECKS NEEDS ADDING LIKE SPACE REMAINING!</summary>
-        /// <param name="dog">A dog parameter from the DogsInLine list</param>
+        /// <summary>Checks if the dog exists and than adds it into the list.</summary>
         public static void TakeDogIn(Dogs dog)
         {
-            foreach(Dogs dogs in DogsInLine)
+            for (int i = DogsInLine.Count - 1; i >= 0; i--)
             {
-                if(dogs == dog)
+                if (DogsInLine[i] == dog)
                 {
-                    DogsInHotel.Add(dogs);
-                    return;
+                    if (DogsInLine[i].DogSize <= RemainingStack)
+                    {
+                        UsedStack += DogsInLine[i].DogSize;
+                        DogsInHotel.Add(DogsInLine[i]);
+                        DogsInLine.RemoveAt(i);
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No space remaining!");
+                        return;
+                    }
                 }
             }
             Console.WriteLine("The dog does not exist!");
         }
+
+        ///<summary></summary>
+        public static void TakeDogOut()
+        {
+            for (int i = DogsInHotel.Count - 1; i >= 0; i--)
+            {
+                if (DogsInHotel[i].AmountOfDaysLeft == 0)
+                {
+                    HotelMoney += DogsInHotel[i].MoneyForDog;
+                    UsedStack -= DogsInHotel[i].DogSize;
+                    DogsInHotel.RemoveAt(i);
+                }
+            }
+        }
     }
 
-    ///<!--This class is to handle all the dogs and to give them each a unnique elements-->
+    ///<!--This class handles all the dogs and to give them each a unnique elements-->
     class Dogs
     {
         ///<summary>Name of the dog</summary>
@@ -61,8 +123,11 @@
 
         ///<summary>1-small;2-medium;3-large</summary>
         public int DogSize { get; set; }
+
+        public int MoneyForDog { get; set; }
     }
     
+    ///<!--This class handles all the random functions that needs to be done-->
     class Randoms
     {
         ///<summary>Generates a random Dog if called</summary>
@@ -76,7 +141,13 @@
             
             dogs.Name = names[rand.Next(1,names.Length)];
             dogs.AmountOfDaysLeft = rand.Next(1, 8);
-            dogs.DogSize = rand.Next(1, 4);
+            switch (rand.Next(1, 4))
+            {
+                case 1: dogs.DogSize = 1;break;
+                case 2: dogs.DogSize = 2;break;
+                case 3: dogs.DogSize = 4;break;
+            }
+            dogs.MoneyForDog = rand.Next(1000, 10001);
             return dogs;
         }
     }
