@@ -30,6 +30,13 @@
             else Console.WriteLine("Invalid naming!");
         }
 
+
+        ///<!--Store menu functions-->
+        private static void OpenStore()
+        {
+
+        }
+
         ///<!--Functions for the game's main menu-->
         public static void GameMenu()
         {
@@ -39,8 +46,49 @@
             Console.WriteLine("3)Check for available dogs");
             Console.WriteLine("4)Check dog in");
             Console.WriteLine("5)Check dog out");
+            Console.WriteLine("9)Pass a day");
             Console.WriteLine("0)Exit the game without saving");
             Console.Write("Enter selected option: ");
+            if(int.TryParse(Console.ReadLine(), out int choice))
+            {
+                switch (choice)
+                {
+                    case 0: Program.IsGameRunning = false; break;
+                    case 1: HotelInfo(); break;
+                    case 2: OpenStore(); break;
+                    case 3: Hotel.CheckForDogs();break;
+                    case 4: CheckDogIn(); break;
+                    case 5: CheckDogOut(); break;
+                    case 9: PassDay();break;
+                    default: Console.WriteLine("Invalid input!"); break;
+                }
+            }
+            else Console.WriteLine("Invalid input type!");
+        }
+
+        ///<!--Private Functions of the main menu-->
+        ///<summary>Gives back all the hotels information</summary>
+        private static void HotelInfo()
+        {
+
+        }
+
+        /// <summary>Checks a dog in</summary>
+        private static void CheckDogIn()
+        {
+
+        }
+
+        /// <summary>Checks a dog out</summary>
+        private static void CheckDogOut()
+        {
+
+        }
+
+        /// <summary>Passes a day</summary>
+        private static void PassDay()
+        {
+
         }
     }
 
@@ -49,6 +97,7 @@
     {
         public static string HotelName { get; set; }
         public static int HotelMoney { get; set; }
+        public static int DayCount { get; set; } = 1;
         public static int StackSize { get; set; } = 4;
         public static int UsedStack {  get; set; }
         public static int RemainingStack => StackSize - UsedStack;
@@ -70,6 +119,16 @@
                 {
                     DogsInLine.Add(Randoms.GenerateDog());
                 }
+            }
+        }
+
+        /// <summary>Shows all the available dogs for check in</summary>
+        public static void CheckForDogs()
+        {
+            Console.WriteLine("____Name____Size____Fee____Days");
+            foreach(Dogs dogs in DogsInLine)
+            {
+                Console.WriteLine(dogs.Name, dogs.DogSize, dogs.MoneyForDog, dogs.AmountOfDaysLeft);
             }
         }
 
@@ -97,7 +156,7 @@
             Console.WriteLine("The dog does not exist!");
         }
 
-        ///<summary></summary>
+        ///<summary>Removes the dogs that are ready to leave</summary>
         public static void TakeDogOut()
         {
             for (int i = DogsInHotel.Count - 1; i >= 0; i--)
