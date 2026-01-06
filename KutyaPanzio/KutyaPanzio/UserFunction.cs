@@ -91,9 +91,9 @@ namespace KutyaPanzio
                 {
                     case "1": Hotel.HotelInfo(); break;
                     case "2": OpenStore(); break;
-                    case "3": Hotel.CheckForDogs(); break;
-                    case "4": CheckDogIn(); break;
-                    case "5": CheckDogOut(); break;
+                    case "3": Hotel.CheckForAnimal(); break;
+                    case "4": CheckAnimalIn(); break;
+                    case "5": CheckAnimalOut(); break;
                     case "p": PassDay(); break;
                     case "m": UserManual(); break;
                     case "e": Program.IsGameRunning = false; break;
@@ -103,7 +103,7 @@ namespace KutyaPanzio
             else Console.WriteLine("Invalid input type!");
 
             int amountOfDogsReadyToLeave = 0;
-            foreach (Dogs dog in Hotel.DogsInHotel)
+            foreach (Animals dog in Hotel.AnimalsInHotel)
             {
                 if (dog.AmountOfDaysLeft == 0) amountOfDogsReadyToLeave++;
             }
@@ -151,20 +151,20 @@ namespace KutyaPanzio
 
         ///<!--Private Functions of the main menu-->
 
-        /// <summary>Checks a dog in</summary>
-        private static void CheckDogIn()
+        /// <summary>Checks an animal in</summary>
+        private static void CheckAnimalIn()
         {
-            Hotel.CheckForDogs();
+            Hotel.CheckForAnimal();
 
             Console.Write("\nEnter the dog's number to check in: ");
             if (int.TryParse(Console.ReadLine(), out int number))
             {
                 int index = number - 1;
 
-                if (index >= 0 && index < Hotel.DogsInLine.Count)
+                if (index >= 0 && index < Hotel.AnimalInLine.Count)
                 {
-                    Dogs selectedDog = Hotel.DogsInLine[index];
-                    Hotel.TakeDogIn(selectedDog);
+                    Animals selectedDog = Hotel.AnimalInLine[index];
+                    Hotel.TakeAnimalIn(selectedDog);
                 }
                 else
                 {
@@ -178,28 +178,28 @@ namespace KutyaPanzio
 
         }
 
-        /// <summary>Checks a dog out</summary>
-        private static void CheckDogOut()
+        /// <summary>Checks an animal out</summary>
+        private static void CheckAnimalOut()
         {
             Console.WriteLine("\n--- Processing Check-outs ---");
 
-            if (Hotel.DogsInHotel.Count == 0)
+            if (Hotel.AnimalsInHotel.Count == 0)
             {
                 Console.WriteLine("The hotel is currently empty.");
                 return;
             }
 
             int moneyBefore = Hotel.HotelMoney;
-            int dogsBefore = Hotel.DogsInHotel.Count;
+            int animalsBefore = Hotel.AnimalsInHotel.Count;
 
-            Hotel.TakeDogOut();
+            Hotel.TakeAnimalOut();
 
-            int dogsDeparted = dogsBefore - Hotel.DogsInHotel.Count;
+            int animalsDeparted = animalsBefore - Hotel.AnimalsInHotel.Count;
             int moneyEarned = Hotel.HotelMoney - moneyBefore;
 
-            if (dogsDeparted > 0)
+            if (animalsDeparted > 0)
             {
-                Console.WriteLine($"Success! {dogsDeparted} dog(s) went home.");
+                Console.WriteLine($"Success! {animalsDeparted} dog(s) went home.");
                 Console.WriteLine($"You earned: ${moneyEarned}");
             }
             else
@@ -212,7 +212,8 @@ namespace KutyaPanzio
         private static void PassDay()
         {
             Hotel.DayCount++;
-            foreach (Dogs dog in Hotel.DogsInHotel)
+            Hotel.HotelMoney -= Hotel.StackSize * 10;
+            foreach (Animals dog in Hotel.AnimalsInHotel)
             {
                 dog.AmountOfDaysLeft--;
             }
@@ -220,7 +221,7 @@ namespace KutyaPanzio
             //Ensures that after 3 days new dogs are available for the user to choose from, so the game is more fluent
             if (Hotel.DayCount % 3 == 0)
             {
-                Hotel.DogsInLine.Clear();
+                Hotel.AnimalInLine.Clear();
             }
             Console.WriteLine("A day has passed..");
         }

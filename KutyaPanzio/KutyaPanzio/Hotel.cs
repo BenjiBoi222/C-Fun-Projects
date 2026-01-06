@@ -9,7 +9,7 @@ namespace KutyaPanzio
     class Hotel
     {
         public static string HotelName { get; set; }
-        public static int HotelMoney { get; set; }
+        public static int HotelMoney { get; set; } = 500;
         public static int DayCount { get; set; } = 1;
         public static int StackSize { get; set; } = 4;
         public static int UsedStack { get; set; }
@@ -17,20 +17,22 @@ namespace KutyaPanzio
 
 
         ///<summary>A list of dogs that are waiting in line to get into the hotel</summary>
-        public static List<Dogs> DogsInLine { get; set; } = new();
+        public static List<Animals> AnimalInLine { get; set; } = new();
 
         ///<summary>A list of dogs that are inside the hotel already</summary>
-        public static List<Dogs> DogsInHotel { get; set; } = new();
+        public static List<Animals> AnimalsInHotel { get; set; } = new();
+
+        public List<FoodTypes> FoodTypes { get; set; } = new();
 
         ///<!--Hotel Functions-->
         ///<summary>Checks if there are 5 dogs in line and if not than it adds more</summary>
         public static void CheckDogsList()
         {
-            if (DogsInLine.Count < 5)
+            if (AnimalInLine.Count < 9)
             {
-                while (DogsInLine.Count < 5)
+                while (AnimalInLine.Count < 9)
                 {
-                    DogsInLine.Add(Randoms.GenerateDog());
+                    AnimalInLine.Add(Randoms.GenerateAnimal());
                 }
             }
         }
@@ -44,17 +46,18 @@ namespace KutyaPanzio
             Console.WriteLine($"Current day: {DayCount}.");
             Console.WriteLine($"Hotel capavity: {StackSize}");
             Console.WriteLine($"Hotel capavity left: {RemainingStack}");
-            if (DogsInHotel.Count > 0)
+            Console.WriteLine($"Hotel's daily fee: {StackSize * 10}");
+            if (AnimalsInHotel.Count > 0)
             {
                 string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10}";
 
                 Console.WriteLine("\n" + string.Format(headerFormat, "Name", "Size", "Fee", "Days"));
                 Console.WriteLine(new string('-', 45)); // Decorative separator line
 
-                foreach (Dogs dog in DogsInHotel)
+                foreach (Animals dog in AnimalsInHotel)
                 {
                     // {dog.Name,-12} means left-align with a width of 12 characters
-                    Console.WriteLine($"{dog.Name,-12} {dog.DogSize,-10} ${dog.MoneyForDog,-9} {dog.AmountOfDaysLeft,-10}");
+                    Console.WriteLine($"{dog.Name,-12} {dog.AnimalSize,-10} ${dog.MoneyForAnimal,-9} {dog.AmountOfDaysLeft,-10}");
                 }
                 Console.WriteLine("======================");
             }
@@ -62,36 +65,36 @@ namespace KutyaPanzio
         }
 
         ///<summary>Shows all the available dogs for check in</summary>
-        public static void CheckForDogs()
+        public static void CheckForAnimal()
         {
             CheckDogsList();
 
             // Define a format string to keep headers and data aligned
-            string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10}";
+            string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10} {4,-10} {5,-10}";
 
-            Console.WriteLine("\n" + string.Format(headerFormat, "Name", "Size", "Fee", "Days"));
-            Console.WriteLine(new string('-', 45)); // Decorative separator line
+            Console.WriteLine("\n" + string.Format(headerFormat, "Name", "Type", "Size", "Fee", "Days", "Food"));
+            Console.WriteLine(new string('-', 65)); // Decorative separator line
 
             int stepper = 1;
-            foreach (Dogs dog in DogsInLine)
+            foreach (Animals animal in AnimalInLine)
             {
-                // {dog.Name,-12} means left-align with a width of 12 characters
-                Console.WriteLine($"{stepper++}){dog.Name,-12} {dog.DogSize,-10} ${dog.MoneyForDog,-9} {dog.AmountOfDaysLeft,-10}");
+                // {animal.Name,-12} means left-align with a width of 12 characters
+                Console.WriteLine($"{stepper++}){animal.Name,-10} {animal.AnimalType, -10} {animal.AnimalSize,-10} ${animal.MoneyForAnimal,-9} {animal.AmountOfDaysLeft,-10} {animal.NeededFoodType}");
             }
         }
 
         /// <summary>Checks if the dog exists and than adds it into the list.</summary>
-        public static void TakeDogIn(Dogs dog)
+        public static void TakeAnimalIn(Animals dog)
         {
-            for (int i = DogsInLine.Count - 1; i >= 0; i--)
+            for (int i = AnimalInLine.Count - 1; i >= 0; i--)
             {
-                if (DogsInLine[i] == dog)
+                if (AnimalInLine[i] == dog)
                 {
-                    if (DogsInLine[i].DogSize <= RemainingStack)
+                    if (AnimalInLine[i].AnimalSize <= RemainingStack)
                     {
-                        UsedStack += DogsInLine[i].DogSize;
-                        DogsInHotel.Add(DogsInLine[i]);
-                        DogsInLine.RemoveAt(i);
+                        UsedStack += AnimalInLine[i].AnimalSize;
+                        AnimalsInHotel.Add(AnimalInLine[i]);
+                        AnimalInLine.RemoveAt(i);
                         return;
                     }
                     else
@@ -105,20 +108,20 @@ namespace KutyaPanzio
         }
 
         ///<summary>Removes the dogs that are ready to leave</summary>
-        public static void TakeDogOut()
+        public static void TakeAnimalOut()
         {
             // We loop backwards (Count - 1 down to 0) 
             // because removing an item from a list shifts all subsequent items.
             // Looping forwards would cause you to skip dogs.
-            for (int i = DogsInHotel.Count - 1; i >= 0; i--)
+            for (int i = AnimalsInHotel.Count - 1; i >= 0; i--)
             {
-                if (DogsInHotel[i].AmountOfDaysLeft <= 0)
+                if (AnimalsInHotel[i].AmountOfDaysLeft <= 0)
                 {
-                    Console.WriteLine($" >> {DogsInHotel[i].Name} has been picked up!");
+                    Console.WriteLine($" >> {AnimalsInHotel[i].Name} has been picked up!");
 
-                    HotelMoney += DogsInHotel[i].MoneyForDog;
-                    UsedStack -= DogsInHotel[i].DogSize;
-                    DogsInHotel.RemoveAt(i);
+                    HotelMoney += AnimalsInHotel[i].MoneyForAnimal;
+                    UsedStack -= AnimalsInHotel[i].AnimalSize;
+                    AnimalsInHotel.RemoveAt(i);
                 }
             }
         }

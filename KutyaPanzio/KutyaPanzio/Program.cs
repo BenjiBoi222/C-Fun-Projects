@@ -20,24 +20,42 @@
     
     class Randoms
     {
+        public static string[] foodTypes = {"fish", "chicken", "carrot", "beef", "apple"};
+
+
         ///<summary>Generates a random Dog if called</summary>
         ///<returns>A dog</returns>
-        public static Dogs GenerateDog()
+        public static Animals GenerateAnimal()
         {
             Random rand = new();
-            Dogs dogs = new Dogs();
+            Animals animal = new Animals();
 
             string[] names = { "Buddy", "Bella", "Max", "Luna", "Charlie", "Daisy", "Cooper", "Milo" };
-            
-            dogs.Name = names[rand.Next(0,names.Length)];
-            dogs.AmountOfDaysLeft = rand.Next(1, 8);
+            string[] types = { "dog", "cat", "lama", "donkey", "horse"};
+            animal.Name = names[rand.Next(0,names.Length)];
+            animal.AmountOfDaysLeft = rand.Next(1, 8);
+            animal.NeededFoodType = foodTypes[rand.Next(0, foodTypes.Length)];
+            animal.AnimalType = types[rand.Next(0, types.Length)];
             switch (rand.Next(1, 4))
             {
-                case 1: dogs.DogSize = 1; dogs.MoneyForDog = rand.Next(100, 251); break;
-                case 2: dogs.DogSize = 2; dogs.MoneyForDog = rand.Next(251, 501); break;
-                case 3: dogs.DogSize = 4; dogs.MoneyForDog = rand.Next(501, 1001); break;
+                case 1: animal.AnimalSize = 1; animal.MoneyForAnimal = rand.Next(100, 251); break;
+                case 2: animal.AnimalSize = 2; animal.MoneyForAnimal = rand.Next(251, 501); break;
+                case 3: animal.AnimalSize = 4; animal.MoneyForAnimal = rand.Next(501, 1001); break;
             }
-            return dogs;
+            return animal;
+        }
+
+        ///<summary>Generates a random amount of how much food an animal needs</summary>
+        ///<returns>Food amount for SPECIFIC day</returns>
+        public static int FoodForAnimal()
+        {
+            Random rand = new();
+            int amount = 1;
+            foreach(Animals animal in Hotel.AnimalsInHotel)
+            {
+                animal.AmountOfFoodPerDay = rand.Next(amount, amount * animal.AnimalSize);
+            }
+            return amount;
         }
     }
 }
@@ -57,6 +75,16 @@
 ///[✔️]Each dog has a size. (Small-1,Medium-2,Large-4) And they take up that much slot.
 ///[✔️]Each slot has a prize and that's how the dogs will be priced
 ///
+///To-do's:
+///----------
+///[✔️]Add more than one type of animal like cats, lama, donkey, horse
+///[✔️]Every day costs money to run the hotel, and the more slots you have the more you need to pay accordingly
+///[✔️]Each animal has their unique food type that they need
+///[✖️]Add a new food class and add the logic to the store 
+///[✔️]Change the Dog class to animals class and add the animal type field!
+///[✖️]Dogs need to be fed, drank and taken to a walk
+///[✖️]If a pet is not taken care for, after a day they leave with no money!
+/// 
 ///Classes needed:
 ///----------------
 ///1]Dogs: stores all the dogs and their infos
@@ -68,7 +96,5 @@
 ///
 ///For the future:
 ///----------------
-///[✖️]Dogs need to be fed, drank and taken to a walk
-///
 
 
