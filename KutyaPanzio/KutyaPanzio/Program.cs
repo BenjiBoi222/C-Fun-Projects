@@ -60,10 +60,11 @@
     }
 }
 
+/// Version: 1.2.1
 /// DevPlans: [✖️/✔️]
 /// =========
 /// 
-///Game mechanic:
+///Game mechanic base:
 ///---------------
 ///[✔️]Random people with their dogs 
 ///[✔️]You can store the dogs based on how many you can take in 
@@ -80,10 +81,22 @@
 ///[✔️]Add more than one type of animal like cats, lama, donkey, horse
 ///[✔️]Every day costs money to run the hotel, and the more slots you have the more you need to pay accordingly
 ///[✔️]Each animal has their unique food type that they need
-///[✖️]Add a new food class and add the logic to the store 
+///[✔️]Add a new food class 
+///[✔️]Add the food logic to the store 
 ///[✔️]Change the Dog class to animals class and add the animal type field!
-///[✖️]Dogs need to be fed, drank and taken to a walk
+///[✖️]Animals need to be fed, drank and taken to a walk
 ///[✖️]If a pet is not taken care for, after a day they leave with no money!
+///
+/// 
+/// 
+///For the future:
+///----------------
+///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
+///  Toys have durability and new needs to be purchased
+///2)Cleaning needs to be done after animals leave the hotel
+///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
+///4)Auto checkout by hiring new worker <!--Tricky, needs to add automation to checkouts if there is a worker-->
+///!Err!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
 /// 
 ///Classes needed:
 ///----------------
@@ -93,8 +106,7 @@
 ///4]Random: does all the random generations
 ///5]UI: stores all the funcions that the player can do
 ///6]Program: runs the game
+///7]FoodTypes: stores all the food fields that can be added to the Hotel's storage
 ///
-///For the future:
-///----------------
 
 

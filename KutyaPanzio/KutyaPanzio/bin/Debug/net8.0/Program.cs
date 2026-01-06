@@ -38,11 +38,24 @@
             animal.AnimalType = types[rand.Next(0, types.Length)];
             switch (rand.Next(1, 4))
             {
-                case 1: animal.DogSize = 1; animal.MoneyForDog = rand.Next(100, 251); break;
-                case 2: animal.DogSize = 2; animal.MoneyForDog = rand.Next(251, 501); break;
-                case 3: animal.DogSize = 4; animal.MoneyForDog = rand.Next(501, 1001); break;
+                case 1: animal.AnimalSize = 1; animal.MoneyForAnimal = rand.Next(100, 251); break;
+                case 2: animal.AnimalSize = 2; animal.MoneyForAnimal = rand.Next(251, 501); break;
+                case 3: animal.AnimalSize = 4; animal.MoneyForAnimal = rand.Next(501, 1001); break;
             }
             return animal;
+        }
+
+        ///<summary>Generates a random amount of how much food an animal needs</summary>
+        ///<returns>Food amount for SPECIFIC day</returns>
+        public static int FoodForAnimal()
+        {
+            Random rand = new();
+            int amount = 1;
+            foreach(Animals animal in Hotel.AnimalsInHotel)
+            {
+                animal.AmountOfFoodPerDay = rand.Next(amount, amount * animal.AnimalSize);
+            }
+            return amount;
         }
     }
 }
@@ -50,7 +63,7 @@
 /// DevPlans: [✖️/✔️]
 /// =========
 /// 
-///Game mechanic:
+///Game mechanic base:
 ///---------------
 ///[✔️]Random people with their dogs 
 ///[✔️]You can store the dogs based on how many you can take in 
@@ -65,11 +78,14 @@
 ///To-do's:
 ///----------
 ///[✔️]Add more than one type of animal like cats, lama, donkey, horse
-///[✖️]Every day costs money to run the hotel, and the more slots you have the more you need to pay accordingly
-///[✖️]Each animal has their unique food type that they need
-///[✖️]Add a new food class and add the logic to the store 
-///[✖️]Change the Dog class to animals class and add the animal type field!
-/// 
+///[✔️]Every day costs money to run the hotel, and the more slots you have the more you need to pay accordingly
+///[✔️]Each animal has their unique food type that they need
+///[✔️]Add a new food class 
+///[✔️]Add the food logic to the store 
+///[✔️]Change the Dog class to animals class and add the animal type field!
+///[✖️]Dogs need to be fed, drank and taken to a walk
+///[✖️]If a pet is not taken care for, after a day they leave with no money!
+///
 ///Classes needed:
 ///----------------
 ///1]Dogs: stores all the dogs and their infos
@@ -78,10 +94,10 @@
 ///4]Random: does all the random generations
 ///5]UI: stores all the funcions that the player can do
 ///6]Program: runs the game
+///7]FoodTypes: stores all the food fields that can be added to the Hotel's storage
 ///
 ///For the future:
 ///----------------
-///[✖️]Dogs need to be fed, drank and taken to a walk
-///[✖️]If a pet is not taken care for, after a day they leave with no money!
+///First Finish the current to-do's
 
 

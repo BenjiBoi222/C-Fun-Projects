@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace KutyaPanzio
             {
                 Console.WriteLine("\n===Store===");
                 Console.WriteLine("1)Buy more slots");
+                Console.WriteLine("2)Buy more food");
                 Console.WriteLine("0)Exit store");
                 Console.Write("Enter selected option: ");
                 if (int.TryParse(Console.ReadLine(), out int choice))
@@ -36,6 +38,8 @@ namespace KutyaPanzio
                     {
                         case 0: isStoreActive = false; break;
                         case 1: BuyMoreStack(); break;
+                        case 2: BuyMoreFood(); break;
+                        default: Console.WriteLine("Invalid input!"); break;
                     }
                 }
             }
@@ -56,6 +60,7 @@ namespace KutyaPanzio
                     case 2: BuyStack(2); break;
                     case 3: BuyStack(4); break;
                     case 4: BuyStack(8); break;
+                    default: Console.WriteLine("Invalid input!"); break;
                 }
             }
         }
@@ -71,15 +76,76 @@ namespace KutyaPanzio
             else Console.WriteLine("Insuficent funds");
         }
 
+
+        ///<summary>This function lists all the food options, stores their value and adds it into the Hotels Foods storage if purchase was successful</summary>
+        private static void BuyMoreFood()
+        {
+            var prices = new Dictionary<string, int>
+            {
+                { "fish", 10 }, { "chicken", 14 }, { "beef", 25 }, { "carrot", 5 }, { "apple", 3 }
+            };
+
+            Console.WriteLine("\n==Food options==");
+            Console.WriteLine($"1)Fish({prices["fish"]}/piece)");
+            Console.WriteLine($"2)Chicken({prices["chicken"]}/piece)");
+            Console.WriteLine($"3)Beef({prices["beef"]}/piece)");
+            Console.WriteLine($"4)Carrot({prices["carrot"]}/piece)");
+            Console.WriteLine($"5)Apple({prices["apple"]}/piece)");
+            Console.Write("Enter your choice: ");
+            
+            if (int.TryParse(Console.ReadLine(), out int choice))
+            {
+                Console.Write("Enter the amount you want to buy: ");
+                if (int.TryParse(Console.ReadLine(), out int amount))
+                {
+                    FoodTypes result = null;
+                    switch (choice)
+                    {
+                        case 1: result = HadleFoodTypes(amount, prices["fish"], "fish"); break;
+                        case 2: result = HadleFoodTypes(amount, prices["chicken"], "chicken"); break;
+                        case 3: result = HadleFoodTypes(amount, prices["beef"], "beef"); break;
+                        case 4: result = HadleFoodTypes(amount, prices["carrot"], "carrot"); break;
+                        case 5: result = HadleFoodTypes(amount, prices["apple"], "apple"); break;
+                        default: Console.WriteLine("Invalid input!"); break;
+                    }
+
+                    if(result != null) { Hotel.FoodTypes.Add(result); Console.WriteLine("Food succesfully bought"); }
+                }
+            }
+        }
+        /// <summary>Calculates the payable amount and handles the purchase/if unsuccessful than creates a null food element</summary>
+        /// <param name="amount">The quantity of the food the user intends to but</param>
+        /// <param name="price">The unique price of a SINGULAR quantity</param>
+        /// <param name="foodType">The foods type/name</param>
+        /// <returns>A FoodTypes object or null</returns>
+        private static FoodTypes HadleFoodTypes(int amount, int price, string foodType)
+        {
+            int foodMoney = amount * price;
+
+            if (foodMoney <= Hotel.HotelMoney)
+            {
+                Hotel.HotelMoney -= foodMoney;
+                return new FoodTypes
+                {
+                    FoodType = foodType,
+                    FoodQuantity = amount
+                };
+            }
+
+            Console.WriteLine("Insufficient funds!");
+            return null; 
+        }
+
+
         ///<!--Functions for the game's main menu-->
         public static void GameMenu()
         {
             Console.WriteLine($"\n==={Hotel.HotelName} Hotel Menu===");
             Console.WriteLine("1)Hotel info");
             Console.WriteLine("2)Open store");
-            Console.WriteLine("3)Check for available dogs");
-            Console.WriteLine("4)Check dog in");
-            Console.WriteLine("5)Check dog out");
+            Console.WriteLine("3)Check for available animals");
+            Console.WriteLine("4)Check animal in");
+            Console.WriteLine("5)Check animal out");
             Console.WriteLine("P)Pass a day");
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
@@ -107,47 +173,9 @@ namespace KutyaPanzio
             {
                 if (dog.AmountOfDaysLeft == 0) amountOfDogsReadyToLeave++;
             }
-            if (amountOfDogsReadyToLeave > 0) Console.WriteLine($"{amountOfDogsReadyToLeave} dogs are ready to leave!");
+            if (amountOfDogsReadyToLeave > 0) Console.WriteLine($"{amountOfDogsReadyToLeave} animal(s) are ready to leave!");
         }
-        ///<!--User manual-->
-        private static void UserManual()
-        {
-            Console.Clear();
-            Console.WriteLine("========================================");
-            Console.WriteLine($"   MANUAL: HOW TO RUN {Hotel.HotelName.ToUpper()}");
-            Console.WriteLine("========================================");
-
-            Console.WriteLine("\n1. THE OBJECTIVE");
-            Console.WriteLine("   Manage your hotel capacity, care for dogs, and");
-            Console.WriteLine("   earn money to expand your business.");
-
-            Console.WriteLine("\n2. HOTEL CAPACITY (STACKS)");
-            Console.WriteLine("   Every dog takes up 'Stack' space based on size:");
-            Console.WriteLine("   * Small Dogs  : 1 Stack");
-            Console.WriteLine("   * Medium Dogs : 2 Stacks");
-            Console.WriteLine("   * Large Dogs  : 4 Stacks");
-            Console.WriteLine("   You cannot check in a dog if you don't have enough");
-            Console.WriteLine("   Remaining Capacity.");
-
-            Console.WriteLine("\n3. THE DAILY CYCLE");
-            Console.WriteLine("   * Use 'Check for available dogs' to see who is waiting.");
-            Console.WriteLine("   * 'Check dog in' to start their stay.");
-            Console.WriteLine("   * 'Pass a day' to progress time. Dogs stay for a ");
-            Console.WriteLine("     set number of days.");
-
-            Console.WriteLine("\n4. EARNING MONEY");
-            Console.WriteLine("   Dogs ONLY pay when they leave. When a dog's 'Days'");
-            Console.WriteLine("   hits 0, use 'Check dog out' (Option 5) to collect");
-            Console.WriteLine("   your fee and free up hotel space.");
-
-            Console.WriteLine("\n5. UPGRADING");
-            Console.WriteLine("   Visit the Store to buy more Stacks. More stacks");
-            Console.WriteLine("   mean you can board larger dogs or more dogs at once.");
-
-            Console.WriteLine("\n========================================");
-            Console.WriteLine("Press any key to return to the menu...");
-            Console.ReadKey();
-        }
+        
 
         ///<!--Private Functions of the main menu-->
 
@@ -156,7 +184,7 @@ namespace KutyaPanzio
         {
             Hotel.CheckForAnimal();
 
-            Console.Write("\nEnter the dog's number to check in: ");
+            Console.Write("\nEnter the animal's number to check in: ");
             if (int.TryParse(Console.ReadLine(), out int number))
             {
                 int index = number - 1;
@@ -168,7 +196,7 @@ namespace KutyaPanzio
                 }
                 else
                 {
-                    Console.WriteLine("Invalid dog number!");
+                    Console.WriteLine("Invalid animal number!");
                 }
             }
             else
@@ -224,6 +252,49 @@ namespace KutyaPanzio
                 Hotel.AnimalInLine.Clear();
             }
             Console.WriteLine("A day has passed..");
+        }
+
+
+
+
+        ///<!--User manual-->
+        private static void UserManual()
+        {
+            Console.Clear();
+            Console.WriteLine("========================================");
+            Console.WriteLine($"   MANUAL: HOW TO RUN {Hotel.HotelName.ToUpper()} HOTEL");
+            Console.WriteLine("========================================");
+
+            Console.WriteLine("\n1. THE OBJECTIVE");
+            Console.WriteLine("   Manage your hotel capacity, care for dogs, and");
+            Console.WriteLine("   earn money to expand your business.");
+
+            Console.WriteLine("\n2. HOTEL CAPACITY (STACKS)");
+            Console.WriteLine("   Every dog takes up 'Stack' space based on size:");
+            Console.WriteLine("   * Small Dogs  : 1 Stack");
+            Console.WriteLine("   * Medium Dogs : 2 Stacks");
+            Console.WriteLine("   * Large Dogs  : 4 Stacks");
+            Console.WriteLine("   You cannot check in a dog if you don't have enough");
+            Console.WriteLine("   Remaining Capacity.");
+
+            Console.WriteLine("\n3. THE DAILY CYCLE");
+            Console.WriteLine("   * Use 'Check for available dogs' to see who is waiting.");
+            Console.WriteLine("   * 'Check dog in' to start their stay.");
+            Console.WriteLine("   * 'Pass a day' to progress time. Dogs stay for a ");
+            Console.WriteLine("     set number of days.");
+
+            Console.WriteLine("\n4. EARNING MONEY");
+            Console.WriteLine("   Dogs ONLY pay when they leave. When a dog's 'Days'");
+            Console.WriteLine("   hits 0, use 'Check dog out' (Option 5) to collect");
+            Console.WriteLine("   your fee and free up hotel space.");
+
+            Console.WriteLine("\n5. UPGRADING");
+            Console.WriteLine("   Visit the Store to buy more Stacks. More stacks");
+            Console.WriteLine("   mean you can board larger dogs or more dogs at once.");
+
+            Console.WriteLine("\n========================================");
+            Console.WriteLine("Press any key to return to the menu...");
+            Console.ReadKey();
         }
     }
 }

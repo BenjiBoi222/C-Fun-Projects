@@ -16,13 +16,14 @@ namespace KutyaPanzio
         public static int RemainingStack => StackSize - UsedStack;
 
 
-        ///<summary>A list of dogs that are waiting in line to get into the hotel</summary>
+        ///<summary>A list of animals that are waiting in line to get into the hotel</summary>
         public static List<Animals> AnimalInLine { get; set; } = new();
 
-        ///<summary>A list of dogs that are inside the hotel already</summary>
+        ///<summary>A list of animals that are inside the hotel already</summary>
         public static List<Animals> AnimalsInHotel { get; set; } = new();
 
-        public List<FoodTypes> FoodTypes { get; set; } = new();
+        ///<summary>A list of all the foods the hotel has in stock</summary>
+        public static List<FoodTypes> FoodTypes { get; set; } = new();
 
         ///<!--Hotel Functions-->
         ///<summary>Checks if there are 5 dogs in line and if not than it adds more</summary>
@@ -47,6 +48,19 @@ namespace KutyaPanzio
             Console.WriteLine($"Hotel capavity: {StackSize}");
             Console.WriteLine($"Hotel capavity left: {RemainingStack}");
             Console.WriteLine($"Hotel's daily fee: {StackSize * 10}");
+            if(FoodTypes.Count > 0)
+            {
+                string headerFormat = "{0,-12} {1,-10}";
+
+                Console.WriteLine("\n" + string.Format(headerFormat, "Food", "Stock"));
+                Console.WriteLine(new string('-', 15)); // Decorative separator line
+
+                foreach (FoodTypes food in FoodTypes)
+                { 
+                    Console.WriteLine($"{food.FoodType,-12} {food.FoodQuantity,-10} ");
+                }
+            }
+
             if (AnimalsInHotel.Count > 0)
             {
                 string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10}";
@@ -56,12 +70,11 @@ namespace KutyaPanzio
 
                 foreach (Animals dog in AnimalsInHotel)
                 {
-                    // {dog.Name,-12} means left-align with a width of 12 characters
+                    // {animal.Name,-12} means left-align with a width of 12 characters
                     Console.WriteLine($"{dog.Name,-12} {dog.AnimalSize,-10} ${dog.MoneyForAnimal,-9} {dog.AmountOfDaysLeft,-10}");
                 }
-                Console.WriteLine("======================");
             }
-            else Console.WriteLine("======================");
+            Console.WriteLine("======================");
         }
 
         ///<summary>Shows all the available dogs for check in</summary>

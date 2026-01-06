@@ -10,7 +10,5 @@ namespace KutyaPanzio
     {
         public string FoodType { get; set; }
         public int FoodQuantity { get; set; }
-
-        
     }
 }

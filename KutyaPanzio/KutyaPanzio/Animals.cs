@@ -26,6 +26,10 @@ namespace KutyaPanzio
         //These three will determen if the animal needs any essential, and these fields will act for all the animal
         ///<!--This is a random event that might happen any day-->
         public bool NeedsWalk { get; set; } = false;
+        //More random events in the future
+        
+
+
         ///<!--These two are mandatory each day!-->
         public bool NeedsFood { get; set; } = false;
         public bool NeedsWater { get; set; } = false;
