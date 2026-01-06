@@ -5,6 +5,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\dogs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\dogs.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\userfunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\userfunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +26,47 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Dogs.cs",
+              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Dogs.cs",
+              "RelativeDocumentMoniker": "KutyaPanzio\\Dogs.cs",
+              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Dogs.cs",
+              "RelativeToolTip": "KutyaPanzio\\Dogs.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T04:35:06.909Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Hotel.cs",
+              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Hotel.cs",
+              "RelativeDocumentMoniker": "KutyaPanzio\\Hotel.cs",
+              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Hotel.cs",
+              "RelativeToolTip": "KutyaPanzio\\Hotel.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAYwHwAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T04:34:26.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserFunction.cs",
+              "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\UserFunction.cs",
+              "RelativeDocumentMoniker": "KutyaPanzio\\UserFunction.cs",
+              "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\UserFunction.cs",
+              "RelativeToolTip": "KutyaPanzio\\UserFunction.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAowOIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-06T04:33:29.935Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +75,7 @@
               "RelativeDocumentMoniker": "KutyaPanzio\\Program.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Program.cs",
               "RelativeToolTip": "KutyaPanzio\\Program.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAgwFUAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAwwDoAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T20:40:41.488Z",
               "EditorCaption": ""
