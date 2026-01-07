@@ -44,3 +44,4 @@ C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Debu
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Debug\net8.0\KutyaPanzio.pdb
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Debug\net8.0\KutyaPanzio.genruntimeconfig.cache
 C:\Users\schla\IskolaGyokermappa\C-Fun-Projects\KutyaPanzio\KutyaPanzio\obj\Debug\net8.0\ref\KutyaPanzio.dll
+H:\C#\C-Fun-Projects\KutyaPanzio\KutyaPanzio\bin\Debug\net8.0\Program.cs

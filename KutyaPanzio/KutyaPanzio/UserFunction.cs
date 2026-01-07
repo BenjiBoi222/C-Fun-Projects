@@ -146,6 +146,7 @@ namespace KutyaPanzio
             Console.WriteLine("3)Check for available animals");
             Console.WriteLine("4)Check animal in");
             Console.WriteLine("5)Check animal out");
+            Console.WriteLine("6)Check animal needs");
             Console.WriteLine("P)Pass a day");
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
@@ -160,6 +161,7 @@ namespace KutyaPanzio
                     case "3": Hotel.CheckForAnimal(); break;
                     case "4": CheckAnimalIn(); break;
                     case "5": CheckAnimalOut(); break;
+                    case "6": AnimalNeedsListed(); break;
                     case "p": PassDay(); break;
                     case "m": UserManual(); break;
                     case "e": Program.IsGameRunning = false; break;
@@ -236,6 +238,36 @@ namespace KutyaPanzio
             }
         }
 
+        /// <summary>Checks all the staying animals needs and writes them up</summary>
+        private static void AnimalNeedsListed()
+        {
+            if (Hotel.AnimalsInHotel.Count > 0)
+            {
+                // Use a consistent format for the header and the rows
+                string rowFormat = "{0,-15} {1,-15} {2,-15} {3,-15} {4,-15}";
+
+                Console.WriteLine("\n" + string.Format(rowFormat, "Name", "Food", "Food amount", "Water", "Walk"));
+                Console.WriteLine(new string('-', 60));
+
+                foreach (Animals animal in Hotel.AnimalsInHotel)
+                {
+                    // Only show the word "Needs" if the bool is true, otherwise leave it empty ""
+                    string foodStatus = animal.NeedsFood ? "Needs" : "";
+                    string waterStatus = animal.NeedsWater ? "Needs" : "";
+                    string walkStatus = animal.NeedsWalk ? "Needs" : "";
+
+                    Console.WriteLine(string.Format(rowFormat,
+                        animal.Name,
+                        foodStatus,
+                        animal.AmountOfFoodPerDay,
+                        waterStatus,
+                        walkStatus));
+                }
+            }
+            else Console.WriteLine("No animal is checked inside the hotel!");
+        }
+
+
         /// <summary>Passes a day</summary>
         private static void PassDay()
         {
@@ -264,6 +296,8 @@ namespace KutyaPanzio
             Console.WriteLine("A day has passed..");
             Randoms.GenerateBehavior();
         }
+
+        
 
 
 

@@ -35,8 +35,5 @@ namespace KutyaPanzio
         ///<summary>What type of food the animal will need uniquely</summary>
         public string NeededFoodType { get; set; }
         public int AmountOfFoodPerDay { get; set; }
-
-
-        
     }
 }
