@@ -119,8 +119,14 @@
 ///[✔️]Add the food logic to the store 
 ///[✔️]Change the Dog class to animals class and add the animal type field!
 ///[✔️]Function to show what each pet need every day
-///[✖️]Animals need to be fed, drank and taken to a walk
+///[✔️]Animals need to be fed, drank and taken to a walk
 ///[✔️]If a pet is not taken care for, after a day they leave with no money!
+///[✖️]Cleaning needs to be done after animals leave the hotel 
+///[✔️]Cleaning reminder
+/// 
+///Always expanding with new functions:
+///-------------------------------------
+///[ Currently[✔️] Overall:[✖️] ]Make a warning function that plays at each main menu display, that writes out all the things the user must do that day
 ///
 /// 
 /// 

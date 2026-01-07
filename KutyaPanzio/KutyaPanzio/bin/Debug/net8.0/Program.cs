@@ -118,6 +118,7 @@
 ///[✔️]Add a new food class 
 ///[✔️]Add the food logic to the store 
 ///[✔️]Change the Dog class to animals class and add the animal type field!
+///[✔️]Function to show what each pet need every day
 ///[✖️]Animals need to be fed, drank and taken to a walk
 ///[✔️]If a pet is not taken care for, after a day they leave with no money!
 ///

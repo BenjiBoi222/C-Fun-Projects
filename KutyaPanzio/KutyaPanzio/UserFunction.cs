@@ -44,29 +44,34 @@ namespace KutyaPanzio
                 }
             }
         }
+        ///<!--Private functions to handle the stack shop-->
+        /// <summary>Shows the buyable stack options and handles the users input</summary>
         private static void BuyMoreStack()
         {
+            int stackPrice = 100 + Hotel.StackSize * 10;
             Console.WriteLine("\n==Stack options==");
             Console.WriteLine("1)Buy 1 more stack");
             Console.WriteLine("2)Buy 2 more stack");
             Console.WriteLine("3)Buy 4 more stack");
             Console.WriteLine("4)Buy 8 more stack");
-            Console.Write("Enter the pack you want(100$/stack): ");
+            Console.Write($"Enter the pack you want({stackPrice}$/stack): ");
             if (int.TryParse(Console.ReadLine(), out int pack))
             {
                 switch (pack)
                 {
-                    case 1: BuyStack(1); break;
-                    case 2: BuyStack(2); break;
-                    case 3: BuyStack(4); break;
-                    case 4: BuyStack(8); break;
+                    case 1: BuyStack(1, stackPrice); break;
+                    case 2: BuyStack(2, stackPrice); break;
+                    case 3: BuyStack(4, stackPrice); break;
+                    case 4: BuyStack(8, stackPrice); break;
                     default: Console.WriteLine("Invalid input!"); break;
                 }
             }
         }
-        private static void BuyStack(int pack)
+        /// <summary>Handles the stack buying process</summary>
+        /// <param name="pack">The pack's size the user wants</param>
+        private static void BuyStack(int pack, int stackPice)
         {
-            int moneyNeeded = pack * 100;
+            int moneyNeeded = pack * stackPice;
 
             if (Hotel.HotelMoney >= moneyNeeded)
             {
@@ -76,6 +81,7 @@ namespace KutyaPanzio
             else Console.WriteLine("Insuficent funds");
         }
 
+        ///<!--Private functions to handle the food shop-->
 
         ///<summary>This function lists all the food options, stores their value and adds it into the Hotels Foods storage if purchase was successful</summary>
         private static void BuyMoreFood()
@@ -109,7 +115,20 @@ namespace KutyaPanzio
                         default: Console.WriteLine("Invalid input!"); break;
                     }
 
-                    if(result != null) { Hotel.FoodTypes.Add(result); Console.WriteLine("Food succesfully bought"); }
+                    if(result != null)
+                    {
+                        foreach (FoodTypes food in Hotel.FoodTypes)
+                        {
+                            if (food.FoodType == result.FoodType)
+                            {
+                                food.FoodQuantity += result.FoodQuantity;
+                                Console.WriteLine("Food successfully bought");
+                                return;
+                            }
+                        }
+                        Hotel.FoodTypes.Add(result);
+                        Console.WriteLine("Food successfully bought");
+                    }
                 }
             }
         }
@@ -147,6 +166,7 @@ namespace KutyaPanzio
             Console.WriteLine("4)Check animal in");
             Console.WriteLine("5)Check animal out");
             Console.WriteLine("6)Check animal needs");
+            Console.WriteLine("7)Animal Care & Maintenance");
             Console.WriteLine("P)Pass a day");
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
@@ -162,6 +182,7 @@ namespace KutyaPanzio
                     case "4": CheckAnimalIn(); break;
                     case "5": CheckAnimalOut(); break;
                     case "6": AnimalNeedsListed(); break;
+                    case "7": AnimalCareList(); break;
                     case "p": PassDay(); break;
                     case "m": UserManual(); break;
                     case "e": Program.IsGameRunning = false; break;
@@ -170,12 +191,7 @@ namespace KutyaPanzio
             }
             else Console.WriteLine("Invalid input type!");
 
-            int amountOfDogsReadyToLeave = 0;
-            foreach (Animals dog in Hotel.AnimalsInHotel)
-            {
-                if (dog.AmountOfDaysLeft == 0) amountOfDogsReadyToLeave++;
-            }
-            if (amountOfDogsReadyToLeave > 0) Console.WriteLine($"{amountOfDogsReadyToLeave} animal(s) are ready to leave!");
+            Reminders();
         }
         
 
@@ -252,9 +268,9 @@ namespace KutyaPanzio
                 foreach (Animals animal in Hotel.AnimalsInHotel)
                 {
                     // Only show the word "Needs" if the bool is true, otherwise leave it empty ""
-                    string foodStatus = animal.NeedsFood ? "Needs" : "";
-                    string waterStatus = animal.NeedsWater ? "Needs" : "";
-                    string walkStatus = animal.NeedsWalk ? "Needs" : "";
+                    string foodStatus = animal.NeedsFood ? "Needs" : "Fed";
+                    string waterStatus = animal.NeedsWater ? "Needs" : "Watered";
+                    string walkStatus = animal.NeedsWalk ? "Needs" : "Walked";
 
                     Console.WriteLine(string.Format(rowFormat,
                         animal.Name,
@@ -267,6 +283,120 @@ namespace KutyaPanzio
             else Console.WriteLine("No animal is checked inside the hotel!");
         }
 
+        ///<!--Private functions and menu of the care taking actions-->
+        /// <summary>Shows all the interactions the user can do to take care of the animals</summary>
+        private static void AnimalCareList()
+        {
+            int staffCount = Hotel.StaffCount;
+            int capacity = 1 + staffCount;
+            bool menuIsRunning = true;
+
+            while(menuIsRunning)
+            {
+                Console.WriteLine("\n=== Animal Care & Maintenance ===");
+                Console.WriteLine("1) Feed the animal");
+                Console.WriteLine("2) Give drink to animal");
+                Console.WriteLine("3) Take an animal out on a walk");
+                Console.WriteLine("0) Exit Care & Maintenance menu");
+                Console.WriteLine($"\nWarning: Currently you can take care of {capacity} animals at a time.");
+                Console.WriteLine($"(Base: 1 + Staff: {staffCount})");
+                Console.Write("Enter chosen option: ");
+                if (int.TryParse(Console.ReadLine(), out int choice))
+                {
+                    switch (choice)
+                    {
+                        case 0: menuIsRunning = false; break;
+                        case 1: FeedAnimal(capacity); break;
+                        case 2: GiveDrinkToAnimal(capacity); break;
+                        case 3: TakeAnimalOnWalk(capacity); break;
+                    }
+                }
+            }
+        }
+        /// <summary>Gives food to as much animal per function run as much stuff the hotel has (base:1 stuff)</summary>
+        /// <param name="maxAmount">The amount of staff inside the hotel</param>
+        private static void FeedAnimal(int maxAmount)
+        {
+            int fedCount = 0;
+
+            foreach (var animal in Hotel.AnimalsInHotel)
+            {
+                if (fedCount >= maxAmount)
+                {
+                    break;
+                }
+
+                if (animal.NeedsFood)
+                {
+                    foreach (var food in Hotel.FoodTypes)
+                    {
+                        if (food.FoodType == animal.NeededFoodType)
+                        {
+                            if (food.FoodQuantity >= animal.AmountOfFoodPerDay)
+                            {
+                                food.FoodQuantity -= animal.AmountOfFoodPerDay;
+                                animal.NeedsFood = false;
+                                fedCount++;
+                                Console.WriteLine($"{animal.Name} got fed.");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"{animal.Name} couldn't be fed: isn't enough {food.FoodType} in storage.");
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>Gives water to as much animal per function run as much stuff the hotel has (base:1 stuff)</summary>
+        /// <param name="maxAmount">The amount of staff inside the hotel</param>
+        private static void GiveDrinkToAnimal(int maxAmount)
+        {
+            int givenDrinkCount = 0;
+
+            foreach (var animal in Hotel.AnimalsInHotel)
+            {
+                if (givenDrinkCount >= maxAmount)
+                {
+                    break;
+                }
+
+                if (animal.NeedsWater)
+                {
+                    animal.NeedsWater = false;
+                    givenDrinkCount++;
+                    Console.WriteLine($"{animal.Name} was given water.");
+                }
+            }
+        }
+
+        /// <summary>Takes as much animal for a walk per function run as much stuff the hotel has (base:1 stuff)</summary>
+        /// <param name="maxAmount">The amount of staff inside the hotel</param>
+        private static void TakeAnimalOnWalk(int maxAmount)
+        {
+            int takenOnWalk = 0;
+            foreach (var animal in Hotel.AnimalsInHotel)
+            {
+                if (takenOnWalk >= maxAmount)
+                {
+                    break;
+                }
+
+                if (animal.NeedsWalk)
+                {
+                    if(animal.NeedsWater || animal.NeedsFood)
+                        Console.WriteLine($"{animal.Name} cannot be walked until fed and given water!");
+                    else
+                    {
+                        animal.NeedsWalk = false;
+                        takenOnWalk++;
+                        Console.WriteLine($"{animal.Name} was taken to a walk.");
+                    }
+                }
+            }
+        }
 
         /// <summary>Passes a day</summary>
         private static void PassDay()
@@ -297,8 +427,95 @@ namespace KutyaPanzio
             Randoms.GenerateBehavior();
         }
 
-        
+        ///<!--The warning function-->
+        ///<!--This function is large, mainly because it will have every element that needs to be done the current day-->
 
+        private static void Reminders()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            //First reminder: How many animals are ready to leave
+            int readyToLeave = AnimalLeavingReminder();
+            if( readyToLeave > 0 ) 
+                Console.WriteLine($"{readyToLeave} animal(s) ready to leave! Proceed with checkout!");
+
+            //Second reminder: How many animals needs to be fed
+            int readyToEat = AnimalFoodReminder();
+            if( readyToEat > 0 )
+                Console.WriteLine($"{readyToEat} animal(s) ready to eat! Proceed with feeding!");
+
+            //Third reminder: How many animals needs to be given water
+            int readyToDrink = AnimalWaterReminder();
+            if (readyToDrink > 0)
+                Console.WriteLine($"{readyToDrink} animal(s) ready to drink! Proceed with watering!");
+
+            //Fourth reminder: How many animals need to go on a walk
+            int readyToWalk = AnimalWalkReminder();
+            if (readyToWalk > 0)
+                Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
+
+            //Fifth reminder: Is there any mess to clean inside the hotel
+            if(Hotel.IsThereMess)
+                Console.WriteLine("There is mess that needs to be cleaned up!");
+
+
+            Console.ResetColor();
+        }
+        /// <summary>Helper function. Shows how many animals are ready leaving</summary>
+        /// <returns>Amount of animal thats ready to leave</returns>
+        private static int AnimalLeavingReminder()
+        {
+            int animalsLeaving = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.AmountOfDaysLeft == 0)
+                {
+                    animalsLeaving++;
+                }
+            }
+            return animalsLeaving;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to eat</summary>
+        /// <returns>Amount of animal thats ready to eat</returns>
+        private static int AnimalFoodReminder()
+        {
+            int animalsLeftHungry = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsFood)
+                {
+                    animalsLeftHungry++;
+                }
+            }
+            return animalsLeftHungry;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to drink</summary>
+        /// <returns>Amount of animal thats ready to drink</returns>
+        private static int AnimalWaterReminder()
+        {
+            int animalsLeftThirsty = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsWater)
+                {
+                    animalsLeftThirsty++;
+                }
+            }
+            return animalsLeftThirsty;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to walk</summary>
+        /// <returns>Amount of animal thats ready to walk</returns>
+        private static int AnimalWalkReminder()
+        {
+            int animalsForWalk = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsWalk)
+                {
+                    animalsForWalk++;
+                }
+            }
+            return animalsForWalk;
+        }
 
 
 

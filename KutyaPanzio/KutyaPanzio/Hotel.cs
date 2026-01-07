@@ -14,6 +14,10 @@ namespace KutyaPanzio
         public static int StackSize { get; set; } = 4;
         public static int UsedStack { get; set; }
         public static int RemainingStack => StackSize - UsedStack;
+        
+        public static int StaffCount { get; set; } = 0;
+
+        public static bool IsThereMess { get; private set; } = false;
 
 
         ///<summary>A list of animals that are waiting in line to get into the hotel</summary>
@@ -135,6 +139,7 @@ namespace KutyaPanzio
 
                     HotelMoney += AnimalsInHotel[i].MoneyForAnimal;
                     UsedStack -= AnimalsInHotel[i].AnimalSize;
+                    IsThereMess = true;
                     AnimalsInHotel.RemoveAt(i);
                 }
             }
