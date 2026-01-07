@@ -28,8 +28,6 @@ namespace KutyaPanzio
         public bool NeedsWalk { get; set; } = false;
         //More random events in the future
         
-
-
         ///<!--These two are mandatory each day!-->
         public bool NeedsFood { get; set; } = false;
         public bool NeedsWater { get; set; } = false;
@@ -38,7 +36,7 @@ namespace KutyaPanzio
         public string NeededFoodType { get; set; }
         public int AmountOfFoodPerDay { get; set; }
 
-        ///<summary>Checks if all the needs of the animal is taken caren or not</summary>
-        public bool IsTakenCareOf {  get; set; } = true;
+
+        
     }
 }

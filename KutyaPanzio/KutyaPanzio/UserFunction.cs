@@ -251,7 +251,18 @@ namespace KutyaPanzio
             {
                 Hotel.AnimalInLine.Clear();
             }
+
+            ///<!--THESE MUST STAY IN THIS ORDER-->
+            ///<!--LOGIC ERROR APPEARS-->
+            ///If the Generation runs before the check
+            /// than some fields of the animal might get overwritten
+            /// and if the only missing action was like for eg. a walk 
+            /// and it gets overwritten by the generator, than the animal won't leave 
+            /// by unsatisfaction.
+            
+            Randoms.CheckAnimalSatisfaction();
             Console.WriteLine("A day has passed..");
+            Randoms.GenerateBehavior();
         }
 
 

@@ -63,15 +63,16 @@ namespace KutyaPanzio
 
             if (AnimalsInHotel.Count > 0)
             {
-                string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10}";
+                string headerFormat = "{0,-12} {1,-10} {2,-10} {3,-10} {4,-10} {5,-10}";
 
-                Console.WriteLine("\n" + string.Format(headerFormat, "Name", "Size", "Fee", "Days"));
+                Console.WriteLine("\n" + string.Format(headerFormat, "Name", "Type", "Size", "Fee", "Days", "Food"));
                 Console.WriteLine(new string('-', 45)); // Decorative separator line
 
-                foreach (Animals dog in AnimalsInHotel)
+                int stepper = 1;
+                foreach (Animals animal in AnimalsInHotel)
                 {
                     // {animal.Name,-12} means left-align with a width of 12 characters
-                    Console.WriteLine($"{dog.Name,-12} {dog.AnimalSize,-10} ${dog.MoneyForAnimal,-9} {dog.AmountOfDaysLeft,-10}");
+                    Console.WriteLine($"{stepper++}){animal.Name,-10} {animal.AnimalType,-10} {animal.AnimalSize,-10} ${animal.MoneyForAnimal,-9} {animal.AmountOfDaysLeft,-10} {animal.NeededFoodType}");
                 }
             }
             Console.WriteLine("======================");

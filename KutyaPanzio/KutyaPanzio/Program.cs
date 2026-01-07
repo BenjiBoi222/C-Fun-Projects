@@ -57,6 +57,39 @@
             }
             return amount;
         }
+
+        ///<summary>This function checks if any need is missing for an animal and if yes than the animal leaves</summary>
+        public static void CheckAnimalSatisfaction()
+        {
+            for(int i = Hotel.AnimalsInHotel.Count - 1; i >= 0; i--)
+            {
+                if (Hotel.AnimalsInHotel[i].NeedsWalk == true ||
+                    Hotel.AnimalsInHotel[i].NeedsWater == true ||
+                    Hotel.AnimalsInHotel[i].NeedsFood == true)
+                {
+                    Console.WriteLine($"{Hotel.AnimalsInHotel[i].Name} got picked up after being unsatisfied!");
+                    Hotel.AnimalsInHotel.RemoveAt(i);
+                }
+            }
+        }
+
+        public static void GenerateBehavior()
+        {
+            Random rand = new();
+            foreach(Animals animal in Hotel.AnimalsInHotel)
+            {
+                //Ensures a 33% random chance
+                if(rand.Next(1, 4) == 3)
+                {
+                    animal.NeedsWalk = true;
+                }
+                animal.NeedsFood = true;
+                int times = animal.AnimalSize;
+                //Food depends on the animals size!
+                animal.AmountOfFoodPerDay = rand.Next(1*times, 4*times);
+                animal.NeedsWater = true;
+            }
+        }
     }
 }
 
@@ -85,18 +118,18 @@
 ///[✔️]Add the food logic to the store 
 ///[✔️]Change the Dog class to animals class and add the animal type field!
 ///[✖️]Animals need to be fed, drank and taken to a walk
-///[✖️]If a pet is not taken care for, after a day they leave with no money!
+///[✔️]If a pet is not taken care for, after a day they leave with no money!
 ///
 /// 
 /// 
 ///For the future:
 ///----------------
 ///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
-///  Toys have durability and new needs to be purchased
-///2)Cleaning needs to be done after animals leave the hotel
+///  Toys have durability and new needs to be purchased <!--Add a new toy class and implement it like food-->
+///2)Cleaning needs to be done after animals leave the hotel <!--Easy implementation, has to add a simple logic-->
 ///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
 ///4)Auto checkout by hiring new worker <!--Tricky, needs to add automation to checkouts if there is a worker-->
-///!Err!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
+///!✖️!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
 /// 
 ///Classes needed:
 ///----------------
