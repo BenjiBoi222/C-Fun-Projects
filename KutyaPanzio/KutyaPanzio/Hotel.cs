@@ -17,7 +17,6 @@ namespace KutyaPanzio
         
         public static int StaffCount { get; set; } = 0;
 
-        public static bool IsThereMess { get; private set; } = false;
         public static int MessyStackAmount { get; set; } = 0;
 
 

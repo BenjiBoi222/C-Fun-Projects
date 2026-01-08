@@ -404,7 +404,11 @@ namespace KutyaPanzio
 
         private static void CleanAnimalMess()
         {
-
+            if(Hotel.MessyStackAmount > 0)
+            {
+                Hotel.MessyStackAmount = 0;
+                Console.WriteLine("The stacks were cleaned!");
+            }
         }
 
 

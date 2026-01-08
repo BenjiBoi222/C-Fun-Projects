@@ -215,8 +215,8 @@
 ///[✔️]Function to show what each pet need every day
 ///[✔️]Animals need to be fed, drank and taken to a walk
 ///[✔️]If a pet is not taken care for, after a day they leave with no money!
-///[✖️]When an animal leaves the hotel they leave their occupied stack dirty
-///[✖️]Cleaning needs to be done after animals leave the hotel 
+///[✔️]When an animal leaves the hotel they leave their occupied stack dirty
+///[✔️]Cleaning needs to be done after animals leave the hotel 
 ///[✔️]Cleaning reminder
 /// 
 ///Always expanding with new functions:
@@ -229,7 +229,6 @@
 ///----------------
 ///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
 ///  Toys have durability and new needs to be purchased <!--Add a new toy class and implement it like food-->
-///2)Cleaning needs to be done after animals leave the hotel <!--Easy implementation, has to add a simple logic-->
 ///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
 ///4)Auto checkout by hiring new worker <!--Tricky, needs to add automation to checkouts if there is a worker-->
 ///!✖️!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
