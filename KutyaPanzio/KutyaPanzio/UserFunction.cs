@@ -167,6 +167,7 @@ namespace KutyaPanzio
             Console.WriteLine("5)Check animal out");
             Console.WriteLine("6)Check animal needs");
             Console.WriteLine("7)Animal Care & Maintenance");
+            Console.WriteLine("8)Clean mess up");
             Console.WriteLine("P)Pass a day");
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
@@ -183,6 +184,7 @@ namespace KutyaPanzio
                     case "5": CheckAnimalOut(); break;
                     case "6": AnimalNeedsListed(); break;
                     case "7": AnimalCareList(); break;
+                    case "8": CleanAnimalMess(); break;
                     case "p": PassDay(); break;
                     case "m": UserManual(); break;
                     case "e": Program.IsGameRunning = false; break;
@@ -191,7 +193,7 @@ namespace KutyaPanzio
             }
             else Console.WriteLine("Invalid input type!");
 
-            Reminders();
+            Randoms.Reminders();
         }
         
 
@@ -250,7 +252,7 @@ namespace KutyaPanzio
             }
             else
             {
-                Console.WriteLine("No dogs are ready to go home yet. Check back tomorrow!");
+                Console.WriteLine("No animal is ready to go home yet. Check back tomorrow!");
             }
         }
 
@@ -313,6 +315,7 @@ namespace KutyaPanzio
                 }
             }
         }
+
         /// <summary>Gives food to as much animal per function run as much stuff the hotel has (base:1 stuff)</summary>
         /// <param name="maxAmount">The amount of staff inside the hotel</param>
         private static void FeedAnimal(int maxAmount)
@@ -398,6 +401,14 @@ namespace KutyaPanzio
             }
         }
 
+
+        private static void CleanAnimalMess()
+        {
+
+        }
+
+
+
         /// <summary>Passes a day</summary>
         private static void PassDay()
         {
@@ -427,95 +438,7 @@ namespace KutyaPanzio
             Randoms.GenerateBehavior();
         }
 
-        ///<!--The warning function-->
-        ///<!--This function is large, mainly because it will have every element that needs to be done the current day-->
-
-        private static void Reminders()
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            //First reminder: How many animals are ready to leave
-            int readyToLeave = AnimalLeavingReminder();
-            if( readyToLeave > 0 ) 
-                Console.WriteLine($"{readyToLeave} animal(s) ready to leave! Proceed with checkout!");
-
-            //Second reminder: How many animals needs to be fed
-            int readyToEat = AnimalFoodReminder();
-            if( readyToEat > 0 )
-                Console.WriteLine($"{readyToEat} animal(s) ready to eat! Proceed with feeding!");
-
-            //Third reminder: How many animals needs to be given water
-            int readyToDrink = AnimalWaterReminder();
-            if (readyToDrink > 0)
-                Console.WriteLine($"{readyToDrink} animal(s) ready to drink! Proceed with watering!");
-
-            //Fourth reminder: How many animals need to go on a walk
-            int readyToWalk = AnimalWalkReminder();
-            if (readyToWalk > 0)
-                Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
-
-            //Fifth reminder: Is there any mess to clean inside the hotel
-            if(Hotel.IsThereMess)
-                Console.WriteLine("There is mess that needs to be cleaned up!");
-
-
-            Console.ResetColor();
-        }
-        /// <summary>Helper function. Shows how many animals are ready leaving</summary>
-        /// <returns>Amount of animal thats ready to leave</returns>
-        private static int AnimalLeavingReminder()
-        {
-            int animalsLeaving = 0;
-            foreach (Animals animal in Hotel.AnimalsInHotel)
-            {
-                if (animal.AmountOfDaysLeft == 0)
-                {
-                    animalsLeaving++;
-                }
-            }
-            return animalsLeaving;
-        }
-        /// <summary>Helper function. Shows how many animals are ready to eat</summary>
-        /// <returns>Amount of animal thats ready to eat</returns>
-        private static int AnimalFoodReminder()
-        {
-            int animalsLeftHungry = 0;
-            foreach (Animals animal in Hotel.AnimalsInHotel)
-            {
-                if (animal.NeedsFood)
-                {
-                    animalsLeftHungry++;
-                }
-            }
-            return animalsLeftHungry;
-        }
-        /// <summary>Helper function. Shows how many animals are ready to drink</summary>
-        /// <returns>Amount of animal thats ready to drink</returns>
-        private static int AnimalWaterReminder()
-        {
-            int animalsLeftThirsty = 0;
-            foreach (Animals animal in Hotel.AnimalsInHotel)
-            {
-                if (animal.NeedsWater)
-                {
-                    animalsLeftThirsty++;
-                }
-            }
-            return animalsLeftThirsty;
-        }
-        /// <summary>Helper function. Shows how many animals are ready to walk</summary>
-        /// <returns>Amount of animal thats ready to walk</returns>
-        private static int AnimalWalkReminder()
-        {
-            int animalsForWalk = 0;
-            foreach (Animals animal in Hotel.AnimalsInHotel)
-            {
-                if (animal.NeedsWalk)
-                {
-                    animalsForWalk++;
-                }
-            }
-            return animalsForWalk;
-        }
+        
 
 
 

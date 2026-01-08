@@ -11,12 +11,12 @@
       "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\userfunction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\animals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\animals.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|solutionrelative:kutyapanzio\\hotel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4EF4C79E-11B3-4739-99D9-FD30F2DE0D19}|KutyaPanzio\\KutyaPanzio.csproj|c:\\users\\schla\\iskolagyokermappa\\c-fun-projects\\kutyapanzio\\kutyapanzio\\foodtypes.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,17 +34,16 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Hotel.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Hotel.cs",
               "RelativeDocumentMoniker": "KutyaPanzio\\Hotel.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Hotel.cs",
               "RelativeToolTip": "KutyaPanzio\\Hotel.cs",
-              "ViewState": "AgIAAA0AAAAAAAAAAAAcwBMAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAA8wDYAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-06T04:34:26.992Z",
-              "IsPinned": true,
-              "EditorCaption": ""
+              "IsPinned": true
             },
             {
               "$type": "Document",
@@ -54,7 +53,7 @@
               "RelativeDocumentMoniker": "KutyaPanzio\\Program.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Program.cs",
               "RelativeToolTip": "KutyaPanzio\\Program.cs",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAMwH8AAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAALgAAAAAAAAAAAAmwL4AAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-04T20:40:41.488Z",
               "IsPinned": true,
@@ -70,12 +69,11 @@
               "RelativeToolTip": "KutyaPanzio\\FoodTypes.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAACAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-06T15:36:37.278Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-06T15:36:37.278Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "Animals.cs",
               "DocumentMoniker": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\Animals.cs",
               "RelativeDocumentMoniker": "KutyaPanzio\\Animals.cs",
@@ -83,8 +81,7 @@
               "RelativeToolTip": "KutyaPanzio\\Animals.cs",
               "ViewState": "AgIAAAsAAAAAAAAAAAAxwB8AAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-06T04:35:06.909Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-06T04:35:06.909Z"
             },
             {
               "$type": "Document",
@@ -94,7 +91,7 @@
               "RelativeDocumentMoniker": "KutyaPanzio\\UserFunction.cs",
               "ToolTip": "C:\\Users\\schla\\IskolaGyokermappa\\C-Fun-Projects\\KutyaPanzio\\KutyaPanzio\\UserFunction.cs",
               "RelativeToolTip": "KutyaPanzio\\UserFunction.cs",
-              "ViewState": "AgIAANABAAAAAAAAAAAxwMkBAABQAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJYBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-06T04:33:29.935Z",
               "EditorCaption": ""

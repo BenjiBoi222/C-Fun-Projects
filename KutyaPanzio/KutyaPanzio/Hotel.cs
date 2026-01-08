@@ -13,11 +13,12 @@ namespace KutyaPanzio
         public static int DayCount { get; set; } = 1;
         public static int StackSize { get; set; } = 4;
         public static int UsedStack { get; set; }
-        public static int RemainingStack => StackSize - UsedStack;
+        public static int RemainingStack => StackSize - (UsedStack+MessyStackAmount);
         
         public static int StaffCount { get; set; } = 0;
 
         public static bool IsThereMess { get; private set; } = false;
+        public static int MessyStackAmount { get; set; } = 0;
 
 
         ///<summary>A list of animals that are waiting in line to get into the hotel</summary>
@@ -49,8 +50,9 @@ namespace KutyaPanzio
             Console.WriteLine($"Hotel name: {HotelName}");
             Console.WriteLine($"Hotel money: ${HotelMoney}");
             Console.WriteLine($"Current day: {DayCount}.");
-            Console.WriteLine($"Hotel capavity: {StackSize}");
-            Console.WriteLine($"Hotel capavity left: {RemainingStack}");
+            Console.WriteLine($"Hotel capacity: {StackSize}");
+            Console.WriteLine($"Hotel capacity left: {RemainingStack}");
+            Console.WriteLine($"Hotel dirty stack: {MessyStackAmount}");
             Console.WriteLine($"Hotel's daily fee: {StackSize * 10}");
             if(FoodTypes.Count > 0)
             {
@@ -138,6 +140,7 @@ namespace KutyaPanzio
                     Console.WriteLine($" >> {AnimalsInHotel[i].Name} has been picked up!");
 
                     HotelMoney += AnimalsInHotel[i].MoneyForAnimal;
+                    MessyStackAmount += UsedStack;
                     UsedStack -= AnimalsInHotel[i].AnimalSize;
                     IsThereMess = true;
                     AnimalsInHotel.RemoveAt(i);
