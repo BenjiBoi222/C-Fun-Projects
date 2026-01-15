@@ -8,7 +8,7 @@
         {
             while (!IsRegistered)
             {
-                UserFunctions.RegisterMenu();
+                SystemFunctions.RegisterMenu();
             }
             while (IsGameRunning)
             {
@@ -69,6 +69,7 @@
                 {
                     Console.WriteLine($"{Hotel.AnimalsInHotel[i].Name} got picked up after being unsatisfied!");
                     Hotel.UsedStack -= Hotel.AnimalsInHotel[i].AnimalSize;
+                    Hotel.MessyStackAmount += Hotel.AnimalsInHotel[i].AnimalSize;
                     Hotel.AnimalsInHotel.RemoveAt(i);
                 }
             }
@@ -91,10 +92,103 @@
                 animal.NeedsWater = true;
             }
         }
+
+
+        ///<!--The warning function-->
+        ///<!--This function is large, mainly because it will have every element that needs to be done the current day-->
+
+        public static void Reminders()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            //First reminder: How many animals are ready to leave
+            int readyToLeave = AnimalLeavingReminder();
+            if (readyToLeave > 0)
+                Console.WriteLine($"{readyToLeave} animal(s) ready to leave! Proceed with checkout!");
+
+            //Second reminder: How many animals needs to be fed
+            int readyToEat = AnimalFoodReminder();
+            if (readyToEat > 0)
+                Console.WriteLine($"{readyToEat} animal(s) ready to eat! Proceed with feeding!");
+
+            //Third reminder: How many animals needs to be given water
+            int readyToDrink = AnimalWaterReminder();
+            if (readyToDrink > 0)
+                Console.WriteLine($"{readyToDrink} animal(s) ready to drink! Proceed with watering!");
+
+            //Fourth reminder: How many animals need to go on a walk
+            int readyToWalk = AnimalWalkReminder();
+            if (readyToWalk > 0)
+                Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
+
+            //Fifth reminder: Is there any mess to clean inside the hotel
+            if (Hotel.MessyStackAmount > 0)
+                Console.WriteLine("There is mess that needs to be cleaned up!");
+
+
+            Console.ResetColor();
+        }
+        /// <summary>Helper function. Shows how many animals are ready leaving</summary>
+        /// <returns>Amount of animal thats ready to leave</returns>
+        private static int AnimalLeavingReminder()
+        {
+            int animalsLeaving = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.AmountOfDaysLeft == 0)
+                {
+                    animalsLeaving++;
+                }
+            }
+            return animalsLeaving;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to eat</summary>
+        /// <returns>Amount of animal thats ready to eat</returns>
+        private static int AnimalFoodReminder()
+        {
+            int animalsLeftHungry = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsFood)
+                {
+                    animalsLeftHungry++;
+                }
+            }
+            return animalsLeftHungry;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to drink</summary>
+        /// <returns>Amount of animal thats ready to drink</returns>
+        private static int AnimalWaterReminder()
+        {
+            int animalsLeftThirsty = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsWater)
+                {
+                    animalsLeftThirsty++;
+                }
+            }
+            return animalsLeftThirsty;
+        }
+        /// <summary>Helper function. Shows how many animals are ready to walk</summary>
+        /// <returns>Amount of animal thats ready to walk</returns>
+        private static int AnimalWalkReminder()
+        {
+            int animalsForWalk = 0;
+            foreach (Animals animal in Hotel.AnimalsInHotel)
+            {
+                if (animal.NeedsWalk)
+                {
+                    animalsForWalk++;
+                }
+            }
+            return animalsForWalk;
+        }
+
+
     }
 }
 
-/// Version: 1.2.1
+/// Version: 1.4.0
 /// DevPlans: [✖️/✔️]
 /// =========
 /// 
@@ -121,9 +215,11 @@
 ///[✔️]Function to show what each pet need every day
 ///[✔️]Animals need to be fed, drank and taken to a walk
 ///[✔️]If a pet is not taken care for, after a day they leave with no money!
-///[✖️]When an animal leaves the hotel they leave their occupied stack dirty
-///[✖️]Cleaning needs to be done after animals leave the hotel 
+///[✔️]When an animal leaves the hotel they leave their occupied stack dirty
+///[✔️]Cleaning needs to be done after animals leave the hotel 
 ///[✔️]Cleaning reminder
+///[✔️]Auto checkout by hiring new worker
+///[✔️]Add a functionality that if the user's money is in "-" for 7 days than the hotel closes and the user fails
 /// 
 ///Always expanding with new functions:
 ///-------------------------------------
@@ -135,9 +231,9 @@
 ///----------------
 ///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
 ///  Toys have durability and new needs to be purchased <!--Add a new toy class and implement it like food-->
-///2)Cleaning needs to be done after animals leave the hotel <!--Easy implementation, has to add a simple logic-->
+///2)Add a banking system so users can take out loans if their money is going low
 ///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
-///4)Auto checkout by hiring new worker <!--Tricky, needs to add automation to checkouts if there is a worker-->
+///5)Add an end screen that shows the amount of money, days statistic after the user is done with the game
 ///!✖️!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
 /// 
 ///Classes needed:
@@ -149,6 +245,9 @@
 ///5]UI: stores all the funcions that the player can do
 ///6]Program: runs the game
 ///7]FoodTypes: stores all the food fields that can be added to the Hotel's storage
+///8]StoreFunctions: stores all the functions that handles the store element
+///9]SystemFunctions: stores all the functions that run without users input for the game's system
 ///
+
 
 

@@ -9,153 +9,6 @@ namespace KutyaPanzio
 {
     class UserFunctions
     {
-        ///<!--This is the main register menu before the game starts-->
-        /// <summary>Registers the hotel name and starts the game</summary>
-        public static void RegisterMenu()
-        {
-            Console.WriteLine("====Welcome to the hotel====");
-            Console.Write("Please enter a name for the hotel: ");
-            string hotelName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(hotelName)) { Hotel.HotelName = hotelName; Program.IsRegistered = true; Program.IsGameRunning = true; }
-            else Console.WriteLine("Invalid naming!");
-        }
-
-
-        ///<!--Store menu functions-->
-        private static void OpenStore()
-        {
-            bool isStoreActive = true;
-            while (isStoreActive)
-            {
-                Console.WriteLine("\n===Store===");
-                Console.WriteLine("1)Buy more slots");
-                Console.WriteLine("2)Buy more food");
-                Console.WriteLine("0)Exit store");
-                Console.Write("Enter selected option: ");
-                if (int.TryParse(Console.ReadLine(), out int choice))
-                {
-                    switch (choice)
-                    {
-                        case 0: isStoreActive = false; break;
-                        case 1: BuyMoreStack(); break;
-                        case 2: BuyMoreFood(); break;
-                        default: Console.WriteLine("Invalid input!"); break;
-                    }
-                }
-            }
-        }
-        ///<!--Private functions to handle the stack shop-->
-        /// <summary>Shows the buyable stack options and handles the users input</summary>
-        private static void BuyMoreStack()
-        {
-            int stackPrice = 100 + Hotel.StackSize * 10;
-            Console.WriteLine("\n==Stack options==");
-            Console.WriteLine("1)Buy 1 more stack");
-            Console.WriteLine("2)Buy 2 more stack");
-            Console.WriteLine("3)Buy 4 more stack");
-            Console.WriteLine("4)Buy 8 more stack");
-            Console.Write($"Enter the pack you want({stackPrice}$/stack): ");
-            if (int.TryParse(Console.ReadLine(), out int pack))
-            {
-                switch (pack)
-                {
-                    case 1: BuyStack(1, stackPrice); break;
-                    case 2: BuyStack(2, stackPrice); break;
-                    case 3: BuyStack(4, stackPrice); break;
-                    case 4: BuyStack(8, stackPrice); break;
-                    default: Console.WriteLine("Invalid input!"); break;
-                }
-            }
-        }
-        /// <summary>Handles the stack buying process</summary>
-        /// <param name="pack">The pack's size the user wants</param>
-        private static void BuyStack(int pack, int stackPice)
-        {
-            int moneyNeeded = pack * stackPice;
-
-            if (Hotel.HotelMoney >= moneyNeeded)
-            {
-                Hotel.HotelMoney -= moneyNeeded;
-                Hotel.StackSize += pack;
-            }
-            else Console.WriteLine("Insuficent funds");
-        }
-
-        ///<!--Private functions to handle the food shop-->
-
-        ///<summary>This function lists all the food options, stores their value and adds it into the Hotels Foods storage if purchase was successful</summary>
-        private static void BuyMoreFood()
-        {
-            var prices = new Dictionary<string, int>
-            {
-                { "fish", 10 }, { "chicken", 14 }, { "beef", 25 }, { "carrot", 5 }, { "apple", 3 }
-            };
-
-            Console.WriteLine("\n==Food options==");
-            Console.WriteLine($"1)Fish({prices["fish"]}/piece)");
-            Console.WriteLine($"2)Chicken({prices["chicken"]}/piece)");
-            Console.WriteLine($"3)Beef({prices["beef"]}/piece)");
-            Console.WriteLine($"4)Carrot({prices["carrot"]}/piece)");
-            Console.WriteLine($"5)Apple({prices["apple"]}/piece)");
-            Console.Write("Enter your choice: ");
-            
-            if (int.TryParse(Console.ReadLine(), out int choice))
-            {
-                Console.Write("Enter the amount you want to buy: ");
-                if (int.TryParse(Console.ReadLine(), out int amount))
-                {
-                    FoodTypes result = null;
-                    switch (choice)
-                    {
-                        case 1: result = HadleFoodTypes(amount, prices["fish"], "fish"); break;
-                        case 2: result = HadleFoodTypes(amount, prices["chicken"], "chicken"); break;
-                        case 3: result = HadleFoodTypes(amount, prices["beef"], "beef"); break;
-                        case 4: result = HadleFoodTypes(amount, prices["carrot"], "carrot"); break;
-                        case 5: result = HadleFoodTypes(amount, prices["apple"], "apple"); break;
-                        default: Console.WriteLine("Invalid input!"); break;
-                    }
-
-                    if(result != null)
-                    {
-                        foreach (FoodTypes food in Hotel.FoodTypes)
-                        {
-                            if (food.FoodType == result.FoodType)
-                            {
-                                food.FoodQuantity += result.FoodQuantity;
-                                Console.WriteLine("Food successfully bought");
-                                return;
-                            }
-                        }
-                        Hotel.FoodTypes.Add(result);
-                        Console.WriteLine("Food successfully bought");
-                    }
-                }
-            }
-        }
-        /// <summary>Calculates the payable amount and handles the purchase/if unsuccessful than creates a null food element</summary>
-        /// <param name="amount">The quantity of the food the user intends to but</param>
-        /// <param name="price">The unique price of a SINGULAR quantity</param>
-        /// <param name="foodType">The foods type/name</param>
-        /// <returns>A FoodTypes object or null</returns>
-        private static FoodTypes HadleFoodTypes(int amount, int price, string foodType)
-        {
-            int foodMoney = amount * price;
-
-            if (foodMoney <= Hotel.HotelMoney)
-            {
-                Hotel.HotelMoney -= foodMoney;
-                return new FoodTypes
-                {
-                    FoodType = foodType,
-                    FoodQuantity = amount
-                };
-            }
-
-            Console.WriteLine("Insufficient funds!");
-            return null; 
-        }
-
-
         ///<!--Functions for the game's main menu-->
         public static void GameMenu()
         {
@@ -172,26 +25,21 @@ namespace KutyaPanzio
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
             Console.Write("Enter selected option: ");
-            string choice = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(choice.ToLower()))
+            switch (Console.ReadLine())
             {
-                switch (choice)
-                {
-                    case "1": Hotel.HotelInfo(); break;
-                    case "2": OpenStore(); break;
-                    case "3": Hotel.CheckForAnimal(); break;
-                    case "4": CheckAnimalIn(); break;
-                    case "5": CheckAnimalOut(); break;
-                    case "6": AnimalNeedsListed(); break;
-                    case "7": AnimalCareList(); break;
-                    case "8": CleanAnimalMess(); break;
-                    case "p": PassDay(); break;
-                    case "m": UserManual(); break;
-                    case "e": Program.IsGameRunning = false; break;
-                    default: Console.WriteLine("Invalid input!"); break;
-                }
+                case "1": Hotel.HotelInfo(); break;
+                case "2": StoreFunctions.OpenStore(); break;
+                case "3": Hotel.CheckForAnimal(); break;
+                case "4": CheckAnimalIn(); break;
+                case "5": CheckAnimalOut(); break;
+                case "6": AnimalNeedsListed(); break;
+                case "7": AnimalCareList(); break;
+                case "8": CleanAnimalMess(); break;
+                case "p": PassDay(); break;
+                case "m": UserManual(); break;
+                case "e": SystemFunctions.EndScreen(); break;
+                default: Console.WriteLine("Invalid input!"); break;
             }
-            else Console.WriteLine("Invalid input type!");
 
             Randoms.Reminders();
         }
@@ -213,6 +61,7 @@ namespace KutyaPanzio
                 {
                     Animals selectedDog = Hotel.AnimalInLine[index];
                     Hotel.TakeAnimalIn(selectedDog);
+                    Hotel.OverAllAnimalCount++;
                 }
                 else
                 {
@@ -227,7 +76,7 @@ namespace KutyaPanzio
         }
 
         /// <summary>Checks an animal out</summary>
-        private static void CheckAnimalOut()
+        public static void CheckAnimalOut()
         {
             Console.WriteLine("\n--- Processing Check-outs ---");
 
@@ -262,10 +111,10 @@ namespace KutyaPanzio
             if (Hotel.AnimalsInHotel.Count > 0)
             {
                 // Use a consistent format for the header and the rows
-                string rowFormat = "{0,-15} {1,-15} {2,-15} {3,-15} {4,-15}";
+                string rowFormat = "{0,-15} {1,-15} {2,-15} {3,-15} {4,-15} {5,-15}";
 
-                Console.WriteLine("\n" + string.Format(rowFormat, "Name", "Food", "Food amount", "Water", "Walk"));
-                Console.WriteLine(new string('-', 60));
+                Console.WriteLine("\n" + string.Format(rowFormat, "Name", "Food","Food type","Food amount", "Water", "Walk"));
+                Console.WriteLine(new string('-', 100));
 
                 foreach (Animals animal in Hotel.AnimalsInHotel)
                 {
@@ -277,6 +126,7 @@ namespace KutyaPanzio
                     Console.WriteLine(string.Format(rowFormat,
                         animal.Name,
                         foodStatus,
+                        animal.NeededFoodType,
                         animal.AmountOfFoodPerDay,
                         waterStatus,
                         walkStatus));
@@ -417,7 +267,7 @@ namespace KutyaPanzio
         private static void PassDay()
         {
             Hotel.DayCount++;
-            Hotel.HotelMoney -= Hotel.StackSize * 10;
+            Hotel.HotelMoney -= Hotel.HotelFeePerDay;
             foreach (Animals dog in Hotel.AnimalsInHotel)
             {
                 dog.AmountOfDaysLeft--;
@@ -439,12 +289,12 @@ namespace KutyaPanzio
             
             Randoms.CheckAnimalSatisfaction();
             Console.WriteLine("A day has passed..");
+            SystemFunctions.CheckForDebt();
             Randoms.GenerateBehavior();
+            SystemFunctions.CheckOutIfStaff();
         }
 
         
-
-
 
         ///<!--User manual-->
         private static void UserManual()

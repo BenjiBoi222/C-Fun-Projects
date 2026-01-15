@@ -8,7 +8,7 @@
         {
             while (!IsRegistered)
             {
-                UserFunctions.RegisterMenu();
+                SystemFunctions.RegisterMenu();
             }
             while (IsGameRunning)
             {
@@ -121,7 +121,7 @@
                 Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
 
             //Fifth reminder: Is there any mess to clean inside the hotel
-            if (Hotel.IsThereMess)
+            if (Hotel.MessyStackAmount > 0)
                 Console.WriteLine("There is mess that needs to be cleaned up!");
 
 
@@ -204,6 +204,10 @@
 ///[✔️]Each dog has a size. (Small-1,Medium-2,Large-4) And they take up that much slot.
 ///[✔️]Each slot has a prize and that's how the dogs will be priced
 ///
+///Urgents:
+///--------
+///Before any more functionality, start using lambda for a cleaner code
+/// 
 ///To-do's:
 ///----------
 ///[✔️]Add more than one type of animal like cats, lama, donkey, horse
@@ -218,6 +222,8 @@
 ///[✔️]When an animal leaves the hotel they leave their occupied stack dirty
 ///[✔️]Cleaning needs to be done after animals leave the hotel 
 ///[✔️]Cleaning reminder
+///[✔️]Auto checkout by hiring new worker
+///[✔️]Add a functionality that if the user's money is in "-" for 7 days than the hotel closes and the user fails
 /// 
 ///Always expanding with new functions:
 ///-------------------------------------
@@ -229,8 +235,9 @@
 ///----------------
 ///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
 ///  Toys have durability and new needs to be purchased <!--Add a new toy class and implement it like food-->
+///2)Add a banking system so users can take out loans if their money is going low
 ///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
-///4)Auto checkout by hiring new worker <!--Tricky, needs to add automation to checkouts if there is a worker-->
+///5)Add an end screen that shows the amount of money, days statistic after the user is done with the game
 ///!✖️!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
 /// 
 ///Classes needed:
@@ -242,6 +249,9 @@
 ///5]UI: stores all the funcions that the player can do
 ///6]Program: runs the game
 ///7]FoodTypes: stores all the food fields that can be added to the Hotel's storage
+///8]StoreFunctions: stores all the functions that handles the store element
+///9]SystemFunctions: stores all the functions that run without users input for the game's system
 ///
+
 
 
