@@ -21,8 +21,8 @@ namespace KutyaPanzio
         public static int MessyStackAmount { get; set; } = 0;
 
         public static int DaysInDebt {  get; set; }
-
-
+        public static int RemainingInterestDay { get; set; } = 0;
+        public static bool AlreadyTookLoan { get; set; } = false;
         public static int OverAllAnimalCount { get; set; } = 0;
 
 

@@ -9,12 +9,13 @@ namespace KutyaPanzio
     class StoreFunctions
     {
         ///<!--Store menu functions-->
-        public static void OpenStore()
+        public static void OpenShop()
         {
+            Console.Clear();
             bool isStoreActive = true;
             while (isStoreActive)
             {
-                Console.WriteLine("\n===Store===");
+                Console.WriteLine("\n===Shop===");
                 Console.WriteLine("1)Buy more slots");
                 Console.WriteLine("2)Buy more food");
                 Console.WriteLine("3)Hire staff");
@@ -24,7 +25,7 @@ namespace KutyaPanzio
                 {
                     switch (choice)
                     {
-                        case 0: isStoreActive = false; break;
+                        case 0: Console.Clear(); isStoreActive = false; break;
                         case 1: BuyMoreStack(); break;
                         case 2: BuyMoreFood(); break;
                         case 3: HireStaff(); break;
@@ -68,6 +69,7 @@ namespace KutyaPanzio
                 Hotel.HotelMoney -= moneyNeeded;
                 Hotel.StackSize += pack;
                 Hotel.HotelFeePerDay += pack * 10;
+                Console.WriteLine($"{pack} amount of slot was bought for {moneyNeeded}");
             }
             else Console.WriteLine("Insuficent funds");
         }

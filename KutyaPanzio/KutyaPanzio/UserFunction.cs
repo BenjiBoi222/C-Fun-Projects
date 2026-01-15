@@ -14,13 +14,14 @@ namespace KutyaPanzio
         {
             Console.WriteLine($"\n==={Hotel.HotelName} Hotel Menu===");
             Console.WriteLine("1)Hotel info");
-            Console.WriteLine("2)Open store");
+            Console.WriteLine("2)Open shop");
             Console.WriteLine("3)Check for available animals");
             Console.WriteLine("4)Check animal in");
             Console.WriteLine("5)Check animal out");
             Console.WriteLine("6)Check animal needs");
             Console.WriteLine("7)Animal Care & Maintenance");
             Console.WriteLine("8)Clean mess up");
+            Console.WriteLine("9)Bank menu");
             Console.WriteLine("P)Pass a day");
             Console.WriteLine("M)User manual");
             Console.WriteLine("E)Exit the game without saving");
@@ -28,25 +29,24 @@ namespace KutyaPanzio
             switch (Console.ReadLine())
             {
                 case "1": Hotel.HotelInfo(); break;
-                case "2": StoreFunctions.OpenStore(); break;
+                case "2": StoreFunctions.OpenShop(); break;
                 case "3": Hotel.CheckForAnimal(); break;
                 case "4": CheckAnimalIn(); break;
                 case "5": CheckAnimalOut(); break;
                 case "6": AnimalNeedsListed(); break;
                 case "7": AnimalCareList(); break;
                 case "8": CleanAnimalMess(); break;
+                case "9": Bank.BankMenu(); break;
                 case "p": PassDay(); break;
                 case "m": UserManual(); break;
                 case "e": SystemFunctions.EndScreen(); break;
                 default: Console.WriteLine("Invalid input!"); break;
             }
-
-            Randoms.Reminders();
+            SystemFunctions.Reminders();
         }
         
 
         ///<!--Private Functions of the main menu-->
-
         /// <summary>Checks an animal in</summary>
         private static void CheckAnimalIn()
         {
@@ -287,7 +287,7 @@ namespace KutyaPanzio
             /// and it gets overwritten by the generator, than the animal won't leave 
             /// by unsatisfaction.
             
-            Randoms.CheckAnimalSatisfaction();
+            SystemFunctions.CheckAnimalSatisfaction();
             Console.WriteLine("A day has passed..");
             SystemFunctions.CheckForDebt();
             Randoms.GenerateBehavior();

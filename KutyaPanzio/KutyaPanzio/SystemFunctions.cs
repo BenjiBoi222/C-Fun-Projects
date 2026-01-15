@@ -19,11 +19,26 @@ namespace KutyaPanzio
             else Console.WriteLine("Invalid naming!");
         }
 
-
+        ///<summary>This function checks if any need is missing for an animal and if yes than the animal leaves</summary>
+        public static void CheckAnimalSatisfaction()
+        {
+            for (int i = Hotel.AnimalsInHotel.Count - 1; i >= 0; i--)
+            {
+                if (Hotel.AnimalsInHotel[i].NeedsWalk == true ||
+                    Hotel.AnimalsInHotel[i].NeedsWater == true ||
+                    Hotel.AnimalsInHotel[i].NeedsFood == true)
+                {
+                    Console.WriteLine($"{Hotel.AnimalsInHotel[i].Name} got picked up after being unsatisfied!");
+                    Hotel.UsedStack -= Hotel.AnimalsInHotel[i].AnimalSize;
+                    Hotel.MessyStackAmount += Hotel.AnimalsInHotel[i].AnimalSize;
+                    Hotel.AnimalsInHotel.RemoveAt(i);
+                }
+            }
+        }
 
 
         ///<!--Functions of the system that run independent of the user-->
-        
+
         ///<summary>Functoin to check the hotel's debt and if there is a debt for 7 days the game ends</summary>
         public static void CheckForDebt()
         {
@@ -68,6 +83,41 @@ namespace KutyaPanzio
             Console.WriteLine($"Amount of animals in the hotel: {Hotel.OverAllAnimalCount}");
             Console.WriteLine($"Money at the end: {Hotel.HotelMoney}");
             Console.WriteLine(footer);
+        }
+
+
+        ///<!--The warning function-->
+        ///<!--This function is large, mainly because it will have every element that needs to be done the current day-->
+        public static void Reminders()
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            //First reminder: How many animals are ready to leave
+            int readyToLeave = Hotel.AnimalsInHotel.Count(a => a.AmountOfDaysLeft == 0);
+            if (readyToLeave > 0)
+                Console.WriteLine($"{readyToLeave} animal(s) ready to leave! Proceed with checkout!");
+
+            //Second reminder: How many animals needs to be fed
+            int readyToEat = Hotel.AnimalsInHotel.Count(a => a.NeedsFood); ;
+            if (readyToEat > 0)
+                Console.WriteLine($"{readyToEat} animal(s) ready to eat! Proceed with feeding!");
+
+            //Third reminder: How many animals needs to be given water
+            int readyToDrink = Hotel.AnimalsInHotel.Count(a => a.NeedsWater); ;
+            if (readyToDrink > 0)
+                Console.WriteLine($"{readyToDrink} animal(s) ready to drink! Proceed with watering!");
+
+            //Fourth reminder: How many animals need to go on a walk
+            int readyToWalk = Hotel.AnimalsInHotel.Count(a => a.NeedsWalk);
+            if (readyToWalk > 0)
+                Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
+
+
+            //Fifth reminder: Is there any mess to clean inside the hotel
+            if (Hotel.MessyStackAmount > 0)
+                Console.WriteLine("There is mess that needs to be cleaned up!");
+
+
+            Console.ResetColor();
         }
     }
 }
