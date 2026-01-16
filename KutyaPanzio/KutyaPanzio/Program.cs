@@ -119,6 +119,8 @@
 ///[✔️]Cleaning reminder
 ///[✔️]Auto checkout by hiring new worker
 ///[✔️]Add a functionality that if the user's money is in "-" for 7 days than the hotel closes and the user fails
+///[✔️]Add the bank class 
+///[✔️]Add the bank functions with their documentation 
 /// 
 ///Always expanding with new functions:
 ///-------------------------------------

@@ -292,6 +292,7 @@ namespace KutyaPanzio
             SystemFunctions.CheckForDebt();
             Randoms.GenerateBehavior();
             SystemFunctions.CheckOutIfStaff();
+            Bank.BankActions();
         }
 
         
