@@ -30,8 +30,13 @@
             Random rand = new();
             Animals animal = new Animals();
 
-            string[] names = { "Buddy", "Bella", "Max", "Luna", "Charlie", "Daisy", "Cooper", "Milo" };
-            string[] types = { "dog", "cat", "lama", "donkey", "horse"};
+            string[] names = { "Buddy", "Bella", "Max", "Luna",
+                "Charlie", "Daisy", "Cooper", "Milo", "Sadie",
+                "Rocky", "Bailey", "Lucy", "Roxy", "Shadow",
+                "Zoe", "Tucker", "Chloe", "Simba", "Oliver", "Molly" };
+
+            string[] types = { "dog", "cat", "lama", "donkey", "horse", "rabbit", "hamster"};
+
             animal.Name = names[rand.Next(0,names.Length)];
             animal.AmountOfDaysLeft = rand.Next(1, 8);
             animal.NeededFoodType = foodTypes[rand.Next(0, foodTypes.Length)];
@@ -78,12 +83,59 @@
             }
         }
 
+        public static void ClownFace()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("You are a damn CLOWN >:)");
+            Console.WriteLine(@"
+                      ..:::::::::::::..
+                .:::::''              ``:::.
+              .:;'                        `::.
+           ..::'                            `::.
+          ::'                                  ::.:'
+      `::.::                                    ::.
+    .::::::::'                                `:.:::.    .:':'
+:::::::::::::.          .:.                .:. ` :::::::::':::
+:::.::::::::::::'       :::                :::    :::::::::':::')
+..::::::::::::'          ' `                ' `   .::::::' :::')
+::::::::::::'  `:.   .:::::::.          .:::::::.:: .:' :'.::')
+::::::::::::    `::.::'     `::.      .::'     `::.::':'.:::')
+::::::::::::      .::'        `:;  . .::'        `:;:'.::''
+:::::::::::'.     ::'    .    .:: :  ::'    .    .:::::'')
+:`::::::::::::.:  `::.  :O: .::;' :  `::.  :O: .::;'::')
+   `::::::`::`:.    `:::::::::'   :.   `:::::::::':'''
 
-        
+            :: `::.   :::      ..::::::::..  :::  `::
+      .::::'::. `::.  `:'     :::::::::::::; `:'   :;
+            ::'    ::.   .::'  ``:::::::;'' :.   .:'
+            `::    `::  ::'        ::       .::  :'
+             ::.    :'.::::::.    :  :   .::::. .:::.
+:.           `::.     :::'  ``::::. .::::'' `::::' `::
+`::.          `::.    `:::. ::.  `::::' .:: ::::;    `::
+:.`:.          `::.     `::.  `::. .::'  ::;'     .:;.
+ ::`::.          `::.     `::.  `::. .:: ::`:::':.:;'
+::':``:::::.       `::.     `::. `::::'  .:;':'     .;':':
+: .:`:::':`:::::.   `::.      `:::.   .::;'.:'  .::;'' ';:
+..::': :. ::::. `::::::`::..      `:::::'  .:':::'::.:: :':
+:' :'.:::. `:: :: ::. .::`::.   .     . .:;':' ::'`:: :::'
+: ::.:. `:  `::'  `:: ::'::`::::::::::::;' :: .:' .::' ;:'
+::.::.:::: .:: :.  `:':'  ::.:'`::. .::':.::' :: .::''::'
+`:::`::.`:.::' ::  .: ::  `::'  `:: :' .::' ::.:.::' :;
+   `::::::.`:. .:. :: `::.:: ::  `::. .:: ::.`:::':.:;'
+         `::::::::::...:::'  `::.:'`:.::'.:.:;' .:;'
+                    `::::::::::::::::::::'.::;:;'
+");
+            Console.ReadKey();
+            Console.ResetColor();
+            Console.Clear();
+        }
+
+
     }
 }
 
-/// Version: 1.4.0
+/// Version: 1.7.3
 /// DevPlans: [✖️/✔️]
 /// =========
 /// 
@@ -121,6 +173,8 @@
 ///[✔️]Add a functionality that if the user's money is in "-" for 7 days than the hotel closes and the user fails
 ///[✔️]Add the bank class 
 ///[✔️]Add the bank functions with their documentation 
+///[✔️]Add an end screen that shows the amount of money, days statistic after the user is done with the game 
+/// 
 /// 
 ///Always expanding with new functions:
 ///-------------------------------------
@@ -132,9 +186,8 @@
 ///----------------
 ///1)Animals want to play, toys: ball, rope, freebee, quackToy <!--Easy to implement, same as food-->
 ///  Toys have durability and new needs to be purchased <!--Add a new toy class and implement it like food-->
-///2)Add a banking system so users can take out loans if their money is going low
 ///3)Animals can get hurt and needs medical help: bangade, operation, death <!--Easy to implement, same as food-->
-///5)Add an end screen that shows the amount of money, days statistic after the user is done with the game
+///4)If stuff exists you can send them to buy all the foods the animals need <!--Somewhat easy to implement-->
 ///!✖️!)Saving, but I'm unsure since i DON'T KNOW HOW TO WRITE INTO ROOT TXT <!--Impossible rn, have to ask teacher about file handlings-->
 /// 
 ///Classes needed:
@@ -149,6 +202,8 @@
 ///8]StoreFunctions: stores all the functions that handles the store element
 ///9]SystemFunctions: stores all the functions that run without users input for the game's system
 ///
+
+
 
 
 

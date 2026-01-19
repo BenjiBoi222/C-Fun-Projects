@@ -40,6 +40,7 @@ namespace KutyaPanzio
                 case "p": PassDay(); break;
                 case "m": UserManual(); break;
                 case "e": SystemFunctions.EndScreen(); break;
+                case "I don't want to choose": Randoms.ClownFace(); break;
                 default: Console.WriteLine("Invalid input!"); break;
             }
             SystemFunctions.Reminders();

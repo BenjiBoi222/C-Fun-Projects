@@ -47,11 +47,8 @@ namespace KutyaPanzio
                 Console.WriteLine("The hotel closed due to unpaid debt");
                 EndScreen();
             }
-
-            if (Hotel.HotelMoney < 0)
-            {
-                Hotel.DaysInDebt++;
-            }
+            if (Hotel.HotelMoney < 0) Hotel.DaysInDebt++;
+            if (Hotel.HotelMoney >= 0) Hotel.DaysInDebt = 0;
         }
 
 
@@ -110,6 +107,13 @@ namespace KutyaPanzio
             int readyToWalk = Hotel.AnimalsInHotel.Count(a => a.NeedsWalk);
             if (readyToWalk > 0)
                 Console.WriteLine($"{readyToWalk} animal(s) ready to go on a walk! Proceed with walkings!");
+
+            int debt = Hotel.DaysInDebt;
+            if (debt > 0)
+            {
+                Console.WriteLine($"Your hotel has been in debt for {debt}!");
+                Console.WriteLine($"{7 - debt} days remaining before your hotel closes!");
+            }
 
 
             //Fifth reminder: Is there any mess to clean inside the hotel

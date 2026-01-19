@@ -149,7 +149,8 @@ namespace KutyaPanzio
             }
             else
             {
-                Console.WriteLine("You can only cash out when the decimal is .5 or higher.");
+                DepositedMoney += (int)Math.Floor(InvestedMoney);
+                InvestedMoney = 0;
             }
         }
         public static void BankActions()
