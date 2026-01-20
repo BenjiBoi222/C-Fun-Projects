@@ -33,7 +33,7 @@ namespace FileSorterUI
 
             lblSelectedPath = new Label { Text = "No folder selected", Location = new Point(20, 20), Width = 400 };
 
-            Button btnBrowse = new Button { Text = "Select Folder", Location = new Point(450, 15), Width = 150 };
+            Button btnBrowse = new Button { Text = "Select Folder", Location = new Point(450, 15), Width = 150, Height = 30 };
             btnBrowse.Click += (s, e) => {
                 using (var fbd = new FolderBrowserDialog())
                 {
@@ -45,16 +45,16 @@ namespace FileSorterUI
                 }
             };
 
-            Button btnSort = new Button { Text = "1) Sort Files", Location = new Point(20, 60), Width = 140 };
+            Button btnSort = new Button { Text = "Sort Files", Location = new Point(20, 60), Width = 140 , Height = 30};
             btnSort.Click += (s, e) => SortFilesIntoSubFolders();
 
-            Button btnUndo = new Button { Text = "2) Undo Sort", Location = new Point(170, 60), Width = 140 };
+            Button btnUndo = new Button { Text = "Undo Sort", Location = new Point(170, 60), Width = 140, Height = 30 };
             btnUndo.Click += (s, e) => UnDoSortFileIntoSubFolders();
 
-            Button btnDelete = new Button { Text = "3) Delete Empty", Location = new Point(320, 60), Width = 140 };
+            Button btnDelete = new Button { Text = "Delete Empty", Location = new Point(320, 60), Width = 140, Height = 30 };
             btnDelete.Click += (s, e) => DeleteEmptyFolders();
 
-            Button btnArchive = new Button { Text = "4) Archive Old", Location = new Point(470, 60), Width = 140 };
+            Button btnArchive = new Button { Text = "Archive Old", Location = new Point(470, 60), Width = 140, Height = 30 };
             btnArchive.Click += (s, e) => ArchiveOldFilesToDesktop();
 
             lstLog = new ListBox { Location = new Point(20, 100), Size = new Size(600, 340) };
