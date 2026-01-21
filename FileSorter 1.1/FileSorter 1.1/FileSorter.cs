@@ -14,104 +14,47 @@ namespace FileSorter_1._1
         ///<summary>Shows the fluid menu and lets the user choose from the options</summary>
         public static void ShowMenu()
         {
-            int option = 0;
             while (true)
             {
                 Console.Clear();
-                string[] menuOptions = { "Sort files", "UnSort files", "Delete empty folders", "Main menu" };
-                Console.WriteLine("\n===Files Menu===");
+                string[] menuOptions = { "Sort files", "UnSort files", "Delete empty folders", "Deep sorter", "Main menu" };
 
+                Program.ShowMenuHelper(menuOptions, out int option, ">", 3);
+                Console.Clear();
+                Console.WriteLine("\n===Files Menu===");
                 for (int i = 0; i < menuOptions.Length; i++)
                 {
                     if (i == option)
                     {
-                        Console.BackgroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Green;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.WriteLine($"> {menuOptions[i]}");
                         Console.ResetColor();
                     }
+                    else if (i == 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"  {menuOptions[i]} (WARNING: CANNOT BE UNDONE)");
+                        Console.ResetColor();
+                    }
                     else Console.WriteLine($"  {menuOptions[i]}");
                 }
-
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-
-                if (keyInfo.Key == ConsoleKey.DownArrow) option++;
-                else if (keyInfo.Key == ConsoleKey.UpArrow) option--;
-
-                if (option < 0) option = menuOptions.Length - 1;
-                if (option >= menuOptions.Length) option = 0;
-
-                //If enter is pressed
-                if (keyInfo.Key == ConsoleKey.Enter)
+                //Adds 200 miliseconds waiting time
+                System.Threading.Thread.Sleep(400);
+                switch (option)
                 {
-                    Console.Clear();
-                    Console.WriteLine("\n===Files Menu===");
-                    for (int i = 0; i < menuOptions.Length; i++)
-                    {
-                        if (i == option)
-                        {
-                            Console.BackgroundColor = ConsoleColor.Green;
-                            Console.ForegroundColor = ConsoleColor.Black;
-                            Console.WriteLine($"> {menuOptions[i]}");
-                            Console.ResetColor();
-                        }
-                        else Console.WriteLine($"  {menuOptions[i]}");
-                    }
-                    //Adds 200 miliseconds waiting time
-                    System.Threading.Thread.Sleep(400);
-                    switch (option)
-                    {
-                        case 0: FileSorter.SortFilesIntoSubFolders(); break;
-                        case 1: FileSorter.UnDoSortFileIntoSubFolders(); break;
-                        case 2: FileSorter.DeleteEmptyFolders(); break;
-                        case 3: return ;
-                    }
-                    Console.WriteLine("\nDone! Press any key to return to menu...");
-                    Console.ReadKey(true);
+                    case 0: FileSorter.SortFilesIntoSubFolders(); break;
+                    case 1: FileSorter.UnDoSortFileIntoSubFolders(); break;
+                    case 2: FileSorter.DeleteEmptyFolders(); break;
+                    case 3: FileSorter.DeepSortInFolder(); break;
+                    case 4: return;
                 }
+                Console.WriteLine("\nDone! Press any key to return to menu...");
+                Console.ReadKey(true);
             }
         }
 
-
-
-
-        ///<summary>Loads the informations from the Json file if it exists and if not than creates it</summary>
-        public static void LoadHistory()
-        {
-            if (!File.Exists(HistoryFileName)) return;
-            try
-            {
-                string jsonString = File.ReadAllText(HistoryFileName);
-                FilesList = JsonSerializer.Deserialize<List<FileMoveHistory>>(jsonString) ?? new();
-                Console.WriteLine($"[System] Loaded {FilesList.Count} previous moves from history.");
-                System.Threading.Thread.Sleep(800);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[System] Error loading history: {ex.Message}");
-                FilesList = new List<FileMoveHistory>();
-            }
-        }
-        ///<summary>Saves the statistics to the created/existing Json file</summary>
-        private static void SaveHistory()
-        {
-            try
-            {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string jsonString = JsonSerializer.Serialize(FilesList, options);
-                File.WriteAllText(HistoryFileName, jsonString);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error saving history: {ex.Message}");
-            }
-        }
-
-
-        ///<summary>Sorts the files inside a main folder into categorised sub-folders</summary>
-        public static void SortFilesIntoSubFolders()
-        {
-            var extensionMap = new Dictionary<string, string>
+        static Dictionary<string,string> extensionMap = new Dictionary<string, string>
             {
                 // --- Microsoft Office ---
                 { ".docx", "Word Documents" },
@@ -197,7 +140,44 @@ namespace FileSorter_1._1
                 { ".ini", "Initialization Files" }
             };
 
-            string sourcePath = ShowAllInDirectory();
+
+        ///<summary>Loads the informations from the Json file if it exists and if not than creates it</summary>
+        public static void LoadHistory()
+        {
+            if (!File.Exists(HistoryFileName)) return;
+            try
+            {
+                string jsonString = File.ReadAllText(HistoryFileName);
+                FilesList = JsonSerializer.Deserialize<List<FileMoveHistory>>(jsonString) ?? new();
+                Console.WriteLine($"[System] Loaded {FilesList.Count} previous moves from history.");
+                System.Threading.Thread.Sleep(800);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[System] Error loading history: {ex.Message}");
+                FilesList = new List<FileMoveHistory>();
+            }
+        }
+        ///<summary>Saves the statistics to the created/existing Json file</summary>
+        private static void SaveHistory()
+        {
+            try
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                string jsonString = JsonSerializer.Serialize(FilesList, options);
+                File.WriteAllText(HistoryFileName, jsonString);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving history: {ex.Message}");
+            }
+        }
+
+
+        ///<summary>Sorts the files inside a main folder into categorised sub-folders</summary>
+        public static void SortFilesIntoSubFolders(string sourcePath = "")
+        {
+            if(sourcePath == "")sourcePath = ShowAllInDirectory();
             if (sourcePath == "exit") return;
             else if (Directory.Exists(sourcePath))
             {
@@ -419,6 +399,86 @@ namespace FileSorter_1._1
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
             }
+        }
+
+
+        public static void DeepSortInFolder()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("==========DISCLAIMER==========");
+            Console.WriteLine("THIS ACTION CANNOT BE UNDONE");
+            Console.WriteLine("THIS WILL GATHER EVERY FILE FROM SUBFOLDERS AND CATEGORIZE THEM ");
+            Console.WriteLine(" INTO NEW SUBFOLDERS INSIDE A SORTED FOLDER IN THE MAIN FOLDER");
+            Console.ResetColor();
+            Console.WriteLine("Press any button to continue");
+            Console.ReadKey(true);
+            string sourcePath = ShowAllInDirectory();
+
+            if (sourcePath == "exit") return;
+
+            string[] allFiles = Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories);
+
+            foreach (string file in allFiles)
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+                    string destinationPath = Path.Combine(sourcePath, fileInfo.Name);
+
+                    //Skip files that are already in the main folder
+                    if (fileInfo.DirectoryName == sourcePath) continue;
+
+
+                    //This checks for duplicate files and renames them accordingly
+                    if (File.Exists(destinationPath))
+                    {
+                        string extension = fileInfo.Extension;
+                        string fileNameOnly = Path.GetFileNameWithoutExtension(fileInfo.Name);
+                        int counter = 1;
+                        while (File.Exists(destinationPath))
+                        {
+                            string newName = $"{fileNameOnly}({counter})";
+                            destinationPath = Path.Combine(sourcePath, newName + extension);
+                            counter++;
+                        }
+                    }
+
+                    File.Move(file, destinationPath);
+                    Console.WriteLine($"Moved: {fileInfo.Name}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error moving file {file}: {ex.Message}");
+                }
+            }
+
+            string sortedFolder = Path.Combine(sourcePath, "SortedFolder");
+            if (!Directory.Exists(sortedFolder)) Directory.CreateDirectory(sortedFolder);
+            string sortedFolderPath = Path.Combine(sourcePath, "SortedFolder");
+
+            string[] files = Directory.GetFiles(sourcePath);
+
+            foreach(string file in files)
+            {
+                string fileName = Path.GetFileName(file);
+
+                if (fileName == HistoryFileName || fileName == "SortedFolder") continue;
+
+                string finalDest = Path.Combine(sortedFolderPath, fileName);
+
+                try
+                {
+                    File.Move(file, finalDest);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error moving to SortedFolder: {ex.Message}");
+                }
+            }
+
+            SortFilesIntoSubFolders(sortedFolderPath);
+
         }
 
         ///<summary>Shows the files inside a given path. The folders are the menu</summary>
