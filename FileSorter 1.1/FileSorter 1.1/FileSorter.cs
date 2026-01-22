@@ -19,7 +19,7 @@ namespace FileSorter_1._1
                 Console.Clear();
                 string[] menuOptions = { "Sort files", "UnSort files", "Delete empty folders", "Deep sorter", "Main menu" };
 
-                Program.ShowMenuHelper(menuOptions, out int option, ">", 3);
+                Program.ShowMenuHelper("Files Menu",menuOptions, out int option, ">", 3);
                 Console.Clear();
                 Console.WriteLine("\n===Files Menu===");
                 for (int i = 0; i < menuOptions.Length; i++)
@@ -401,7 +401,9 @@ namespace FileSorter_1._1
             }
         }
 
-
+        /// <summary>
+        /// Searches each subfolders inside a chosen folder and collects every file to a new organised subfolder
+        /// </summary>
         public static void DeepSortInFolder()
         {
             Console.Clear();
@@ -485,6 +487,8 @@ namespace FileSorter_1._1
         private static string ShowAllInDirectory()
         {
             string currentPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string lockFolder = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
             while (true)
             {
                 string[] files;
@@ -559,7 +563,8 @@ namespace FileSorter_1._1
                             }
                             break;
                         case ConsoleKey.Backspace:
-                            currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath;
+                            if (currentPath == lockFolder) Console.WriteLine("Can't go up from the user folder");
+                            else { currentPath = Directory.GetParent(currentPath)?.FullName ?? currentPath; }
                             refreshFolders = true;
                             break;
                         case ConsoleKey.E: return "exit";
