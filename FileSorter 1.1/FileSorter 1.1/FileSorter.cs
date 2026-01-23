@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 
@@ -7,11 +8,12 @@ namespace FileSorter_1._1
 {
     class FileSorter
     {
-        static List<FileMoveHistory> FilesList = new();
-        const string HistoryFileName = "history.json";
+        public static List<FileMoveHistory> FilesList = new();
+        public static readonly string HistoryFileName = "history.json";
+        public static readonly string IgnoreFileName = "ignore.json";
+        public static List<string> ExtensionToIgnore = new();
 
-
-        ///<summary>Shows the fluid menu and lets the user choose from the options</summary>
+        ///<summary>Shows the menu and lets the user choose from the options</summary>
         public static void ShowMenu()
         {
             while (true)
@@ -19,7 +21,8 @@ namespace FileSorter_1._1
                 Console.Clear();
                 string[] menuOptions = { "Sort files", "UnSort files", "Delete empty folders", "Deep sorter", "Main menu" };
 
-                Program.ShowMenuHelper("Files Menu",menuOptions, out int option, ">", 3);
+                Program.ShowMenuHelper("Files Menu", menuOptions, out int option, ">", 3);
+
                 Console.Clear();
                 Console.WriteLine("\n===Files Menu===");
                 for (int i = 0; i < menuOptions.Length; i++)
@@ -39,8 +42,10 @@ namespace FileSorter_1._1
                     }
                     else Console.WriteLine($"  {menuOptions[i]}");
                 }
+
                 //Adds 200 miliseconds waiting time
-                System.Threading.Thread.Sleep(400);
+                Settings.Sleep(400);
+
                 switch (option)
                 {
                     case 0: FileSorter.SortFilesIntoSubFolders(); break;
@@ -49,123 +54,144 @@ namespace FileSorter_1._1
                     case 3: FileSorter.DeepSortInFolder(); break;
                     case 4: return;
                 }
+
                 Console.WriteLine("\nDone! Press any key to return to menu...");
                 Console.ReadKey(true);
             }
         }
 
-        static Dictionary<string,string> extensionMap = new Dictionary<string, string>
-            {
-                // --- Microsoft Office ---
-                { ".docx", "Word Documents" },
-                { ".doc", "Word Documents" },
-                { ".xlsx", "Excel Spreadsheets" },
-                { ".xls", "Excel Spreadsheets" },
-                { ".pptx", "PowerPoint Presentations" },
-                { ".ppt", "PowerPoint Presentations" },
+        static Dictionary<string, string> extensionMap = new Dictionary<string, string>
+        {
+            // --- Microsoft Office ---
+            { ".docx", "Word Documents" },
+            { ".doc", "Word Documents" },
+            { ".xlsx", "Excel Spreadsheets" },
+            { ".xls", "Excel Spreadsheets" },
+            { ".pptx", "PowerPoint Presentations" },
+            { ".ppt", "PowerPoint Presentations" },
 
-                // --- Images & Graphics ---
-                { ".jpg", "Photos (JPG)" },
-                { ".jpeg", "Photos (JPG)" },
-                { ".png", "Graphics (PNG)" },
-                { ".gif", "Animations (GIF)" },
-                { ".webp", "Web Images" },
-                { ".svg", "Vectors (SVG)" },
-                { ".ico", "Icons" },
-                { ".bmp", "Bitmaps" },
-                { ".tiff", "High-Res Images" },
+            // --- Images & Graphics ---
+            { ".jpg", "Photos (JPG)" },
+            { ".jpeg", "Photos (JPG)" },
+            { ".png", "Graphics (PNG)" },
+            { ".gif", "Animations (GIF)" },
+            { ".webp", "Web Images" },
+            { ".svg", "Vectors (SVG)" },
+            { ".ico", "Icons" },
+            { ".bmp", "Bitmaps" },
+            { ".tiff", "High-Res Images" },
 
-                // --- Documents & Text ---
-                { ".pdf", "PDF Documents" },
-                { ".txt", "Plain Text Files" },
-                { ".rtf", "Rich Text" },
-                { ".odt", "OpenOffice Docs" },
-                { ".ods", "OpenOffice Sheets" },
-                { ".odp", "OpenOffice Slides" },
-                { ".csv", "CSV Data" },
-                { ".xps", "XPS Documents" },
+            // --- Documents & Text ---
+            { ".pdf", "PDF Documents" },
+            { ".txt", "Plain Text Files" },
+            { ".rtf", "Rich Text" },
+            { ".odt", "OpenOffice Docs" },
+            { ".ods", "OpenOffice Sheets" },
+            { ".odp", "OpenOffice Slides" },
+            { ".csv", "CSV Data" },
+            { ".xps", "XPS Documents" },
 
-                // --- Archives & Compressed ---
-                { ".zip", "Zip Archives" },
-                { ".rar", "Rar Archives" },
-                { ".7z", "7-Zip Archives" },
-                { ".tar", "Tarballs" },
-                { ".gz", "Gzip Files" },
-                { ".iso", "Disc Images" },
+            // --- Archives & Compressed ---
+            { ".zip", "Zip Archives" },
+            { ".rar", "Rar Archives" },
+            { ".7z", "7-Zip Archives" },
+            { ".tar", "Tarballs" },
+            { ".gz", "Gzip Files" },
+            { ".iso", "Disc Images" },
 
-                // --- Audio ---
-                { ".mp3", "Music (MP3)" },
-                { ".wav", "Wave Audio" },
-                { ".flac", "Lossless Audio" },
-                { ".m4a", "Apple Audio" },
-                { ".aac", "AAC Audio" },
-                { ".ogg", "Ogg Vorbis" },
-                { ".wma", "Windows Audio" },
+            // --- Audio ---
+            { ".mp3", "Music (MP3)" },
+            { ".wav", "Wave Audio" },
+            { ".flac", "Lossless Audio" },
+            { ".m4a", "Apple Audio" },
+            { ".aac", "AAC Audio" },
+            { ".ogg", "Ogg Vorbis" },
+            { ".wma", "Windows Audio" },
 
-                // --- Video ---
-                { ".mp4", "MP4 Videos" },
-                { ".avi", "AVI Videos" },
-                { ".mkv", "Matroska Videos" },
-                { ".mov", "QuickTime Videos" },
-                { ".wmv", "Windows Videos" },
-                { ".webm", "Web Videos" },
-                { ".flv", "Flash Videos" },
-                { ".m4v", "Apple Videos" },
+            // --- Video ---
+            { ".mp4", "MP4 Videos" },
+            { ".avi", "AVI Videos" },
+            { ".mkv", "Matroska Videos" },
+            { ".mov", "QuickTime Videos" },
+            { ".wmv", "Windows Videos" },
+            { ".webm", "Web Videos" },
+            { ".flv", "Flash Videos" },
+            { ".m4v", "Apple Videos" },
 
-                // --- Programming & Code ---
-                { ".cs", "Code" },
-                { ".py", "Code" },
-                { ".js", "Code" },
-                { ".java", "Code" },
-                { ".cpp", "Code" },
-                { ".c", "Code" },
-                { ".html", "Code" },
-                { ".css", "Code" },
-                { ".xml", "Code" },
-                { ".json", "Code" },
-                { ".sql", "Code" },
-                { ".php", "Code" },
-                { ".ts", "Code" },
+            // --- Programming & Code ---
+            { ".cs", "Code" },
+            { ".py", "Code" },
+            { ".js", "Code" },
+            { ".java", "Code" },
+            { ".cpp", "Code" },
+            { ".c", "Code" },
+            { ".html", "Code" },
+            { ".css", "Code" },
+            { ".xml", "Code" },
+            { ".json", "Code" },
+            { ".sql", "Code" },
+            { ".php", "Code" },
+            { ".ts", "Code" },
 
-                // --- Executables & Scripts ---
-                { ".exe", "Executables" },
-                { ".msi", "Installers" },
-                { ".dll", "System Libraries" },
-                { ".bat", "Windows Batch" },
-                { ".sh", "Bash Scripts" },
+            // --- Executables & Scripts ---
+            { ".exe", "Executables" },
+            { ".msi", "Installers" },
+            { ".dll", "System Libraries" },
+            { ".bat", "Windows Batch" },
+            { ".sh", "Bash Scripts" },
 
-                // --- Configuration & Logs ---
-                { ".log", "Activity Logs" },
-                { ".config", "App Configs" },
-                { ".ini", "Initialization Files" }
-            };
-
+            // --- Configuration & Logs ---
+            { ".log", "Activity Logs" },
+            { ".config", "App Configs" },
+            { ".ini", "Initialization Files" }
+        };
 
         ///<summary>Loads the informations from the Json file if it exists and if not than creates it</summary>
         public static void LoadHistory()
         {
-            if (!File.Exists(HistoryFileName)) return;
-            try
+            if (File.Exists(HistoryFileName))
             {
-                string jsonString = File.ReadAllText(HistoryFileName);
-                FilesList = JsonSerializer.Deserialize<List<FileMoveHistory>>(jsonString) ?? new();
-                Console.WriteLine($"[System] Loaded {FilesList.Count} previous moves from history.");
-                System.Threading.Thread.Sleep(800);
+                try
+                {
+                    string jsonString = File.ReadAllText(HistoryFileName);
+                    FilesList = JsonSerializer.Deserialize<List<FileMoveHistory>>(jsonString) ?? new();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[System] Error loading history: {ex.Message}");
+                    FilesList = new List<FileMoveHistory>();
+                }
             }
-            catch (Exception ex)
+
+            if (File.Exists(IgnoreFileName))
             {
-                Console.WriteLine($"[System] Error loading history: {ex.Message}");
-                FilesList = new List<FileMoveHistory>();
+                try
+                {
+                    string jsonIgnore = File.ReadAllText(IgnoreFileName);
+                    ExtensionToIgnore = JsonSerializer.Deserialize<List<string>>(jsonIgnore) ?? new();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[System] Error loading history: {ex.Message}");
+                    ExtensionToIgnore = new List<string>();
+                }
             }
+
+            Console.WriteLine($"[System] Loaded {FilesList.Count} previous moves from history.");
+            Console.WriteLine($"[System] Loaded {ExtensionToIgnore.Count} previous reference.");
+            System.Threading.Thread.Sleep(800);
         }
+
         ///<summary>Saves the statistics to the created/existing Json file</summary>
-        private static void SaveHistory()
+        public static void SaveHistory()
         {
             try
             {
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 string jsonString = JsonSerializer.Serialize(FilesList, options);
+                string jsonIgnore = JsonSerializer.Serialize(ExtensionToIgnore, options);
                 File.WriteAllText(HistoryFileName, jsonString);
+                File.WriteAllText(IgnoreFileName, jsonIgnore);
             }
             catch (Exception ex)
             {
@@ -173,11 +199,10 @@ namespace FileSorter_1._1
             }
         }
 
-
         ///<summary>Sorts the files inside a main folder into categorised sub-folders</summary>
-        public static void SortFilesIntoSubFolders(string sourcePath = "")
+        public static void SortFilesIntoSubFolders(string sourcePath = "", bool shouldSave = true)
         {
-            if(sourcePath == "")sourcePath = ShowAllInDirectory();
+            if (sourcePath == "") sourcePath = ShowAllInDirectory();
             if (sourcePath == "exit") return;
             else if (Directory.Exists(sourcePath))
             {
@@ -187,6 +212,7 @@ namespace FileSorter_1._1
                 foreach (string filePath in files)
                 {
                     string extension = Path.GetExtension(filePath).ToLower();
+                    if (ExtensionToIgnore.Contains(extension)) continue;
 
                     string subFolderName = extensionMap.ContainsKey(extension)
                                            ? extensionMap[extension]
@@ -221,11 +247,14 @@ namespace FileSorter_1._1
                         Console.WriteLine($"File name changed! {fileName} -> {Path.GetFileName(finalPath)}");
                     }
 
-                    FileMoveHistory FileHistory = new FileMoveHistory();
-                    FileHistory.FileName = newFileName;
-                    FileHistory.NewPath = finalPath;
-                    FileHistory.OriginalPath = Path.GetDirectoryName(filePath) ?? sourcePath;
-                    FilesList.Add(FileHistory);
+                    if (shouldSave)
+                    {
+                        FileMoveHistory FileHistory = new FileMoveHistory();
+                        FileHistory.FileName = newFileName;
+                        FileHistory.NewPath = finalPath;
+                        FileHistory.OriginalPath = Path.GetDirectoryName(filePath) ?? sourcePath;
+                        FilesList.Add(FileHistory);
+                    }
 
                     try
                     {
@@ -254,7 +283,8 @@ namespace FileSorter_1._1
 
                     Console.WriteLine("Moved: " + fileName);
                 }
-                SaveHistory();
+
+                if (shouldSave) SaveHistory();
             }
         }
 
@@ -276,10 +306,8 @@ namespace FileSorter_1._1
                             if (File.Exists(history.NewPath))
                             {
                                 string destinationPath = Path.Combine(sourcePath, history.FileName);
-
                                 File.Move(history.NewPath, destinationPath, overwrite: true);
                                 Console.WriteLine($"Restored: {history.FileName} -> {sourcePath}");
-
                                 FilesList.RemoveAt(i);
                             }
                         }
@@ -289,6 +317,7 @@ namespace FileSorter_1._1
                         }
                     }
                 }
+
                 DeleteEmptyFolders(sourcePath);
                 SaveHistory();
             }
@@ -322,17 +351,16 @@ namespace FileSorter_1._1
                     }
                 }
             }
+
             Console.WriteLine($"Cleanup finished. Removed {deletedCount} folders.");
         }
 
         ///<summary>Puts the 2year or older files into a archive subfolder for easier orgenisation</summary>
         public static void ArchiveOldFilesToDesktop()
         {
-            // 1. Ask user which folder to scan
             string sourcePath = ShowAllInDirectory();
             if (sourcePath == "exit") return;
 
-            // 2. Define the Desktop Archive path
             string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             string archiveFolder = Path.Combine(desktopPath, "Archive_Old_Files");
 
@@ -349,7 +377,6 @@ namespace FileSorter_1._1
 
                     if (lastModified < cutoffDate)
                     {
-                        // 3. Only create the folder if we actually find at least one old file
                         if (!Directory.Exists(archiveFolder))
                         {
                             Directory.CreateDirectory(archiveFolder);
@@ -359,7 +386,6 @@ namespace FileSorter_1._1
                         string fileName = Path.GetFileName(filePath);
                         string destPath = Path.Combine(archiveFolder, fileName);
 
-                        // Handle collisions in the Archive folder too!
                         int counter = 1;
                         string finalDestPath = destPath;
                         while (File.Exists(finalDestPath))
@@ -370,7 +396,6 @@ namespace FileSorter_1._1
                             counter++;
                         }
 
-                        // 4. Record history for UNDO functionality
                         FileMoveHistory history = new FileMoveHistory
                         {
                             FileName = Path.GetFileName(finalDestPath),
@@ -428,11 +453,10 @@ namespace FileSorter_1._1
                     FileInfo fileInfo = new FileInfo(file);
                     string destinationPath = Path.Combine(sourcePath, fileInfo.Name);
 
-                    //Skip files that are already in the main folder
+                    if (fileInfo.Name == HistoryFileName || fileInfo.Name == IgnoreFileName) continue;
+
                     if (fileInfo.DirectoryName == sourcePath) continue;
 
-
-                    //This checks for duplicate files and renames them accordingly
                     if (File.Exists(destinationPath))
                     {
                         string extension = fileInfo.Extension;
@@ -461,7 +485,7 @@ namespace FileSorter_1._1
 
             string[] files = Directory.GetFiles(sourcePath);
 
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 string fileName = Path.GetFileName(file);
 
@@ -479,8 +503,7 @@ namespace FileSorter_1._1
                 }
             }
 
-            SortFilesIntoSubFolders(sortedFolderPath);
-
+            SortFilesIntoSubFolders(sortedFolderPath, false);
         }
 
         ///<summary>Shows the files inside a given path. The folders are the menu</summary>
@@ -507,13 +530,11 @@ namespace FileSorter_1._1
                     continue;
                 }
 
-                //We have all the directory names in the array
                 string[] optionsMenu = { };
 
                 for (int i = 0; i < directories.Length; i++)
                     optionsMenu = optionsMenu.Append(Path.GetFileName(directories[i])).ToArray();
 
-                //I need to implement the function to be able to scroll through them
                 bool refreshFolders = false;
                 int place = 0;
                 while (true)
@@ -543,6 +564,7 @@ namespace FileSorter_1._1
                     }
 
                     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+
                     if (keyInfo.Key == ConsoleKey.DownArrow) place++;
                     else if (keyInfo.Key == ConsoleKey.UpArrow) place--;
 
@@ -571,11 +593,10 @@ namespace FileSorter_1._1
                         case ConsoleKey.Spacebar:
                             return currentPath;
                     }
-                    if (refreshFolders == true) break;
 
+                    if (refreshFolders == true) break;
                 }
             }
         }
     }
-
 }
