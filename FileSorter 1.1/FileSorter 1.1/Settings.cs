@@ -9,12 +9,15 @@ namespace FileSorter_1._1
         ///<summary>Shows the menu and lets the user choose from the options</summary>
         public static void ShowMenu()
         {
+            
             string[] menuOptions =
             {
-                "Files to ignore",
-                "Delete ignore preferences",
-                "Delete files history",
-                "Main menu"
+                "[File]Files to ignore",
+                "[File]Delete ignore preferences",
+                "[File]Delete files history",
+                "[Server]Add Ip address",
+                "[Server]Add user",
+                "[Program]Main menu"
             };
             while (true)
             {
@@ -38,17 +41,17 @@ namespace FileSorter_1._1
                 switch (option)
                 {
                     case 0: ExtensionToIgnore(); break;
-                    case 1:
-                        DeleteExtensionPreferences(ignore);
-                        break;
-                    case 2:
-                        DeleteFileHistory();
-                        break;
-                    case 3: return;
+                    case 1: DeleteExtensionPreferences(ignore); break;
+                    case 2: DeleteFileHistory();    break;
+                    case 3: AddIpAddress(); break;
+                    case 4: AddUser();  break;
+                    case 5: return;
                 }
             }
         }
 
+        ///<!--Files menu settings-->
+        
         private static void DeleteFileHistory()
         {
             int amount = FileSorter.FilesList.Count; 
@@ -144,6 +147,68 @@ namespace FileSorter_1._1
             }
         }
         
+
+
+        ///<!--Server menu sttings-->
+        ///<summary>Adds an ip addres with a name to it</summary>
+        private static void AddIpAddress()
+        {
+            while(true)
+            {
+                Console.Write("Enter device IP(x.x.x.x): ");
+                string ipAddress = Console.ReadLine() ?? "x";
+
+                Console.Write("Enter the device name: ");
+                string ipDevice = Console.ReadLine() ?? string.Empty;
+
+                if(ipAddress != "x" && ipDevice != string.Empty)
+                {
+                    ServerDevicesObjects devices = new();
+                    devices.IpAddres = ipAddress;
+                    devices.DeviceName = ipDevice;
+                    Server.ServerDevices.Add(devices);
+                }
+                Console.Write("Add more(y/n): ");
+                string choice = Console.ReadLine() ?? string.Empty;
+
+                if (choice.ToLower() == "n") return;
+            }
+        }
+
+        /// <summary>
+        /// Adds a user and its username
+        /// </summary>
+        private static void AddUser()
+        {
+            while(true)
+            {
+                Console.Write("Enter the username: ");
+                string userName = Console.ReadLine() ?? string.Empty;
+
+                Console.Write($"Enter the password for {userName}: ");
+                string userPass = Console.ReadLine() ?? string.Empty;
+
+                if (userName != string.Empty && userPass != string.Empty)
+                {
+                    ServerUsersObjects user = new();
+                    user.UserName = userName;
+                    user.UserPassword = userPass;
+                    Server.ServerUsers.Add(user);
+                }
+                Console.Write("Add more(y/n): ");
+                string choice = Console.ReadLine() ?? string.Empty;
+
+                if (choice.ToLower() == "n") return;
+            }
+
+        }
+
+
+
+
+
+
+        ///<!--Helper functions for test and UI-->
         /// <summary>
         /// A function that returns various informations 
         /// </summary>
