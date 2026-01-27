@@ -191,57 +191,83 @@ namespace FileSorter_1._1
         /// <summary>
         /// Let's the user change or delete any device
         /// </summary>
+        /// <summary>
+        /// Lets the user change or delete any device
+        /// </summary>
         private static void ChangeDeviceSettings()
         {
             while (true)
             {
                 List<ServerDevicesObjects> devices = Server.ServerDevices;
-                int baseOptions = 1;//Those options that are not devices but dev given
-                string[] devicesOption = new string[devices.Count];
 
-                int lastItem = 0;
-                for (int i = 0; i < devices.Count - baseOptions; i++)
+                // Create menu options: List of devices + Return option
+                string[] devicesOption = new string[devices.Count + 1];
+                for (int i = 0; i < devices.Count; i++)
                 {
                     devicesOption[i] = devices[i].DeviceName;
-                    lastItem++;
                 }
-                devicesOption[lastItem] = "Main menu";
+                devicesOption[devices.Count] = "Back to Settings";
 
-                Program.ShowMenuHelper("Devices", devicesOption, out int option, ">");
-                MenuSelectUI("Devices", devicesOption, ">", option);
-                
-                if (option == lastItem) return;
-                for (int i = 0; i < devices.Count - 1; i++)
-                {
-                    if (i == option)
-                    {
-                        while(true)
-                        {
-                            string[] deviceChangeOptions = { "Change name", "Change IP", "Change server status", "Back" };
-                            Program.ShowMenuHelper(devices[i].DeviceName, deviceChangeOptions, out int deviceChangeOption, ">");
+                Program.ShowMenuHelper("Select Device to Edit", devicesOption, out int selectedIndex, ">");
 
-                            MenuSelectUI(devices[i].DeviceName, deviceChangeOptions, ">", deviceChangeOption);
+                // If user selects "Back to Settings"
+                if (selectedIndex == devices.Count) return;
 
-                            if (deviceChangeOption == 3) return;
-
-                            switch (deviceChangeOption)
-                            {
-                                case 0: 
-                                    ; 
-                                    break;
-                                case 1: /*Change Ip*/; break;
-                                case 2: /*Change Server*/; break;
-                            }
-                        }
-                    }
-
-                }
+                // Enter the sub-menu for the specific device
+                EditSpecificDevice(devices[selectedIndex]);
             }
         }
-        
+
+        private static void EditSpecificDevice(ServerDevicesObjects device)
+        {
+            string[] editOptions = { "Change Name", "Change IP", "Toggle Server Status", "Delete Device", "Back" };
+
+            while (true)
+            {
+                Program.ShowMenuHelper($"Editing: {device.DeviceName}", editOptions, out int choice, ">");
+
+                switch (choice)
+                {
+                    case 0: // Change Name
+                        Console.Write($"Current name: {device.DeviceName}. Enter new name: ");
+                        string newName = Console.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(newName)) device.DeviceName = newName;
+                        break;
+
+                    case 1: // Change IP
+                        Console.Write($"Current IP: {device.IpAddres}. Enter new IP: ");
+                        string newIp = Console.ReadLine();
+                        if (!string.IsNullOrWhiteSpace(newIp)) device.IpAddres = newIp;
+                        break;
+
+                    case 2: // Toggle Server
+                        device.IsServer = !device.IsServer;
+                        Console.WriteLine($"Server status is now: {device.IsServer}");
+                        Sleep(1000);
+                        break;
+
+                    case 3: // Delete
+                        Console.Write("Are you sure you want to delete this device? (y/n): ");
+                        if (Console.ReadLine()?.ToLower() == "y")
+                        {
+                            Server.ServerDevices.Remove(device);
+                            Server.SaveHistory();
+                            return; // Exit back to device list
+                        }
+                        break;
+
+                    case 4: // Back
+                        Server.SaveHistory(); // Save changes before leaving
+                        return;
+                }
+                Server.SaveHistory();
+            }
+        }
+
+
 
         ///<!--Helper functions for test and UI-->
-        
+
         public static void MenuSelectUI(string menuName,string[] menuOptions, string indicator, int selected)
         {
             Console.Clear();
@@ -276,13 +302,12 @@ namespace FileSorter_1._1
         /// </summary>
         public static void ShowSystemLogs()
         {
-            Console.BackgroundColor = ConsoleColor.Gray;
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"[System][File] Loaded {FileSorter.FilesList.Count} previous moves from history.");
             Console.WriteLine($"[System][File] Loaded {FileSorter.ExtensionToIgnore.Count} previous reference.");
             Console.WriteLine($"[System][Server] Loaded {Server.ServerDevices.Count} server devices.");
             Console.ResetColor();
-            Sleep(3000);
+            Sleep(1500);
         }
 
         /// <summary>

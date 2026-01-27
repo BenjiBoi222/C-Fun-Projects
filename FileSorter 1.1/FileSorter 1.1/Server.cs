@@ -61,12 +61,15 @@ namespace FileSorter_1._1
             Console.Clear();
             Console.WriteLine("=== Connection Status ===");
 
-            // ... (marad a hibakezelés, ha üres a lista)
-
             using (Ping pingSender = new())
             {
                 foreach (var device in ServerDevices)
                 {
+
+                    if (device.IsServer) { Console.ForegroundColor = ConsoleColor.DarkBlue; Console.Write("[Server] "); }
+                    else { Console.ForegroundColor = ConsoleColor.DarkMagenta; Console.Write("[Device] "); }
+                    Console.ResetColor();
+
                     Console.Write($"Pinging {device.DeviceName} ");
 
                     // Animáció indítása egy külön szálon, hogy ne blokkolja a Pinget
@@ -85,25 +88,22 @@ namespace FileSorter_1._1
 
                     try
                     {
-                        // Itt történik a tényleges pingelés
                         PingReply reply = pingSender.Send(device.IpAddres, 2000);
                         isDone = true; // Megállítjuk az animációt
                         loaderTask.Wait(); // Megvárjuk, amíg a szál befejezi az utolsó kört
 
-                        // Töröljük a spinnert egy szóközzel
                         Console.Write(" ");
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
 
-                        // Megjelenítés a te korábbi kódod alapján
+
                         if (reply.Status == IPStatus.Success)
                         {
-                            if (device.IsServer) { Console.ForegroundColor = ConsoleColor.DarkBlue; Console.Write("[Server] "); }
+                            
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"[Online] {reply.RoundtripTime}ms");
                         }
                         else
                         {
-                            if (device.IsServer) { Console.ForegroundColor = ConsoleColor.DarkBlue; Console.Write("[Server] "); }
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("[Offline]");
                         }
