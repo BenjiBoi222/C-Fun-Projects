@@ -177,9 +177,6 @@ namespace FileSorter_1._1
                 }
             }
 
-            Console.WriteLine($"[System] Loaded {FilesList.Count} previous moves from history.");
-            Console.WriteLine($"[System] Loaded {ExtensionToIgnore.Count} previous reference.");
-            System.Threading.Thread.Sleep(800);
         }
 
         ///<summary>Saves the statistics to the created/existing Json file</summary>

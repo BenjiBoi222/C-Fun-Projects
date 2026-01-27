@@ -219,6 +219,22 @@ namespace FileSorter_1._1
             foreach (string extension in FileSorter.ExtensionToIgnore) alreadyIgnored += extension + ";";
         }
 
+
+        /// <summary>
+        /// Shows the system logs in every program startup
+        /// </summary>
+        public static void ShowSystemLogs()
+        {
+            Console.BackgroundColor = ConsoleColor.Gray;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.WriteLine($"[System][File] Loaded {FileSorter.FilesList.Count} previous moves from history.");
+            Console.WriteLine($"[System][File] Loaded {FileSorter.ExtensionToIgnore.Count} previous reference.");
+            Console.WriteLine($"[System][Server] Loaded {Server.ServerDevices.Count} server devices.");
+            Console.WriteLine($"[System][Server] Loaded {Server.ServerUsers.Count} server users.");
+            Console.ResetColor();
+            Sleep(3000);
+        }
+
         /// <summary>
         /// Shortens the System.Threading.Thread.Sleep to just Sleep
         /// </summary>
