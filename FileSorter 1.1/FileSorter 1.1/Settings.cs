@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,8 +16,8 @@ namespace FileSorter_1._1
                 "[File]Files to ignore",
                 "[File]Delete ignore preferences",
                 "[File]Delete files history",
-                "[Server]Add Ip address",
-                "[Server]Add user",
+                "[Server]Add IP address",
+                "[Server]Change IP address",
                 "[Program]Main menu"
             };
             while (true)
@@ -44,7 +45,7 @@ namespace FileSorter_1._1
                     case 1: DeleteExtensionPreferences(ignore); break;
                     case 2: DeleteFileHistory();    break;
                     case 3: AddIpAddress(); break;
-                    case 4: AddUser();  break;
+                    case 4: ChangeDeviceSettings(); break;
                     case 5: return;
                 }
             }
@@ -161,12 +162,23 @@ namespace FileSorter_1._1
                 Console.Write("Enter the device name: ");
                 string ipDevice = Console.ReadLine() ?? string.Empty;
 
+                Console.Write("Is this a server? (y/n): ");
+                string ipIsServer = Console.ReadLine() ?? "n";
+
                 if(ipAddress != "x" && ipDevice != string.Empty)
                 {
                     ServerDevicesObjects devices = new();
                     devices.IpAddres = ipAddress;
                     devices.DeviceName = ipDevice;
+
+                    if(ipIsServer.ToLower() == "y") devices.IsServer = true; 
+
                     Server.ServerDevices.Add(devices);
+                    Server.SaveHistory();
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Device saved successfully!");
+                    Console.ResetColor();
                 }
                 Console.Write("Add more(y/n): ");
                 string choice = Console.ReadLine() ?? string.Empty;
@@ -174,41 +186,80 @@ namespace FileSorter_1._1
                 if (choice.ToLower() == "n") return;
             }
         }
+
 
         /// <summary>
-        /// Adds a user and its username
+        /// Let's the user change or delete any device
         /// </summary>
-        private static void AddUser()
+        private static void ChangeDeviceSettings()
         {
-            while(true)
+            while (true)
             {
-                Console.Write("Enter the username: ");
-                string userName = Console.ReadLine() ?? string.Empty;
+                List<ServerDevicesObjects> devices = Server.ServerDevices;
+                int baseOptions = 1;//Those options that are not devices but dev given
+                string[] devicesOption = new string[devices.Count];
 
-                Console.Write($"Enter the password for {userName}: ");
-                string userPass = Console.ReadLine() ?? string.Empty;
-
-                if (userName != string.Empty && userPass != string.Empty)
+                int lastItem = 0;
+                for (int i = 0; i < devices.Count - baseOptions; i++)
                 {
-                    ServerUsersObjects user = new();
-                    user.UserName = userName;
-                    user.UserPassword = userPass;
-                    Server.ServerUsers.Add(user);
+                    devicesOption[i] = devices[i].DeviceName;
+                    lastItem++;
                 }
-                Console.Write("Add more(y/n): ");
-                string choice = Console.ReadLine() ?? string.Empty;
+                devicesOption[lastItem] = "Main menu";
 
-                if (choice.ToLower() == "n") return;
+                Program.ShowMenuHelper("Devices", devicesOption, out int option, ">");
+                MenuSelectUI("Devices", devicesOption, ">", option);
+                
+                if (option == lastItem) return;
+                for (int i = 0; i < devices.Count - 1; i++)
+                {
+                    if (i == option)
+                    {
+                        while(true)
+                        {
+                            string[] deviceChangeOptions = { "Change name", "Change IP", "Change server status", "Back" };
+                            Program.ShowMenuHelper(devices[i].DeviceName, deviceChangeOptions, out int deviceChangeOption, ">");
+
+                            MenuSelectUI(devices[i].DeviceName, deviceChangeOptions, ">", deviceChangeOption);
+
+                            if (deviceChangeOption == 3) return;
+
+                            switch (deviceChangeOption)
+                            {
+                                case 0: 
+                                    ; 
+                                    break;
+                                case 1: /*Change Ip*/; break;
+                                case 2: /*Change Server*/; break;
+                            }
+                        }
+                    }
+
+                }
             }
-
         }
-
-
-
-
-
+        
 
         ///<!--Helper functions for test and UI-->
+        
+        public static void MenuSelectUI(string menuName,string[] menuOptions, string indicator, int selected)
+        {
+            Console.Clear();
+            Console.WriteLine($"\n==={menuName}===");
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                if (selected == i)
+                {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"> {menuOptions[i]}");
+                    Console.ResetColor();
+                }
+                else Console.WriteLine($"  {menuOptions[i]}");
+            }
+            Sleep(800);
+        }
+
         /// <summary>
         /// A function that returns various informations 
         /// </summary>
@@ -230,7 +281,6 @@ namespace FileSorter_1._1
             Console.WriteLine($"[System][File] Loaded {FileSorter.FilesList.Count} previous moves from history.");
             Console.WriteLine($"[System][File] Loaded {FileSorter.ExtensionToIgnore.Count} previous reference.");
             Console.WriteLine($"[System][Server] Loaded {Server.ServerDevices.Count} server devices.");
-            Console.WriteLine($"[System][Server] Loaded {Server.ServerUsers.Count} server users.");
             Console.ResetColor();
             Sleep(3000);
         }
