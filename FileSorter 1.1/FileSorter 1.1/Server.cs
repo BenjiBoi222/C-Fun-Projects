@@ -20,7 +20,7 @@ namespace FileSorter_1._1
             while (true)
             {
                 Console.Clear();
-                string[] menuOptions = { "Connection Status", "Main Menu"};
+                string[] menuOptions = { "Connection Status","Devices List","Main Menu"};
 
                 Program.ShowMenuHelper(menuName, menuOptions, out int option, ">");
 
@@ -45,7 +45,8 @@ namespace FileSorter_1._1
                 switch (option)
                 {
                     case 0: CheckConnection(); break;
-                    case 1: return;
+                    case 1: ShowSavedDevices(); break;
+                    case 2: return;
                 }
 
                 Console.WriteLine("\nDone! Press any key to return to menu...");
@@ -58,19 +59,22 @@ namespace FileSorter_1._1
         ///<summary>Sends out pings and if it gets a return it shows the device currently on the server</summary>
         static void CheckConnection()
         {
+            //This list makes it so the servers are always on top
+            List<ServerDevicesObjects> serverDevicesList = ServerDevices.OrderBy(x => x.IsServer ==  false).ToList();
+
             Console.Clear();
             Console.WriteLine("=== Connection Status ===");
 
             using (Ping pingSender = new())
             {
-                foreach (var device in ServerDevices)
+                foreach (var device in serverDevicesList)
                 {
 
                     if (device.IsServer) { Console.ForegroundColor = ConsoleColor.DarkBlue; Console.Write("[Server] "); }
                     else { Console.ForegroundColor = ConsoleColor.DarkMagenta; Console.Write("[Device] "); }
                     Console.ResetColor();
 
-                    Console.Write($"Pinging {device.DeviceName} ");
+                    Console.Write($"Pinging: {device.DeviceName, -12} ");
 
                     // Animáció indítása egy külön szálon, hogy ne blokkolja a Pinget
                     bool isDone = false;
@@ -98,14 +102,14 @@ namespace FileSorter_1._1
 
                         if (reply.Status == IPStatus.Success)
                         {
-                            
+
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine($"[Online] {reply.RoundtripTime}ms");
                         }
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("[Offline]");
+                            Console.WriteLine($"{"[Offline]", 10}");
                         }
                     }
                     catch (Exception ex)
@@ -123,6 +127,33 @@ namespace FileSorter_1._1
         }
 
 
+        private static void ShowSavedDevices()
+        {
+            Console.Clear();
+            Console.WriteLine("\nThe server devices:");
+            Console.WriteLine($"{"Name",-14} {"Ip",-15} {"Type",-15}");
+            List<ServerDevicesObjects> serverDevicesList = Server.ServerDevices.OrderBy(x => x.IsServer == false).ToList();
+            foreach (ServerDevicesObjects devices in serverDevicesList)
+            {
+                string isServer = devices.IsServer ? "[Server]" : "[Device]";
+                Console.Write($"{devices.DeviceName,-15}");
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write($"{devices.IpAddres,-16}");
+                if (devices.IsServer == true)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    Console.WriteLine($"{isServer,-15}");
+                    Console.ResetColor();
+                }
+
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.WriteLine($"{isServer,-15}");
+                    Console.ResetColor();
+                }
+            }
+        }
 
 
         ///<!--The server's file handler functions-->
