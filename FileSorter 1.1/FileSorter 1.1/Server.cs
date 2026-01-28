@@ -20,7 +20,7 @@ namespace FileSorter_1._1
             while (true)
             {
                 Console.Clear();
-                string[] menuOptions = { "Connection Status","Devices List","Server Metrics","Server commands","Main Menu"};
+                string[] menuOptions = { "Connection Status","Devices List","Server Metrics","Ping network devices","Main Menu"};
 
                 Program.ShowMenuHelper(menuName, menuOptions, out int option, ">");
 
@@ -30,7 +30,7 @@ namespace FileSorter_1._1
                     case 0: CheckConnection(); break;
                     case 1: ShowSavedDevices(); break;
                     case 2: ShowServerMetrics(); break;
-                    case 3: ServerCommands(); break;
+                    case 3: GrabNetworkIPs(); break;
                     case 4: return;
                 }
             }
@@ -249,106 +249,139 @@ namespace FileSorter_1._1
 
 
 
-        private static void ServerCommands()
+        private static void GrabNetworkIPs()
         {
-            List<ServerDevicesObjects> serverDevicesObject = ServerDevices.Where(device => device.DeviceType == "Server").ToList();
-            string[] servers = new string[serverDevicesObject.Count + 1];
-            int lastItem = serverDevicesObject.Count;
-            for(int i = 0; i < lastItem; i++)
+            // 1. Menu Selection
+            string[] savedDevices = new string[ServerDevices.Count + 1];
+            for (int i = 0; i < ServerDevices.Count; i++)
             {
-                servers[i] = serverDevicesObject[i].DeviceName;
+                savedDevices[i] = ServerDevices[i].DeviceName;
             }
-            servers[lastItem] = "Back";
+            savedDevices[ServerDevices.Count] = "Back";
 
+            Program.ShowMenuHelper("Select Anchor Device", savedDevices, out int option, ">");
+            Settings.MenuSelectUI("Select Anchor Device", savedDevices, ">", option);
 
-            string[] commandOptions = { "Update server", "Restart server", "Custom command","Back" };
-            while (true)
-            {
-                Program.ShowMenuHelper("Servers", servers, out int option, ">");
-                Settings.MenuSelectUI("Servers", servers, ">", option);
+            if (option == ServerDevices.Count) return;
 
-                if (option == lastItem) return;
+            // 2. Setup Scan Depth
+            Console.Clear();
+            Console.WriteLine("=== Scan Configuration ===");
+            Console.WriteLine("1. Quick Scan (Current subnet: x.x.x.0-255)");
+            Console.WriteLine("2. Deep Scan  (Everything except first IP: x.0.0.0-x.255.255.255)");
+            Console.Write("\nChoose depth [1-2]: ");
+            string choice = Console.ReadLine();
 
-                bool runDeviceOption = true;
-                while (runDeviceOption)
+            string networkIp = ServerDevices[option].IpAddres;
+            string[] parts = networkIp.Split('.');
+
+            // Thread-safe collection and counters
+            var onlineDevices = new System.Collections.Concurrent.ConcurrentBag<ServerDevicesObjects>();
+            long completedIps = 0;
+            // Calculation: Choice 2 is 256 * 256 * 256 (everything but the first octet)
+            long totalIps = (choice == "2") ? 256L * 256L * 256L : 256L;
+
+            Console.Clear();
+            Console.CursorVisible = false;
+
+            // 3. Progress Bar Task
+            bool isDone = false;
+            var progressTask = Task.Run(() => {
+                while (!isDone)
                 {
-                    ServerDevicesObjects selectedServer = serverDevicesObject[option];
-                    Program.ShowMenuHelper($"Commands for {selectedServer}", commandOptions, out int commandOption, ">");
-                    Settings.MenuSelectUI($"Commands for {selectedServer}", commandOptions, ">", commandOption);
-
-                    if (commandOption == 3) { runDeviceOption = false; continue; }
-
-
-                    string user = selectedServer.SshUsername;
-                    string pass = selectedServer.SshPassword;
-                    if (user == "none")
-                    {
-                        Console.Write($"Add the SSH Username for {servers[option]}: ");
-                        user = Console.ReadLine();
-                    }
-                    if (pass == "none")
-                    {
-                        Console.Write($"Add the SSH password for {servers[option]}: ");
-                        pass = Console.ReadLine();
-                    }
-
-                    switch (commandOption)
-                    {
-                        case 0: //Update
-                            string updateCmd = $"echo '{pass}' | sudo -S apt-get update && echo '{pass}' | sudo -S apt-get upgrade -y";
-                            ExecuteSingleSshCommand(selectedServer, user, pass, updateCmd);
-                            break;
-
-                        case 1: // Restart
-                            Console.Write("Are you sure? (y/n): ");
-                            if (Console.ReadLine()?.ToLower() == "y")
-                            {
-                                string rebootCmd = $"echo '{pass}' | sudo -S reboot";
-                                ExecuteSingleSshCommand(selectedServer, user, pass, rebootCmd);
-                            }
-                            break;
-                        case 2: // Custom
-                            Console.Write("Enter command: ");
-                            string customCmd = Console.ReadLine() ?? "";
-                            if (!string.IsNullOrWhiteSpace(customCmd))
-                                ExecuteSingleSshCommand(selectedServer, user, pass, customCmd);
-                            break;
-                    }
-
+                    double percentage = (double)Interlocked.Read(ref completedIps) / totalIps * 100;
+                    DrawProgressBar(percentage);
+                    Thread.Sleep(100);
                 }
+            });
+
+            // 4. Parallel Execution Logic
+            if (choice == "2") // Deep Scan (Scans x.0.0.0 to x.255.255.255)
+            {
+                Parallel.For(0, 256, second => {
+                    Parallel.For(0, 256, third => {
+                        for (int fourth = 0; fourth < 256; fourth++)
+                        {
+                            string target = $"{parts[0]}.{second}.{third}.{fourth}";
+                            PingAndStore(target, onlineDevices);
+                            Interlocked.Increment(ref completedIps);
+                        }
+                    });
+                });
+            }
+            else // Quick Scan (Scans x.x.x.0 to x.x.x.255)
+            {
+                Parallel.For(0, 256, fourth => {
+                    string target = $"{parts[0]}.{parts[1]}.{parts[2]}.{fourth}";
+                    PingAndStore(target, onlineDevices);
+                    Interlocked.Increment(ref completedIps);
+                });
+            }
+
+            isDone = true;
+            progressTask.Wait();
+            Console.CursorVisible = true;
+            Console.WriteLine("\rScan Complete!                                     \n");
+
+            // 5. Results Display
+            Console.WriteLine("=== Network Online Devices ===");
+
+            // Sorts IPs numerically (1.2 before 1.10)
+            var sortedDevices = onlineDevices.OrderBy(d => Version.Parse(d.IpAddres)).ToList();
+            int displayCounter = 1;
+
+            foreach (var device in sortedDevices)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                Console.Write("[Found] ");
+                Console.ResetColor();
+                Console.Write($"Device-{displayCounter,-3} ({device.IpAddres,-15}) ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"{"[Online]",20}");
+                Console.ResetColor();
+                displayCounter++;
+            }
+
+            Console.WriteLine("\nPress any key to return to the menu...");
+            Console.ReadKey(true);
+        }
+
+        // Helper method to handle the actual pinging
+        private static void PingAndStore(string ip, System.Collections.Concurrent.ConcurrentBag<ServerDevicesObjects> list)
+        {
+            using (Ping p = new Ping())
+            {
+                try
+                {
+                    PingReply reply = p.Send(ip, 150);
+                    if (reply.Status == IPStatus.Success)
+                    {
+                        list.Add(new ServerDevicesObjects
+                        {
+                            DeviceName = "Device",
+                            IpAddres = ip,
+                            DeviceType = "[LAN] "
+                        });
+                    }
+                }
+                catch { /* Ignore timeouts/errors */ }
             }
         }
 
-        private static void ExecuteSingleSshCommand(ServerDevicesObjects device, string user, string pass, string command)
+        // Helper to draw the loading line
+        private static void DrawProgressBar(double percentage)
         {
-            Console.WriteLine($"\n[SSH] Sending command to {device.DeviceName}...");
-            try
-            {
-                var connectionInfo = new PasswordConnectionInfo(device.IpAddres, user, pass) { Timeout = TimeSpan.FromSeconds(10) };
-                using(var client = new SshClient(connectionInfo))
-                {
-                    client.Connect();
-                    var sshCmd = client.CreateCommand(command);
-                    string result = sshCmd.Execute();
+            int barLength = 40;
+            int filledLength = (int)(percentage / 100 * barLength);
 
-                    Console.WriteLine("\n--- Response ---");
-                    Console.WriteLine(string.IsNullOrWhiteSpace(result) ? "Command executed (no output)." : result);
-                    if (!string.IsNullOrEmpty(sshCmd.Error))
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"Error: {sshCmd.Error}");
-                        Console.ResetColor();
-                    }
-                    Console.WriteLine("----------------");
-                    client.Disconnect();
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to execute: {ex.Message}");
-            }
-            Console.WriteLine("\nPress any key to continue...");
-            Console.ReadKey(true);
+            // Use \r to return cursor to start of line without clearing screen
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write("[");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write(new string('█', filledLength));
+            Console.Write(new string('-', barLength - filledLength));
+            Console.ResetColor();
+            Console.Write($"] {percentage:F2}% Complete   ");
         }
 
 
