@@ -20,38 +20,19 @@ namespace FileSorter_1._1
             while (true)
             {
                 Console.Clear();
-                string[] menuOptions = { "Connection Status","Devices List","Server Metrics","Main Menu"};
+                string[] menuOptions = { "Connection Status","Devices List","Server Metrics","Server commands","Main Menu"};
 
                 Program.ShowMenuHelper(menuName, menuOptions, out int option, ">");
 
-                Console.Clear();
-                Console.WriteLine($"\n==={menuName}===");
-                for (int i = 0; i < menuOptions.Length; i++)
-                {
-                    if (i == option)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Green;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.WriteLine($"> {menuOptions[i]}");
-                        Console.ResetColor();
-                    }
-                    
-                    else Console.WriteLine($"  {menuOptions[i]}");
-                }
-
-                //Adds 200 miliseconds waiting time
-                Settings.Sleep(400);
-
+                Settings.MenuSelectUI(menuName, menuOptions, ">", option);
                 switch (option)
                 {
                     case 0: CheckConnection(); break;
                     case 1: ShowSavedDevices(); break;
                     case 2: ShowServerMetrics(); break;
-                    case 3: return;
+                    case 3: ServerCommands(); break;
+                    case 4: return;
                 }
-
-                Console.WriteLine("\nDone! Press any key to return to menu...");
-                Console.ReadKey(true);
             }
         }
 
@@ -61,7 +42,8 @@ namespace FileSorter_1._1
         static void CheckConnection()
         {
             //This list makes it so the servers are always on top
-            List<ServerDevicesObjects> serverDevicesList = ServerDevices.OrderBy(x => x.IsServer ==  false).ToList();
+
+            List<ServerDevicesObjects> serverDevicesList = ServerDevices.OrderBy(x => x.DeviceType !=  "Router").ThenBy(x => x.DeviceType != "Server").ThenBy(x => x.DeviceName.Length).ToList();
 
             Console.Clear();
             Console.WriteLine("=== Connection Status ===");
@@ -71,8 +53,10 @@ namespace FileSorter_1._1
                 foreach (var device in serverDevicesList)
                 {
 
-                    if (device.IsServer) { Console.ForegroundColor = ConsoleColor.DarkBlue; Console.Write("[Server] "); }
-                    else { Console.ForegroundColor = ConsoleColor.DarkMagenta; Console.Write("[Device] "); }
+                    if (device.DeviceType == "Server") { Console.ForegroundColor = ConsoleColor.DarkBlue;  Console.Write("[Server] "); }
+                    if (device.DeviceType == "Router") { Console.ForegroundColor = ConsoleColor.DarkYellow; Console.Write("[Router] "); }
+                    if (device.DeviceType == "Device") { Console.ForegroundColor = ConsoleColor.DarkMagenta; Console.Write("[Device] "); }
+
                     Console.ResetColor();
 
                     Console.Write($"Pinging: {device.DeviceName, -12} ");
@@ -110,7 +94,7 @@ namespace FileSorter_1._1
                         else
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine($"{"[Offline]", 10}");
+                            Console.WriteLine($"[Offline]");
                         }
                     }
                     catch (Exception ex)
@@ -125,6 +109,8 @@ namespace FileSorter_1._1
                     }
                 }
             }
+            Console.WriteLine("\nPress any key to return to the server menu...");
+            Console.ReadKey(true);
         }
 
 
@@ -133,34 +119,38 @@ namespace FileSorter_1._1
             Console.Clear();
             Console.WriteLine("\nThe server devices:");
             Console.WriteLine($"{"Name",-14} {"Ip",-15} {"Type",-15}");
-            List<ServerDevicesObjects> serverDevicesList = Server.ServerDevices.OrderBy(x => x.IsServer == false).ToList();
+            List<ServerDevicesObjects> serverDevicesList = Server.ServerDevices.OrderBy(x => x.DeviceType != "Server").ToList();
             foreach (ServerDevicesObjects devices in serverDevicesList)
             {
-                string isServer = devices.IsServer ? "[Server]" : "[Device]";
+                
                 Console.Write($"{devices.DeviceName,-15}");
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write($"{devices.IpAddres,-16}");
-                if (devices.IsServer == true)
+                if (devices.DeviceType == "Server")
                 {
                     Console.ForegroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine($"{isServer,-15}");
+                    Console.WriteLine($"{devices.DeviceType,-15}");
                     Console.ResetColor();
                 }
 
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine($"{isServer,-15}");
+                    Console.WriteLine($"{devices.DeviceType,-15}");
                     Console.ResetColor();
                 }
             }
+
+
+            Console.WriteLine("\nPress any key to return to the server list...");
+            Console.ReadKey(true);
         }
 
 
 
         private static void ShowServerMetrics()
         {
-            List<ServerDevicesObjects> serverTypeDevices = ServerDevices.Where(x => x.IsServer == true).ToList();
+            List<ServerDevicesObjects> serverTypeDevices = ServerDevices.Where(x => x.DeviceType == "Server").ToList();
 
             if (serverTypeDevices.Count == 0)
             {
@@ -256,6 +246,113 @@ namespace FileSorter_1._1
                 Console.ReadKey(true);
             }
         }
+
+
+
+        private static void ServerCommands()
+        {
+            List<ServerDevicesObjects> serverDevicesObject = ServerDevices.Where(device => device.DeviceType == "Server").ToList();
+            string[] servers = new string[serverDevicesObject.Count + 1];
+            int lastItem = serverDevicesObject.Count;
+            for(int i = 0; i < lastItem; i++)
+            {
+                servers[i] = serverDevicesObject[i].DeviceName;
+            }
+            servers[lastItem] = "Back";
+
+
+            string[] commandOptions = { "Update server", "Restart server", "Custom command","Back" };
+            while (true)
+            {
+                Program.ShowMenuHelper("Servers", servers, out int option, ">");
+                Settings.MenuSelectUI("Servers", servers, ">", option);
+
+                if (option == lastItem) return;
+
+                bool runDeviceOption = true;
+                while (runDeviceOption)
+                {
+                    ServerDevicesObjects selectedServer = serverDevicesObject[option];
+                    Program.ShowMenuHelper($"Commands for {selectedServer}", commandOptions, out int commandOption, ">");
+                    Settings.MenuSelectUI($"Commands for {selectedServer}", commandOptions, ">", commandOption);
+
+                    if (commandOption == 3) { runDeviceOption = false; continue; }
+
+
+                    string user = selectedServer.SshUsername;
+                    string pass = selectedServer.SshPassword;
+                    if (user == "none")
+                    {
+                        Console.Write($"Add the SSH Username for {servers[option]}: ");
+                        user = Console.ReadLine();
+                    }
+                    if (pass == "none")
+                    {
+                        Console.Write($"Add the SSH password for {servers[option]}: ");
+                        pass = Console.ReadLine();
+                    }
+
+                    switch (commandOption)
+                    {
+                        case 0: //Update
+                            string updateCmd = $"echo '{pass}' | sudo -S apt-get update && echo '{pass}' | sudo -S apt-get upgrade -y";
+                            ExecuteSingleSshCommand(selectedServer, user, pass, updateCmd);
+                            break;
+
+                        case 1: // Restart
+                            Console.Write("Are you sure? (y/n): ");
+                            if (Console.ReadLine()?.ToLower() == "y")
+                            {
+                                string rebootCmd = $"echo '{pass}' | sudo -S reboot";
+                                ExecuteSingleSshCommand(selectedServer, user, pass, rebootCmd);
+                            }
+                            break;
+                        case 2: // Custom
+                            Console.Write("Enter command: ");
+                            string customCmd = Console.ReadLine() ?? "";
+                            if (!string.IsNullOrWhiteSpace(customCmd))
+                                ExecuteSingleSshCommand(selectedServer, user, pass, customCmd);
+                            break;
+                    }
+
+                }
+            }
+        }
+
+        private static void ExecuteSingleSshCommand(ServerDevicesObjects device, string user, string pass, string command)
+        {
+            Console.WriteLine($"\n[SSH] Sending command to {device.DeviceName}...");
+            try
+            {
+                var connectionInfo = new PasswordConnectionInfo(device.IpAddres, user, pass) { Timeout = TimeSpan.FromSeconds(10) };
+                using(var client = new SshClient(connectionInfo))
+                {
+                    client.Connect();
+                    var sshCmd = client.CreateCommand(command);
+                    string result = sshCmd.Execute();
+
+                    Console.WriteLine("\n--- Response ---");
+                    Console.WriteLine(string.IsNullOrWhiteSpace(result) ? "Command executed (no output)." : result);
+                    if (!string.IsNullOrEmpty(sshCmd.Error))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"Error: {sshCmd.Error}");
+                        Console.ResetColor();
+                    }
+                    Console.WriteLine("----------------");
+                    client.Disconnect();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to execute: {ex.Message}");
+            }
+            Console.WriteLine("\nPress any key to continue...");
+            Console.ReadKey(true);
+        }
+
+
+
         ///<!--The server's file handler functions-->
 
         ///<summary>Loads the existing server jsons into usable list's</summary>

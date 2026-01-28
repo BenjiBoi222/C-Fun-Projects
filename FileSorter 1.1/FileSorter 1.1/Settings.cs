@@ -154,7 +154,7 @@ namespace FileSorter_1._1
         ///<summary>Adds an ip addres with a name to it</summary>
         private static void AddIpAddress()
         {
-            while(true)
+            while (true)
             {
                 Console.Write("Enter device IP(x.x.x.x): ");
                 string ipAddress = Console.ReadLine() ?? "x";
@@ -162,12 +162,14 @@ namespace FileSorter_1._1
                 Console.Write("Enter the device name: ");
                 string ipDevice = Console.ReadLine() ?? string.Empty;
 
-                Console.Write("Is this a server? (y/n): ");
-                string ipIsServer = Console.ReadLine() ?? "n";
+                string deviceType = SelectDeviceType();
+                //I have to add the function for the user to able to choose from pre-made types
+                //so limiting user failiure
+
                 string ipServerSshUsername = "none";
                 string ipServerSshPassword = "none";
 
-                if (ipIsServer == "y")
+                if (deviceType == "Server")
                 {
                     Console.Write("Add the SSH Username(press enter if don't want it saved): ");
                     ipServerSshUsername = Console.ReadLine() ?? "none";
@@ -184,7 +186,6 @@ namespace FileSorter_1._1
                     devices.SshUsername = ipServerSshUsername;
                     devices.SshPassword = ipServerSshPassword;
 
-                    if(ipIsServer.ToLower() == "y") devices.IsServer = true; 
 
                     Server.ServerDevices.Add(devices);
                     Server.SaveHistory();
@@ -230,7 +231,7 @@ namespace FileSorter_1._1
 
         private static void EditSpecificDevice(ServerDevicesObjects device)
         {
-            string[] editOptions = { "Change Name", "Change IP", "Toggle Server Status", "Edit ssh data", "Delete Device", "Back" };
+            string[] editOptions = { "Change Name", "Change IP", "Change device type", "Edit ssh data", "Delete Device", "Back" };
 
             while (true)
             {
@@ -251,13 +252,13 @@ namespace FileSorter_1._1
                         break;
 
                     case 2: // Toggle Server
-                        device.IsServer = !device.IsServer;
-                        Console.WriteLine($"Server status is now: {device.IsServer}");
+                        device.DeviceType = SelectDeviceType();
+                        Console.WriteLine($"Device type is now: [{device.DeviceType}]");
                         Sleep(1000);
                         break;
 
                     case 3:
-                        if (device.IsServer)
+                        if (device.DeviceType == "Server")
                         {
                             Console.WriteLine("(press enter if there is no change/none if you want to delete it)");
                             Console.Write($"Current ssh username:{device.SshUsername}. New ssh username: ");
@@ -298,6 +299,28 @@ namespace FileSorter_1._1
 
 
         ///<!--Helper functions for test and UI-->
+        
+        ///<summary>Shows a menu of all the device type the user can choose from</summary>
+        ///<param name="deviceType">Base parameter is a Device</param>
+        ///<returns>The type of device</returns>
+        public static string SelectDeviceType(string deviceType = "Device")
+        {
+            string[] deviceTypesOptions = { "Server", "Router", "Device" };
+
+
+            Program.ShowMenuHelper("Type options", deviceTypesOptions, out int deviceTypeSelected, ">");
+            Settings.MenuSelectUI("Type options", deviceTypesOptions, ">", deviceTypeSelected);
+
+            switch (deviceTypeSelected)
+            {
+                case 0: deviceType = "Server"; break;
+                case 1: deviceType = "Router"; break;
+            }
+
+            return deviceType;
+        }
+
+
 
         public static void MenuSelectUI(string menuName,string[] menuOptions, string indicator, int selected)
         {
