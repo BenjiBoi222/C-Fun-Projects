@@ -10,6 +10,10 @@ namespace FileSorter_1._1
         public string IpAddres {  get; set; }
         public string DeviceName { get; set; }
         public bool IsServer { get; set; } = false;
+
+        //Only add if the device is a server
+        public string SshUsername { get; set; } = "none";
+        public string SshPassword { get; set;} = "none";
     }
     
 }

@@ -20,7 +20,7 @@ namespace FileSorter_1._1
             while (true)
             {
                 Console.Clear();
-                string[] menuOptions = { "Connection Status","Devices List","Main Menu"};
+                string[] menuOptions = { "Connection Status","Devices List","Server Metrics","Main Menu"};
 
                 Program.ShowMenuHelper(menuName, menuOptions, out int option, ">");
 
@@ -46,7 +46,8 @@ namespace FileSorter_1._1
                 {
                     case 0: CheckConnection(); break;
                     case 1: ShowSavedDevices(); break;
-                    case 2: return;
+                    case 2: ShowServerMetrics(); break;
+                    case 3: return;
                 }
 
                 Console.WriteLine("\nDone! Press any key to return to menu...");
@@ -156,6 +157,105 @@ namespace FileSorter_1._1
         }
 
 
+
+        private static void ShowServerMetrics()
+        {
+            List<ServerDevicesObjects> serverTypeDevices = ServerDevices.Where(x => x.IsServer == true).ToList();
+
+            if (serverTypeDevices.Count == 0)
+            {
+                Console.WriteLine("No server-type devices found in your list.");
+                return;
+            }
+
+            string[] servers = new string[serverTypeDevices.Count + 1];
+            int lastItem = 0;
+            for (int i = 0; i < servers.Length - 1; i++) { servers[i] = serverTypeDevices[i].DeviceName; lastItem++; }
+            servers[lastItem] = "Back";
+
+            Program.ShowMenuHelper("Servers", servers, out int option, ">");
+            Settings.MenuSelectUI("Servers", servers, ">", option);
+
+            if (option == lastItem) return;
+
+            string sshUsername = serverTypeDevices[option].SshUsername;
+            string sshPassword = serverTypeDevices[option].SshPassword;
+
+            if(sshUsername == "none")
+            {
+                Console.Write($"Add the SSH Username for {servers[option]}: ");
+                sshUsername = Console.ReadLine();
+            }
+            if(sshPassword == "none")
+            {
+                Console.Write($"Add the SSH password for {servers[option]}: ");
+                sshPassword = Console.ReadLine();
+            }
+
+            ShowServerMetricsHandler(serverTypeDevices[option], sshUsername, sshPassword);
+        }
+        public static void ShowServerMetricsHandler(ServerDevicesObjects device, string username, string password)
+        {
+            try
+            {
+                // 1. Setup Connection Info with a specific Timeout
+                var connectionInfo = new PasswordConnectionInfo(device.IpAddres, username, password)
+                {
+                    Timeout = TimeSpan.FromSeconds(5) // This is where the timeout lives!
+                };
+
+                // 2. Initialize the client using that info
+                using (var client = new SshClient(connectionInfo))
+                {
+                    Console.WriteLine($"\n[System] Connecting to {device.IpAddres} (Timeout: 5s)...");
+                    client.Connect();
+
+                    Console.WriteLine("Connected! Press any key to stop monitoring.");
+                    Settings.Sleep(1000);
+
+                    while (!Console.KeyAvailable)
+                    {
+                        if (!client.IsConnected) break;
+
+                        var cmd = client.CreateCommand(
+                            "echo \"CPU: $(top -bn1 | grep 'Cpu(s)' | awk '{print $2 + $4}')%\" && " +
+                            "free -m | awk 'NR==2{printf \"RAM: %s/%sMB (%.2f%%)\\n\", $3,$2,$3*100/$2 }' && " +
+                            "df -h / | awk 'NR==2{printf \"Storage: %s/%s used (%s total)\\n\", $3,$2,$2}'"
+                        );
+
+                        var result = cmd.Execute();
+
+                        Console.Clear();
+                        Console.WriteLine($"=== Metrics: {device.DeviceName} ===");
+                        Console.WriteLine($"Last Update: {DateTime.Now:HH:mm:ss}");
+                        Console.WriteLine("----------------------------------------------------");
+                        Console.WriteLine(result);
+                        Console.WriteLine("----------------------------------------------------");
+                        Console.WriteLine("Press any key to exit...");
+
+                        Settings.Sleep(1000);
+                    }
+
+                    if (Console.KeyAvailable) Console.ReadKey(true);
+                    client.Disconnect();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("========================================");
+                Console.WriteLine("        CONNECTION ERROR");
+                Console.WriteLine("========================================");
+                Console.WriteLine($"Target: {device.DeviceName} ({device.IpAddres})");
+                Console.WriteLine($"Error:  {ex.Message}");
+                Console.WriteLine("========================================");
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress any key to return to the server list...");
+                Console.ReadKey(true);
+            }
+        }
         ///<!--The server's file handler functions-->
 
         ///<summary>Loads the existing server jsons into usable list's</summary>

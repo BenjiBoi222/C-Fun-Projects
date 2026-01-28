@@ -164,12 +164,25 @@ namespace FileSorter_1._1
 
                 Console.Write("Is this a server? (y/n): ");
                 string ipIsServer = Console.ReadLine() ?? "n";
+                string ipServerSshUsername = "none";
+                string ipServerSshPassword = "none";
+
+                if (ipIsServer == "y")
+                {
+                    Console.Write("Add the SSH Username(press enter if don't want it saved): ");
+                    ipServerSshUsername = Console.ReadLine() ?? "none";
+
+                    Console.Write("Add the SSH Password(press enter if don't want it saved): ");
+                    ipServerSshPassword = Console.ReadLine() ?? "none";
+                }
 
                 if(ipAddress != "x" && ipDevice != string.Empty)
                 {
                     ServerDevicesObjects devices = new();
                     devices.IpAddres = ipAddress;
                     devices.DeviceName = ipDevice;
+                    devices.SshUsername = ipServerSshUsername;
+                    devices.SshPassword = ipServerSshPassword;
 
                     if(ipIsServer.ToLower() == "y") devices.IsServer = true; 
 
@@ -190,9 +203,6 @@ namespace FileSorter_1._1
 
         /// <summary>
         /// Let's the user change or delete any device
-        /// </summary>
-        /// <summary>
-        /// Lets the user change or delete any device
         /// </summary>
         private static void ChangeDeviceSettings()
         {
@@ -220,7 +230,7 @@ namespace FileSorter_1._1
 
         private static void EditSpecificDevice(ServerDevicesObjects device)
         {
-            string[] editOptions = { "Change Name", "Change IP", "Toggle Server Status", "Delete Device", "Back" };
+            string[] editOptions = { "Change Name", "Change IP", "Toggle Server Status", "Edit ssh data", "Delete Device", "Back" };
 
             while (true)
             {
@@ -246,20 +256,41 @@ namespace FileSorter_1._1
                         Sleep(1000);
                         break;
 
-                    case 3: // Delete
-                        Console.Write("Are you sure you want to delete this device? (y/n): ");
-                        if (Console.ReadLine()?.ToLower() == "y")
+                    case 3:
+                        if (device.IsServer)
                         {
-                            Server.ServerDevices.Remove(device);
-                            Server.SaveHistory();
-                            return; // Exit back to device list
+                            Console.WriteLine("(press enter if there is no change/none if you want to delete it)");
+                            Console.Write($"Current ssh username:{device.SshUsername}. New ssh username: ");
+                            string newUsername = Console.ReadLine() ?? "none";
+                            if (newUsername != "") device.SshUsername = newUsername;
+
+                            Console.Write($"Current ssh password:{device.SshPassword}. New ssh username: ");
+                            string newPassword = Console.ReadLine() ?? "none";
+                            if (newPassword != "") device.SshPassword = newPassword;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Device is not a server. No ssh settings");
+                            Sleep(2000);
                         }
                         break;
 
-                    case 4: // Back
-                        Server.SaveHistory(); // Save changes before leaving
-                        return;
-                }
+
+
+                    case 4: // Delete
+                                Console.Write("Are you sure you want to delete this device? (y/n): ");
+                                if (Console.ReadLine()?.ToLower() == "y")
+                                {
+                                    Server.ServerDevices.Remove(device);
+                                    Server.SaveHistory();
+                                    return; // Exit back to device list
+                                }
+                                break;
+
+                            case 5: // Back
+                                Server.SaveHistory(); // Save changes before leaving
+                                return;
+                            }
                 Server.SaveHistory();
             }
         }
