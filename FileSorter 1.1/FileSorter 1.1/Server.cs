@@ -119,7 +119,7 @@ namespace FileSorter_1._1
             Console.Clear();
             Console.WriteLine("\nThe server devices:");
             Console.WriteLine($"{"Name",-14} {"Ip",-15} {"Type",-15}");
-            List<ServerDevicesObjects> serverDevicesList = Server.ServerDevices.OrderBy(x => x.DeviceType != "Server").ToList();
+            List<ServerDevicesObjects> serverDevicesList = Server.ServerDevices.OrderBy(x => x.DeviceType != "Router").ThenBy(x => x.DeviceType != "Server").ToList();
             foreach (ServerDevicesObjects devices in serverDevicesList)
             {
                 

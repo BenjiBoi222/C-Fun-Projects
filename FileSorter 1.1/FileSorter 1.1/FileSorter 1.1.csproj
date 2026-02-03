@@ -6,7 +6,12 @@
     <RootNamespace>FileSorter_1._1</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ApplicationIcon>file-sharing.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="file-sharing.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="SSH.NET" Version="2025.1.0" />

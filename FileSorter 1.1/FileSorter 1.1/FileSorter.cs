@@ -447,7 +447,7 @@ namespace FileSorter_1._1
             {
                 try
                 {
-                    FileInfo fileInfo = new FileInfo(file);
+                    System.IO.FileInfo fileInfo = new System.IO.FileInfo(file);
                     string destinationPath = Path.Combine(sourcePath, fileInfo.Name);
 
                     if (fileInfo.Name == HistoryFileName || fileInfo.Name == IgnoreFileName) continue;
