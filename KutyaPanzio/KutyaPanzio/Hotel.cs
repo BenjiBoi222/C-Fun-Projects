@@ -72,6 +72,9 @@ namespace KutyaPanzio
             }
 
             Console.WriteLine("======================");
+            Console.WriteLine("Press any button to continue...");
+            Console.ReadKey();
+
         }
 
         /// <summary>Shows all the available animals for check in</summary>
@@ -88,6 +91,9 @@ namespace KutyaPanzio
             {
                 Console.WriteLine($"{stepper++}){animal.Name,-10} {animal.AnimalType,-10} {animal.AnimalSize,-10} ${animal.MoneyForAnimal,-9} {animal.AmountOfDaysLeft,-10} {animal.NeededFoodType}");
             }
+
+            Console.WriteLine("Press any button to continue...");
+            Console.ReadKey();
         }
 
         /// <summary>Checks if the animal exists and adds it to the hotel</summary>

@@ -15,7 +15,19 @@ namespace KutyaPanzio
             Console.WriteLine("====Welcome to the hotel====");
             Console.Write("Please enter a name for the hotel: ");
             string hotelName = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(hotelName)) { Hotel.HotelName = hotelName; Program.IsRegistered = true; Program.IsGameRunning = true; }
+            if (!string.IsNullOrWhiteSpace(hotelName)) 
+            {
+                string finalHotelName = "";
+                for(int i = 0; i < hotelName.Length; i++)
+                {
+                    if (i == 0) finalHotelName = hotelName[i].ToString().ToUpper();
+                    else finalHotelName += hotelName[i].ToString().ToLower();
+                }
+
+                Hotel.HotelName = finalHotelName;
+                Program.IsRegistered = true;
+                Program.IsGameRunning = true; 
+            }
             else Console.WriteLine("Invalid naming!");
         }
 
