@@ -11,25 +11,25 @@ namespace KutyaPanzio
         ///<!--Store menu functions-->
         public static void OpenShop()
         {
-            Console.Clear();
+            string[] shopMenuOptions =
+            {
+                "Buy more slots",
+                "Buy more food",
+                "Hire staff",
+                "Back to menu"
+            };
             bool isStoreActive = true;
             while (isStoreActive)
             {
-                Console.WriteLine("\n===Shop===");
-                Console.WriteLine("1)Buy more slots");
-                Console.WriteLine("2)Buy more food");
-                Console.WriteLine("3)Hire staff");
-                Console.WriteLine("0)Exit store");
-                Console.Write("Enter selected option: ");
-                if (int.TryParse(Console.ReadLine(), out int choice))
+
+                int choice = ShortFunctions.ShowMenu("Shop", shopMenuOptions, "-");
                 {
                     switch (choice)
                     {
-                        case 0: Console.Clear(); isStoreActive = false; break;
-                        case 1: BuyMoreStack(); break;
-                        case 2: BuyMoreFood(); break;
-                        case 3: HireStaff(); break;
-                        default: Console.WriteLine("Invalid input!"); break;
+                        case 0: BuyMoreStack(); break;
+                        case 1: BuyMoreFood(); break;
+                        case 2: HireStaff(); break;
+                        case 3: Console.Clear(); isStoreActive = false; break;
                     }
                 }
             }

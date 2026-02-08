@@ -12,35 +12,40 @@ namespace KutyaPanzio
         ///<!--Functions for the game's main menu-->
         public static void GameMenu()
         {
-            Console.WriteLine($"\n==={Hotel.HotelName} Hotel Menu===");
-            Console.WriteLine("1)Hotel info");
-            Console.WriteLine("2)Open shop");
-            Console.WriteLine("3)Check for available animals");
-            Console.WriteLine("4)Check animal in");
-            Console.WriteLine("5)Check animal out");
-            Console.WriteLine("6)Check animal needs");
-            Console.WriteLine("7)Animal Care & Maintenance");
-            Console.WriteLine("8)Clean mess up");
-            Console.WriteLine("9)Bank menu");
-            Console.WriteLine("P)Pass a day");
-            Console.WriteLine("M)User manual");
-            Console.WriteLine("E)Exit the game without saving");
-            Console.Write("Enter selected option: ");
-            switch (Console.ReadLine())
+            string[] mainMenuOptions =
             {
-                case "1": Hotel.HotelInfo(); break;
-                case "2": StoreFunctions.OpenShop(); break;
-                case "3": Hotel.CheckForAnimal(); break;
-                case "4": CheckAnimalIn(); break;
-                case "5": CheckAnimalOut(); break;
-                case "6": AnimalNeedsListed(); break;
-                case "7": AnimalCareList(); break;
-                case "8": CleanAnimalMess(); break;
-                case "9": Bank.BankMenu(); break;
-                case "p": PassDay(); break;
-                case "m": UserManual(); break;
-                case "e": SystemFunctions.EndScreen(); break;
-                case "I don't want to choose": Randoms.ClownFace(); break;
+                "Hotel info",
+                "Open shop",
+                "Check for available animals",
+                "Check animal in",
+                "Check animal out",
+                "Check animal needs",
+                "Animal Care & Maintenance",
+                "Clean up mess",
+                "Bank menu",
+                "Pass a day",
+                "User manual",
+                "Exit the game without saving"
+            };
+
+
+            int option = ShortFunctions.ShowMenu(Hotel.HotelName, mainMenuOptions, ">");
+
+            switch (option)
+            {
+                case 0: Hotel.HotelInfo(); break;
+                case 1: StoreFunctions.OpenShop(); break;
+                case 2: Hotel.CheckForAnimal(); break;
+                case 3: CheckAnimalIn(); break;
+                case 4: CheckAnimalOut(); break;
+                case 5: AnimalNeedsListed(); break;
+                case 6: AnimalCareList(); break;
+                case 7: CleanAnimalMess(); break;
+                case 8: Bank.BankMenu(); break;
+                case 9: PassDay(); break;
+                case 10: UserManual(); break;
+                case 11: SystemFunctions.EndScreen(); break;
+                case -1: Randoms.ClownFace(); break;
                 default: Console.WriteLine("Invalid input!"); break;
             }
             SystemFunctions.Reminders();
@@ -84,26 +89,31 @@ namespace KutyaPanzio
             if (Hotel.AnimalsInHotel.Count == 0)
             {
                 Console.WriteLine("The hotel is currently empty.");
-                return;
-            }
-
-            int moneyBefore = Hotel.HotelMoney;
-            int animalsBefore = Hotel.AnimalsInHotel.Count;
-
-            Hotel.TakeAnimalOut();
-
-            int animalsDeparted = animalsBefore - Hotel.AnimalsInHotel.Count;
-            int moneyEarned = Hotel.HotelMoney - moneyBefore;
-
-            if (animalsDeparted > 0)
-            {
-                Console.WriteLine($"Success! {animalsDeparted} dog(s) went home.");
-                Console.WriteLine($"You earned: ${moneyEarned}");
             }
             else
             {
-                Console.WriteLine("No animal is ready to go home yet. Check back tomorrow!");
+
+                int moneyBefore = Hotel.HotelMoney;
+                int animalsBefore = Hotel.AnimalsInHotel.Count;
+
+                Hotel.TakeAnimalOut();
+
+                int animalsDeparted = animalsBefore - Hotel.AnimalsInHotel.Count;
+                int moneyEarned = Hotel.HotelMoney - moneyBefore;
+
+                if (animalsDeparted > 0)
+                {
+                    Console.WriteLine($"Success! {animalsDeparted} dog(s) went home.");
+                    Console.WriteLine($"You earned: ${moneyEarned}");
+                }
+                else
+                {
+                    Console.WriteLine("No animal is ready to go home yet. Check back tomorrow!");
+                }
             }
+
+            Console.WriteLine("Press any button to continue...");
+            Console.ReadKey();
         }
 
         /// <summary>Checks all the staying animals needs and writes them up</summary>
@@ -134,6 +144,9 @@ namespace KutyaPanzio
                 }
             }
             else Console.WriteLine("No animal is checked inside the hotel!");
+
+            Console.WriteLine("Press any button to continue...");
+            Console.ReadKey();
         }
 
         ///<!--Private functions and menu of the care taking actions-->
@@ -144,24 +157,27 @@ namespace KutyaPanzio
             int capacity = 1 + staffCount;
             bool menuIsRunning = true;
 
+            string[] careMenuOptions =
+            {
+                "Feed the animal",
+                "Give drink to animal",
+                "Take animal out on a walk",
+                "Back to main menu"
+            };
+
             while(menuIsRunning)
             {
-                Console.WriteLine("\n=== Animal Care & Maintenance ===");
-                Console.WriteLine("1) Feed the animal");
-                Console.WriteLine("2) Give drink to animal");
-                Console.WriteLine("3) Take an animal out on a walk");
-                Console.WriteLine("0) Exit Care & Maintenance menu");
                 Console.WriteLine($"\nWarning: Currently you can take care of {capacity} animals at a time.");
                 Console.WriteLine($"(Base: 1 + Staff: {staffCount})");
-                Console.Write("Enter chosen option: ");
-                if (int.TryParse(Console.ReadLine(), out int choice))
+                int choice = ShortFunctions.ShowMenu("Animal Care & Maintenance", careMenuOptions, "-");
+
                 {
                     switch (choice)
                     {
-                        case 0: menuIsRunning = false; break;
-                        case 1: FeedAnimal(capacity); break;
-                        case 2: GiveDrinkToAnimal(capacity); break;
-                        case 3: TakeAnimalOnWalk(capacity); break;
+                        case 0: FeedAnimal(capacity); break;
+                        case 1: GiveDrinkToAnimal(capacity); break;
+                        case 2: TakeAnimalOnWalk(capacity); break;
+                        case 3: menuIsRunning = false; break;
                     }
                 }
             }
@@ -260,6 +276,8 @@ namespace KutyaPanzio
                 Hotel.MessyStackAmount = 0;
                 Console.WriteLine("The stacks were cleaned!");
             }
+            Console.WriteLine("Press any button to continue...");
+            Console.ReadKey();
         }
 
 
@@ -294,6 +312,8 @@ namespace KutyaPanzio
             Randoms.GenerateBehavior();
             SystemFunctions.CheckOutIfStaff();
             Bank.BankActions();
+
+            ShortFunctions.Sleep(1);
         }
 
         
