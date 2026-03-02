@@ -30,7 +30,96 @@ namespace TriDev_System_Vital_Dashboard
 {
     internal class SystemFunctions
     {
-        
+        public static void ShowMenu()
+        {
+            string[] menuOptions =
+            {
+                "Show Metrics",
+                "Leave program"
+            };
 
+            int hovered = 0;
+            while (true)
+            {
+
+                for (int i = 0;  i < menuOptions.Length; i++)
+                {
+                    if(i == hovered)
+                    {
+                        AnsiConsole.WriteLine($"[red] -{menuOptions[i]}");
+                    }
+                    else
+                    {
+                        AnsiConsole.WriteLine($" {menuOptions[i]}");
+                    }
+                }
+
+                Console.ReadKey();
+            }
+        }
+
+
+        /// <summary>
+        /// Displays real-time CPU and memory usage metrics in a live console table with visual indicators.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        public static async Task CheckSystemUsage()
+        {
+            Task runBackgroundSystemCheck = Task.Run(async () =>
+            {
+                PerformanceCounter cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                PerformanceCounter memCounter = new PerformanceCounter("Memory", "Available MBytes");
+
+                var services = new ServiceCollection()
+                    .AddLogging()
+                    .AddResourceMonitoring()
+                    .BuildServiceProvider();
+
+                var monitor = services.GetRequiredService<IResourceMonitor>();
+
+                var table = new Table().Border(TableBorder.Rounded);
+                table.AddColumn("[yellow]Metric[/]");
+                table.AddColumn("[yellow]Usage[/]");
+                table.AddColumn("[yellow]Visual[/]");
+
+
+                await AnsiConsole.Live(table).StartAsync(async ctx =>
+                {
+                    while (true)
+                    {
+                        float cpuUsage = cpuCounter.NextValue();
+                        float availableMem = memCounter.NextValue();
+
+                        float memUsagePercent = (1 - (availableMem / 16384)) * 100;
+
+                        table.Rows.Clear();
+
+                        string cpuColor = GetColor(cpuUsage);
+                        string memoryColor = GetColor(memUsagePercent);
+
+                        string cpuBar = new string('█', (int)(cpuUsage / 5)).PadRight(20, '░');
+                        string memoryBar = new string('█', (int)(memUsagePercent / 5)).PadRight(20, '░');
+
+                        table.AddRow("CPU Usage", $"{cpuUsage:F1}%", $"[{cpuColor}]{cpuBar}[/]");
+                        table.AddEmptyRow();
+                        table.AddRow("Memory Left to use", $"{memUsagePercent:F1}%", $"[{memoryColor}]{memoryBar}[/]");
+
+                        ctx.Refresh();
+                        await Task.Delay(1000);
+                    }
+                });
+            });
+            await runBackgroundSystemCheck;
+
+
+            static string GetColor(double value)
+            {
+                if (value > 80) return "red";
+                if (value > 50) return "yellow";
+                if (value > 20) return "green";
+                else return "blue";
+            }
+        
+        }
     }
 }
