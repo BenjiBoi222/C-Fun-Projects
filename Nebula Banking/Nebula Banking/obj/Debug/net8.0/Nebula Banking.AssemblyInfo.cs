@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Nebula Banking")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fa5b6b457d2366015810f536b1830fe2131585da")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a52a279a92bf2889d528ec39f347dd005ff37ef7")]
 [assembly: System.Reflection.AssemblyProductAttribute("Nebula Banking")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Nebula Banking")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
