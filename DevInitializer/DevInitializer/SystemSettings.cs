@@ -58,9 +58,11 @@ namespace DevInitializer
             }
         }
         //----
+        /// <summary>
+        /// Let's the usr choose the tools they want to download and initialises the download with a link
+        /// </summary>
         public static async void ToolInstallerMenu()
         {
-            // 1. Setup the data as objects
             List<DevTool> tools = new List<DevTool>
             {
                 // --- Runtimes ---
@@ -173,7 +175,6 @@ namespace DevInitializer
                     // Selection indicator [ ] or [X]
                     string checkbox = tools[i].IsChecked ? "[X]" : "[ ]";
 
-                    // Highlight the hovered line
                     if (i == hoverIndex)
                     {
                         Console.BackgroundColor = ConsoleColor.Gray;
@@ -187,7 +188,6 @@ namespace DevInitializer
                     }
                 }
 
-                // Input Handling
                 var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.UpArrow) hoverIndex = Math.Max(0, hoverIndex - 1);
                 if (key == ConsoleKey.DownArrow) hoverIndex = Math.Min(tools.Count - 1, hoverIndex + 1);
@@ -201,7 +201,6 @@ namespace DevInitializer
                 if (key == ConsoleKey.Enter) break; // Exit loop to start "download"
             }
 
-            // Process only the selected items
             var selectedTools = tools.Where(t => t.IsChecked).ToList();
             await ProcessDownloads(selectedTools);
 
